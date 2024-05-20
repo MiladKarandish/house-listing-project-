@@ -6,7 +6,7 @@
       </div>
       <nav>
         <router-link to="/" class="header_item">Houses</router-link>
-        <router-link to="/About_Page" class="header_item">About</router-link>
+        <router-link to="/AboutPage" class="header_item">About</router-link>
       </nav>
     </div>
   </header>
