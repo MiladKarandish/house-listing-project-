@@ -1,15 +1,26 @@
 <template>
 <div class="body">
-  <h1>Houses</h1>
-  <div class="input-container">
-    <img class="search" src="@/assets/ic_search@3x.png" alt="search" >
-    <input type="text" id="inputField" placeholder="Search for a house" @input="handleInput">
-    <img class="clear" id="clearButton" src="@/assets/ic_clear@3x.png" alt="clear" @click="clearInput">
+  <div class="upper-block">
+    <div class="left-block">
+      <h1>Houses</h1>
+    <div class="input-container">
+      <img class="search" src="@/assets/ic_search@3x.png" alt="search" >
+      <input type="text" id="inputField" placeholder="Search for a house" @input="handleInput">
+      <img class="clear" id="clearButton" src="@/assets/ic_clear@3x.png" alt="clear" @click="clearInput">
+    </div>
+    <div class="resulf-of-search"><h4>2 results found</h4></div>
+    </div>
+    
+    <div class="right-block">
+      <button class="creat-new" >+ CREAT NEW</button>
+    <div class="filter">
+      <button class="Price-filter" >Price</button>
+      <button class="Size-filter" >Size</button>
+    </div>
   </div>
-
-  <div class="filter">
-    <p>Price</p><p>Size</p>
   </div>
+  
+  
 
 
 
@@ -133,8 +144,59 @@ onMounted(() => {
 
 
 <style scoped>
+.right-block{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: -20px;
+}
+
+.Price-filter, .Size-filter{
+  color: #ffffff;
+  padding: 8px 40px;
+  border: none;
+  font-size: 14px;
+  font-family: 'Montserrat';
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.Price-filter{
+  background-color: #EB5440;
+  border-radius: 5px 0px 0px 5px;
+}
+
+.Size-filter{
+  background-color: #C3C3C3;
+  border-radius: 0px 5px 5px 0px;
+}
+
+.creat-new{
+  background-color: #EB5440;
+  color: #ffffff;
+  padding: 8px 25px;
+  border-radius: 5px;
+  border: none;
+  font-size: 18px;
+  font-family: 'Montserrat';
+  font-weight: 600;
+  margin: 30px 0px;
+  cursor: pointer;
+}
+
+.upper-block{
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .body{
-  padding: 0% 13%;
+  padding: 0% 15%;
 }
 
 .input-container {
@@ -157,6 +219,7 @@ onMounted(() => {
 .input-container .clear {
   right: 10px;
   display: none;
+  cursor: pointer;
 }
 
 .input-container input {
@@ -198,6 +261,7 @@ input[type=text] {
   width: 100%;
   border-radius: 10px;
   margin: 10px 0px;
+  overflow: hidden;
 }
 
 .item-text-container {
