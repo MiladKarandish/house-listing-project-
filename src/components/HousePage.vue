@@ -1,5 +1,18 @@
 <template>
+<div class="body">
   <h1>Houses</h1>
+  <div class="input-container">
+    <img class="search" src="@/assets/ic_search@3x.png" alt="search" >
+    <input type="text" id="inputField" placeholder="Search for a house" @input="handleInput">
+    <img class="clear" id="clearButton" src="@/assets/ic_clear@3x.png" alt="clear" @click="clearInput">
+  </div>
+
+  <div class="filter">
+    <p>Price</p><p>Size</p>
+  </div>
+
+
+
   <div class="items">
     <div class="item">
       <div class="item-img" :style="`background-image: url('${houseImage}')`"></div>
@@ -85,25 +98,96 @@
       </div>
     </div>
   </div>
+</div>
+  
 
     
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import houseImage from '@/assets/img_placeholder_house@3x.png';
+
+const clearButton = ref(null);
+const inputField = ref(null);
+
+const handleInput = () => {
+  if (inputField.value.value.length > 0) {
+    clearButton.value.style.display = 'block';
+  } else {
+    clearButton.value.style.display = 'none';
+  }
+};
+
+const clearInput = () => {
+  inputField.value.value = '';
+  clearButton.value.style.display = 'none';
+  inputField.value.focus();
+};
+
+onMounted(() => {
+  clearButton.value = document.getElementById('clearButton');
+  inputField.value = document.getElementById('inputField');
+});
 </script>
 
+
 <style scoped>
-.items {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  font-size: 16px;
-  font-family: 'Open Sans';
-  font-weight: 300;
-  padding: 0% 15%;
-  margin: 15px 0px;
+.body{
+  padding: 0% 13%;
 }
+
+.input-container {
+  position: relative;
+  width: fit-content;
+}
+
+.input-container img {
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-container .search {
+  left: 10px;
+}
+
+.input-container .clear {
+  right: 10px;
+  display: none;
+}
+
+.input-container input {
+  width: 380px;
+  font-size: 16px;
+  padding: 10px 40px 10px 40px; 
+  border: 0;
+  border-radius: 5px;
+  background-color: #E8E8E8;
+  color: #4A4B4C;
+  font-size: 14px;
+  font-family: 'Montserrat';
+  font-weight: 500;
+}
+
+.input-container input::placeholder {
+  color: #C3C3C3;
+  font-size: 14px;
+  font-family: 'Open Sans';
+  font-weight: 400;
+}
+
+input:focus {
+  outline: none;
+}
+
+input[type=text] {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 
 .item {
   display: flex;
@@ -113,6 +197,7 @@ import houseImage from '@/assets/img_placeholder_house@3x.png';
   padding: 15px;
   width: 100%;
   border-radius: 10px;
+  margin: 10px 0px;
 }
 
 .item-text-container {
