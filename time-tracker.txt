@@ -1,0 +1,11 @@
+| Task name | Task time |
+| Creating a header | 5 hours 25 minutes |
+| Learning Vue (reading documentation) | 5 hours  |
+| Creating house page | 2 hours 40 minutes |
+| Setting up the project  | 2 hours |
+| Creating a search element | 1 hour 30 minutes |
+| Creating filter element | 1 hour 15 minutes |
+| Fixing mistakes  | 1 hour |
+| Creating About page | 1 hour |
+| Planning session  | 30 minutes |
+| General time (22.05.23) | 20 hours 40 minutes |
