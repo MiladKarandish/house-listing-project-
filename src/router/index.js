@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HousePage from '../components/HousePage.vue';
-import AboutPage from '../components/AboutPage.vue';
+import HousePage from '../pages/HousePage.vue';
+import AboutPage from '../pages/AboutPage.vue';
 
 
 

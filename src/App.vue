@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <Header  /> 
-    <router-view/>
+    <Header />
+    <router-view />
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Header from "./components/Header.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Header
-  }
-}
+    Header,
+  },
+};
 </script>
 
 <style>
@@ -26,7 +26,6 @@ export default {
 
 body {
   margin: 0px;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
 }
 </style>
-
