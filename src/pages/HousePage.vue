@@ -37,6 +37,7 @@
 
     <div class="items">
       <div class="item">
+        <!-- Using a background image to maintain proportions and ensure proper cropping -->
         <div
           class="item-img"
           :style="`background-image: url('${houseImage}')`"
@@ -110,6 +111,7 @@ import houseImage from "@/assets/images/placeholder-house-img.png";
 const clearButton = ref(null);
 const inputField = ref(null);
 
+// Function to handle input in the search field
 const handleInput = () => {
   if (inputField.value.value.length > 0) {
     clearButton.value.style.display = "block";
@@ -118,12 +120,14 @@ const handleInput = () => {
   }
 };
 
+// Function to clear the search input field
 const clearInput = () => {
   inputField.value.value = "";
   clearButton.value.style.display = "none";
   inputField.value.focus();
 };
 
+// Setting up the references on component mount
 onMounted(() => {
   clearButton.value = document.getElementById("clearButton");
   inputField.value = document.getElementById("inputField");

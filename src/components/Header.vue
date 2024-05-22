@@ -4,6 +4,7 @@
       <div class="logo header_item">
         <img src="@/assets/images/logo-dtt-img.png" alt="Logo" />
       </div>
+      <!-- Navigation links -->
       <nav>
         <router-link to="/" class="header_item">Houses</router-link>
         <router-link to="/AboutPage" class="header_item">About</router-link>
