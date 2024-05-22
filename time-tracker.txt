@@ -1,3 +1,5 @@
+//here is time that I spend for creating this project
+
 | Task name | Task time |
 | Creating a header | 5 hours 25 minutes |
 | Learning Vue (reading documentation) | 5 hours  |

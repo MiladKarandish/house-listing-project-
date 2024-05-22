@@ -17,7 +17,7 @@
     </p>
     <h1>Design and Developement</h1>
     <div class="content-web-link">
-      <img src="@/assets/pictures/img_logo_dtt@3x.png" alt="" />
+      <img src="@/assets/images/logo-dtt-img.png" alt="" />
       <div class="web-link">
         <h5 cless="web-link-item">By DTT</h5>
         <a href="www.d-tt.nl" cless="web-link-item">www.d-tt.nl</a>

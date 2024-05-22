@@ -6,7 +6,7 @@
         <div class="search-container">
           <img
             class="search"
-            src="@/assets/search/ic_search@3x.png"
+            src="@/assets/managing-icons/search.png"
             alt="search"
           />
           <input
@@ -18,7 +18,7 @@
           <img
             class="clear"
             id="clearButton"
-            src="@/assets/clear/ic_clear@3x.png"
+            src="@/assets/managing-icons/grey-clear-icon.png"
             alt="clear"
             @click="clearInput"
           />
@@ -48,23 +48,11 @@
             <div class="item-address">1011 AA Amsterdam</div>
           </div>
           <div class="item-properties">
-            <img
-              class="property"
-              src="@/assets/properties/ic_bed@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/bed.png" alt="" />
             <p>1</p>
-            <img
-              class="property"
-              src="@/assets/properties/ic_bath@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/bath.png" alt="" />
             <p>1</p>
-            <img
-              class="property"
-              src="@/assets/properties/ic_size@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/size.png" alt="" />
             <p>120M²</p>
           </div>
         </div>
@@ -81,23 +69,11 @@
             <div class="item-address">1011 AA Amsterdam</div>
           </div>
           <div class="item-properties">
-            <img
-              class="property"
-              src="@/assets/properties/ic_bed@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/bed.png" alt="" />
             <p>1</p>
-            <img
-              class="property"
-              src="@/assets/properties/ic_bath@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/bath.png" alt="" />
             <p>1</p>
-            <img
-              class="property"
-              src="@/assets/properties/ic_size@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/size.png" alt="" />
             <p>120M²</p>
           </div>
         </div>
@@ -114,23 +90,11 @@
             <div class="item-address">1011 AA Amsterdam</div>
           </div>
           <div class="item-properties">
-            <img
-              class="property"
-              src="@/assets/properties/ic_bed@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/bed.png" alt="" />
             <p>1</p>
-            <img
-              class="property"
-              src="@/assets/properties/ic_bath@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/bath.png" alt="" />
             <p>1</p>
-            <img
-              class="property"
-              src="@/assets/properties/ic_size@3x.png"
-              alt=""
-            />
+            <img class="property" src="@/assets/properties/size.png" alt="" />
             <p>120M²</p>
           </div>
         </div>
@@ -141,7 +105,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import houseImage from "@/assets/images/img_placeholder_house@3x.png";
+import houseImage from "@/assets/images/placeholder-house-img.png";
 
 const clearButton = ref(null);
 const inputField = ref(null);

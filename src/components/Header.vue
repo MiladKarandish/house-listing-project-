@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header_contetnt">
       <div class="logo header_item">
-      <img src="@/assets/pictures/img_logo_dtt@3x.png" alt="Logo" />
+        <img src="@/assets/images/logo-dtt-img.png" alt="Logo" />
       </div>
       <nav>
         <router-link to="/" class="header_item">Houses</router-link>
@@ -14,16 +14,15 @@
 
 <script>
 export default {
-  name: 'Header',
-  props: {
-  }
-}
+  name: "Header",
+  props: {},
+};
 </script>
 
 <style scoped>
 .header {
   display: flex;
-  align-items:center;
+  align-items: center;
   padding: 0px;
   background-color: #fff;
 }
@@ -40,7 +39,7 @@ export default {
   margin-left: 0px;
 }
 
-.router-link-active{
+.router-link-active {
   font-weight: bold;
   color: black;
 }
@@ -49,14 +48,14 @@ a {
   text-decoration: none;
   color: inherit;
   font-size: 18px;
-  font-family: 'Montserrat';
-  color: #C3C3C3;
+  font-family: "Montserrat";
+  color: #c3c3c3;
   font-weight: 500;
 }
 
-.header_contetnt{
+.header_contetnt {
   display: flex;
   padding: 0% 15%;
-  align-items:center;
+  align-items: center;
 }
 </style>
