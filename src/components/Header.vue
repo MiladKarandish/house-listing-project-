@@ -1,13 +1,13 @@
 <template>
   <header class="header">
-    <div class="header_contetnt">
-      <div class="logo header_item">
-        <img src="@/assets/images/logo-dtt-img.png" alt="Logo" />
+    <div class="header-content">
+      <div class="logo header-item">
+        <img src="@/assets/images/logo.png" alt="Logo of DTT complany" />
       </div>
-      <!-- Navigation links -->
+
       <nav>
-        <router-link to="/" class="header_item">Houses</router-link>
-        <router-link to="/AboutPage" class="header_item">About</router-link>
+        <router-link to="/" class="header-item">Houses</router-link>
+        <router-link to="/AboutPage" class="header-item">About</router-link>
       </nav>
     </div>
   </header>
@@ -32,7 +32,7 @@ export default {
   height: 30px;
 }
 
-.header_item {
+.header-item {
   margin: 20px;
 }
 
@@ -54,7 +54,7 @@ a {
   font-weight: 500;
 }
 
-.header_contetnt {
+.header-content {
   display: flex;
   padding: 0% 15%;
   align-items: center;

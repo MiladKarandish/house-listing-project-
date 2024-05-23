@@ -15,12 +15,12 @@
       makes us rich in experience, flexible and enormously versatile. And that
       is precisely where our strength lies.
     </p>
-    <h1>Design and Developement</h1>
+    <h2>Design and Developement</h2>
     <div class="content-web-link">
-      <img src="@/assets/images/logo-dtt-img.png" alt="" />
+      <img src="@/assets/images/logo.png" alt="logo of DTT company" />
       <div class="web-link">
-        <h5 cless="web-link-item">By DTT</h5>
-        <a href="www.d-tt.nl" cless="web-link-item">www.d-tt.nl</a>
+        <h5 class="web-link-item">By DTT</h5>
+        <a href="www.d-tt.nl" class="web-link-item">www.d-tt.nl</a>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "About_page",
+  name: "AboutPage",
 };
 </script>
 

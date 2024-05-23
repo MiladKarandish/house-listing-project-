@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Header />
-    <!-- Router view for rendering matched components -->
     <router-view />
   </div>
 </template>
@@ -10,9 +9,9 @@
 import Header from "./components/Header.vue";
 
 export default {
-  name: "App", // Name of the root component
+  name: "App", 
   components: {
-    Header, // Registering the Header component
+    Header, 
   },
 };
 </script>

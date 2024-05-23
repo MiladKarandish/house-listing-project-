@@ -6,23 +6,28 @@
         <div class="search-container">
           <img
             class="search"
-            src="@/assets/managing-icons/search.png"
-            alt="search"
+            src="@/assets/icons/actions/search.png"
+            alt="search of input"
           />
+
           <input
             type="text"
             id="inputField"
+            ref="inputField"
             placeholder="Search for a house"
             @input="handleInput"
           />
+
           <img
             class="clear"
             id="clearButton"
-            src="@/assets/managing-icons/grey-clear-icon.png"
-            alt="clear"
+            ref="clearButton"
+            src="@/assets/icons/actions/grey-clear-icon.png"
+            alt="Clear search"
             @click="clearInput"
           />
         </div>
+
         <div class="resulf-of-search"><h4>2 results found</h4></div>
       </div>
 
@@ -37,7 +42,6 @@
 
     <div class="items">
       <div class="item">
-        <!-- Using a background image to maintain proportions and ensure proper cropping -->
         <div
           class="item-img"
           :style="`background-image: url('${houseImage}')`"
@@ -49,53 +53,23 @@
             <div class="item-address">1011 AA Amsterdam</div>
           </div>
           <div class="item-properties">
-            <img class="property" src="@/assets/properties/bed.png" alt="" />
+            <img
+              class="property"
+              src="@/assets/icons/properties/bed.png"
+              alt="icon of bad"
+            />
             <p>1</p>
-            <img class="property" src="@/assets/properties/bath.png" alt="" />
+            <img
+              class="property"
+              src="@/assets/icons/properties/bath.png"
+              alt="icon of bath"
+            />
             <p>1</p>
-            <img class="property" src="@/assets/properties/size.png" alt="" />
-            <p>120M²</p>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div
-          class="item-img"
-          :style="`background-image: url('${houseImage}')`"
-        ></div>
-        <div class="item-container">
-          <div class="item-text-container">
-            <div class="item-title"><h5>Stokvisstraat 132</h5></div>
-            <div class="item-price">€ 500.000</div>
-            <div class="item-address">1011 AA Amsterdam</div>
-          </div>
-          <div class="item-properties">
-            <img class="property" src="@/assets/properties/bed.png" alt="" />
-            <p>1</p>
-            <img class="property" src="@/assets/properties/bath.png" alt="" />
-            <p>1</p>
-            <img class="property" src="@/assets/properties/size.png" alt="" />
-            <p>120M²</p>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div
-          class="item-img"
-          :style="`background-image: url('${houseImage}')`"
-        ></div>
-        <div class="item-container">
-          <div class="item-text-container">
-            <div class="item-title"><h5>Stokvisstraat 132</h5></div>
-            <div class="item-price">€ 500.000</div>
-            <div class="item-address">1011 AA Amsterdam</div>
-          </div>
-          <div class="item-properties">
-            <img class="property" src="@/assets/properties/bed.png" alt="" />
-            <p>1</p>
-            <img class="property" src="@/assets/properties/bath.png" alt="" />
-            <p>1</p>
-            <img class="property" src="@/assets/properties/size.png" alt="" />
+            <img
+              class="property"
+              src="@/assets/icons/properties/size.png"
+              alt="icon of size"
+            />
             <p>120M²</p>
           </div>
         </div>
@@ -105,13 +79,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import houseImage from "@/assets/images/placeholder-house-img.png";
+import { ref } from "vue";
+//Using a background image to maintain proportions and correct cropping
+import houseImage from "@/assets/images/placeholder-house.png";
 
 const clearButton = ref(null);
 const inputField = ref(null);
 
-// Function to handle input in the search field
+// Function to handle input events in the search field
 const handleInput = () => {
   if (inputField.value.value.length > 0) {
     clearButton.value.style.display = "block";
@@ -122,16 +97,13 @@ const handleInput = () => {
 
 // Function to clear the search input field
 const clearInput = () => {
-  inputField.value.value = "";
-  clearButton.value.style.display = "none";
-  inputField.value.focus();
+  if (inputField.value) {
+    inputField.value.value = "";
+    clearButton.value.style.display = "none";
+    // Set focus back to the input field
+    inputField.value.focus();
+  }
 };
-
-// Setting up the references on component mount
-onMounted(() => {
-  clearButton.value = document.getElementById("clearButton");
-  inputField.value = document.getElementById("inputField");
-});
 </script>
 
 <style scoped>
@@ -210,8 +182,8 @@ onMounted(() => {
 
 .search-container .clear {
   right: 10px;
-  display: none;
   cursor: pointer;
+  display: none;
 }
 
 .search-container input {
