@@ -9,22 +9,21 @@
             src="@/assets/icons/actions/search.png"
             alt="search of input"
           />
-
+          <!-- Using v-model to automatically update the input value and detect changes for clearing -->
           <input
             type="text"
-            id="inputField"
-            ref="inputField"
+            v-model="search"
             placeholder="Search for a house"
             @input="handleInput"
           />
-
+          <!-- Show the clear button only when the search input length is greater than 0 -->
+          <!-- On click, the input value is cleared (set to an empty string) -->
           <img
+            v-if="showSearchClearButton"
             class="clear"
-            id="clearButton"
-            ref="clearButton"
             src="@/assets/icons/actions/grey-clear-icon.png"
             alt="Clear search"
-            @click="clearInput"
+            @click="search = ''"
           />
         </div>
 
@@ -79,31 +78,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 //Using a background image to maintain proportions and correct cropping
 import houseImage from "@/assets/images/placeholder-house.png";
 
-const clearButton = ref(null);
-const inputField = ref(null);
-
-// Function to handle input events in the search field
-const handleInput = () => {
-  if (inputField.value.value.length > 0) {
-    clearButton.value.style.display = "block";
-  } else {
-    clearButton.value.style.display = "none";
-  }
-};
-
-// Function to clear the search input field
-const clearInput = () => {
-  if (inputField.value) {
-    inputField.value.value = "";
-    clearButton.value.style.display = "none";
-    // Set focus back to the input field
-    inputField.value.focus();
-  }
-};
+// Simplified function using the Composition API
+const search = ref("");
+const showSearchClearButton = computed(() => {
+  return search.value.length > 0;
+});
 </script>
 
 <style scoped>
@@ -183,7 +166,6 @@ const clearInput = () => {
 .search-container .clear {
   right: 10px;
   cursor: pointer;
-  display: none;
 }
 
 .search-container input {
