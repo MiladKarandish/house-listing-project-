@@ -29,7 +29,9 @@
           />
         </div>
 
-        <div class="resulf-of-search"><h4>2 results found</h4></div>
+        <div class="resulf-of-search">
+          <h4>{{ filteredItems.length }} {{ resultLable }} found</h4>
+        </div>
       </div>
 
       <div class="right-block">
@@ -119,8 +121,14 @@ const filteredItems = computed(() => {
     return items.value;
   }
   return items.value.filter((item) =>
-    `${item.location.street}${item.location.zip}${item.location.city}`.toLowerCase().includes(search.value.toLowerCase())
+    `${item.location.street}${item.location.zip}${item.location.city}`
+      .toLowerCase()
+      .includes(search.value.toLowerCase())
   );
+});
+
+const resultLable = computed(() => {
+  return filteredItems.value.length === 1 ? "result" : "results";
 });
 
 onMounted(getItems);
