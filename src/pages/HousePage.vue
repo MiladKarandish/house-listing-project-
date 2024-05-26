@@ -37,14 +37,26 @@
       <div class="right-block">
         <button class="creat-new">+ CREAT NEW</button>
         <div class="filter">
-          <button class="price-filter">Price</button>
-          <button class="size-filter">Size</button>
+          <button
+            class="price-filter"
+            :class="{ active: sortCriteria === 'price' }"
+            @click="setSortCriteria('price')"
+          >
+            Price
+          </button>
+          <button
+            class="size-filter"
+            :class="{ active: sortCriteria === 'size' }"
+            @click="setSortCriteria('size')"
+          >
+            Size
+          </button>
         </div>
       </div>
     </div>
 
     <div class="items">
-      <div v-for="item in filteredItems" :key="item.id" class="item">
+      <div v-for="item in sortedItems" :key="item.id" class="item">
         <div
           class="item-img"
           :style="`background-image: url(${item.image})`"
@@ -98,6 +110,7 @@ const items = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const search = ref("");
+const sortCriteria = ref("none");
 
 const getItems = async () => {
   try {
@@ -127,9 +140,23 @@ const filteredItems = computed(() => {
   );
 });
 
+const sortedItems = computed(() => {
+  const sorted = [...filteredItems.value]; // Make a copy of the filtered items
+  if (sortCriteria.value === "price") {
+    sorted.sort((a, b) => a.price - b.price);
+  } else if (sortCriteria.value === "size") {
+    sorted.sort((a, b) => a.size - b.size);
+  }
+  return sorted;
+});
+
 const resultLable = computed(() => {
   return filteredItems.value.length === 1 ? "result" : "results";
 });
+
+const setSortCriteria = (criteria) => {
+  sortCriteria.value = criteria;
+};
 
 onMounted(getItems);
 
@@ -140,6 +167,10 @@ const showSearchClearButton = computed(() => {
 </script>
 
 <style scoped>
+button.active {
+  background-color: #eb5440;
+}
+
 .right-block {
   display: flex;
   flex-direction: column;
@@ -156,15 +187,15 @@ const showSearchClearButton = computed(() => {
   font-family: "Montserrat";
   font-weight: 600;
   cursor: pointer;
+  background-color: #c3c3c3;
+  transition: background-color 0.4s ease;
 }
 
 .price-filter {
-  background-color: #eb5440;
   border-radius: 5px 0px 0px 5px;
 }
 
 .size-filter {
-  background-color: #c3c3c3;
   border-radius: 0px 5px 5px 0px;
 }
 
