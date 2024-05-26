@@ -1,5 +1,7 @@
 <template>
-  <div class="body">
+  <div v-if="loading">Loading...</div>
+  <div v-else-if="error">{{ error }}</div>
+  <div v-else class="body">
     <div class="upper-block">
       <div class="left-block">
         <h1>Houses</h1>
@@ -40,16 +42,23 @@
     </div>
 
     <div class="items">
-      <div class="item">
+      <div v-for="item in items" :key="item.id" class="item">
         <div
           class="item-img"
-          :style="`background-image: url('${houseImage}')`"
+          :style="`background-image: url(${item.image})`"
         ></div>
         <div class="item-container">
           <div class="item-text-container">
-            <div class="item-title"><h5>Stokvisstraat 132</h5></div>
-            <div class="item-price">€ 500.000</div>
-            <div class="item-address">1011 AA Amsterdam</div>
+            <div class="item-title">
+              <h5>
+                {{ item.location.street }} {{ item.location.houseNumber }}
+                {{ item.location.houseNumberAddition }}
+              </h5>
+            </div>
+            <div class="item-price">{{ item.price }}€</div>
+            <div class="item-address">
+              {{ item.location.zip }} {{ item.location.city }}
+            </div>
           </div>
           <div class="item-properties">
             <img
@@ -57,19 +66,19 @@
               src="@/assets/icons/properties/bed.png"
               alt="icon of bad"
             />
-            <p>1</p>
+            <p>{{ item.rooms.bedrooms }}</p>
             <img
               class="property"
               src="@/assets/icons/properties/bath.png"
               alt="icon of bath"
             />
-            <p>1</p>
+            <p>{{ item.rooms.bathrooms }}</p>
             <img
               class="property"
               src="@/assets/icons/properties/size.png"
               alt="icon of size"
             />
-            <p>120M²</p>
+            <p>{{ item.size }}</p>
           </div>
         </div>
       </div>
@@ -78,9 +87,33 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-//Using a background image to maintain proportions and correct cropping
-import houseImage from "@/assets/images/placeholder-house.png";
+import { computed, ref, onMounted } from "vue";
+import axios from "axios";
+// Using a background image to maintain proportions and correct cropping
+// import houseImage from "@/assets/images/placeholder-house.png"; // Commented out as it's not used
+
+const items = ref("");
+const loading = ref(true);
+const error = ref(null);
+
+const getItems = async () => {
+  try {
+    const response = await axios.get("https://api.intern.d-tt.nl/api/houses", {
+      headers: {
+        "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+      },
+    });
+    items.value = response.data;
+    console.log(items.value);
+  } catch (err) {
+    error.value = "Error happened";
+    console.error("Error:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(getItems);
 
 // Simplified function using the Composition API
 const search = ref("");

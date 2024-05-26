@@ -29,6 +29,11 @@
 <script>
 export default {
   name: "AboutPage",
+  data() {
+    return {
+      info: null,
+    };
+  },
 };
 </script>
 
