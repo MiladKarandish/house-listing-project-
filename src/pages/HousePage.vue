@@ -42,7 +42,7 @@
     </div>
 
     <div class="items">
-      <div v-for="item in items" :key="item.id" class="item">
+      <div v-for="item in filteredItems" :key="item.id" class="item">
         <div
           class="item-img"
           :style="`background-image: url(${item.image})`"
@@ -92,9 +92,10 @@ import axios from "axios";
 // Using a background image to maintain proportions and correct cropping
 // import houseImage from "@/assets/images/placeholder-house.png"; // Commented out as it's not used
 
-const items = ref("");
+const items = ref([]);
 const loading = ref(true);
 const error = ref(null);
+const search = ref("");
 
 const getItems = async () => {
   try {
@@ -113,10 +114,18 @@ const getItems = async () => {
   }
 };
 
+const filteredItems = computed(() => {
+  if (!search.value) {
+    return items.value;
+  }
+  return items.value.filter((item) =>
+    `${item.location.street}${item.location.zip}${item.location.city}`.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
+
 onMounted(getItems);
 
 // Simplified function using the Composition API
-const search = ref("");
 const showSearchClearButton = computed(() => {
   return search.value.length > 0;
 });
