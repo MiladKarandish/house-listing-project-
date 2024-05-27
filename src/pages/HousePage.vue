@@ -101,33 +101,18 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from "vue";
-import axios from "axios";
-// Using a background image to maintain proportions and correct cropping
-// import houseImage from "@/assets/images/placeholder-house.png"; // Commented out as it's not used
+import { computed, ref } from "vue";
+import { useFetchItems } from "@/composables/useFetchData";
 
-const items = ref([]);
-const loading = ref(true);
-const error = ref(null);
+const { items, loading, error } = useFetchItems(
+  "https://api.intern.d-tt.nl/api/houses",
+  {
+    "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+  }
+);
+
 const search = ref("");
 const sortCriteria = ref("none");
-
-const getItems = async () => {
-  try {
-    const response = await axios.get("https://api.intern.d-tt.nl/api/houses", {
-      headers: {
-        "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-      },
-    });
-    items.value = response.data;
-    console.log(items.value);
-  } catch (err) {
-    error.value = "Error happened";
-    console.error("Error:", err);
-  } finally {
-    loading.value = false;
-  }
-};
 
 const filteredItems = computed(() => {
   if (!search.value) {
@@ -157,8 +142,6 @@ const resultLable = computed(() => {
 const setSortCriteria = (criteria) => {
   sortCriteria.value = criteria;
 };
-
-onMounted(getItems);
 
 // Simplified function using the Composition API
 const showSearchClearButton = computed(() => {
