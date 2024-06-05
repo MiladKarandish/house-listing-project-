@@ -1,7 +1,7 @@
 <template>
   <div class="body" :style="backgroundStyle">
     <div class="body-container">
-      <div class="back-to-list">
+      <div @click="goToHousePage" class="back-to-list">
         <img
           class="back-to-list-img"
           src="@/assets/icons/actions/grey-back-icon.png"
@@ -183,7 +183,12 @@
             ></textarea>
           </div>
         </fieldset>
-        <div class="post-button">
+        <div
+          :class="{
+            'filled-button': allFieldsFilled,
+            'post-button': !allFieldsFilled,
+          }"
+        >
           <button type="submit">POST</button>
         </div>
       </form>
@@ -195,6 +200,21 @@
 import { computed, ref } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const goToHousePage = () => {
+  console.log("Navigating to HousePage"); // Log before navigation
+  router
+    .push({ name: "HousePage" })
+    .then(() => {
+      console.log("Navigation successful"); // Log on successful navigation
+    })
+    .catch((error) => {
+      console.error("Navigation error:", error); // Log any navigation errors
+    });
+};
 
 const imageUrl = ref(null);
 const file = ref(null);
@@ -213,6 +233,21 @@ const formData = ref({
   description: "",
 });
 
+const allFieldsFilled = computed(() => {
+  return (
+    formData.value.price &&
+    formData.value.bedrooms &&
+    formData.value.bathrooms &&
+    formData.value.size &&
+    formData.value.streetName &&
+    formData.value.houseNumber &&
+    formData.value.zip &&
+    formData.value.city &&
+    formData.value.constructionYear &&
+    formData.value.description
+  );
+});
+
 const handleData = async () => {
   try {
     const response = await axios.post(
@@ -225,6 +260,24 @@ const handleData = async () => {
       }
     );
     console.log("Response:", response.data);
+
+    formData.value = {
+      price: "",
+      bedrooms: "",
+      bathrooms: "",
+      size: "",
+      streetName: "",
+      houseNumber: "",
+      numberAddition: "",
+      zip: "",
+      city: "",
+      constructionYear: "",
+      hasGarage: "",
+      description: "",
+    };
+
+    fileInput.value.value = null;
+
     return response.data; // Return the response data to get the house ID
   } catch (error) {
     console.error("Error:", error);
@@ -352,6 +405,22 @@ label.plus {
   margin: 10px 0px;
 }
 
+.filled-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filled-button button {
+  background-color: #eb5440;
+  color: white;
+  padding: 15px 10px;
+  width: 200px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
 .post-button button {
   background-color: #eb5440bd;
   color: white;
@@ -379,6 +448,10 @@ label.plus {
 
 .back-to-list-img {
   margin-right: 10px;
+}
+
+.back-to-list {
+  cursor: pointer;
 }
 
 img {

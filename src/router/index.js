@@ -7,20 +7,18 @@ import HouseDetailsPage from '../pages/HouseDetailsPage.vue';
 const routes = [
     {
       path: '/',
-      name: ' HousePage',
+      name: 'HousePage',
       component: HousePage,
-      children: [
-        {
-          path:'HouseDetailsPage',
-          name: 'HouseDetailsPage',
-          component: HouseDetailsPage,
-        },
-      ]
     },
     {
       path: '/AboutPage',
       name:'AboutPage', 
       component: AboutPage,
+    },
+    {
+      path:'/HouseDetailsPage',
+      name: 'HouseDetailsPage',
+      component: HouseDetailsPage,
     }, 
   ]
 

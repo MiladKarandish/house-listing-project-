@@ -36,7 +36,6 @@
 
       <div class="right-block">
         <button @click="goToHouseDetails" class="creat-new">+ CREAT NEW</button>
-        <router-view></router-view>
         <div class="filter">
           <button
             class="price-filter"
@@ -119,13 +118,13 @@ const deleteHouse = async (itemId) => {
   try {
     await axios.delete(`https://api.intern.d-tt.nl/api/houses/${itemId}`, {
       headers: {
-        'X-Api-Key': "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-      }
+        "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+      },
     });
     // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter(item => item.id !== itemId);
+    items.value = items.value.filter((item) => item.id !== itemId);
   } catch (error) {
-    console.error('Error deleting house:', error);
+    console.error("Error deleting house:", error);
   }
 };
 
@@ -137,13 +136,14 @@ const router = useRouter();
 
 // Define the method to navigate to the House Deteils page
 const goToHouseDetails = () => {
-  console.log('Navigating to HouseDetailsPage'); // Log before navigation
-  router.push({ name: 'HouseDetailsPage' })
+  console.log("Navigating to HouseDetailsPage"); // Log before navigation
+  router
+    .push({ name: "HouseDetailsPage" })
     .then(() => {
-      console.log('Navigation successful'); // Log on successful navigation
+      console.log("Navigation successful"); // Log on successful navigation
     })
     .catch((error) => {
-      console.error('Navigation error:', error); // Log any navigation errors
+      console.error("Navigation error:", error); // Log any navigation errors
     });
 };
 
