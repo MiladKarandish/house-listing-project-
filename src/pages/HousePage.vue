@@ -35,7 +35,8 @@
       </div>
 
       <div class="right-block">
-        <button class="creat-new">+ CREAT NEW</button>
+        <button @click="goToHouseDetails" class="creat-new">+ CREAT NEW</button>
+        <router-view></router-view>
         <div class="filter">
           <button
             class="price-filter"
@@ -94,6 +95,11 @@
             />
             <p>{{ item.size }}</p>
           </div>
+          <div class="delate">
+            <button v-if="item.createdByMe" @click="deleteHouse(item.id)">
+              <img src="@/assets/icons/actions/grey-delate-icon.png" alt="" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -101,18 +107,45 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useFetchItems } from "@/composables/useFetchData";
+import { computed, ref, onMounted } from "vue";
+import { useFetchHouses } from "@/composables/useFetchHouses";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
-const { items, loading, error } = useFetchItems(
-  "https://api.intern.d-tt.nl/api/houses",
-  {
-    "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+const { items, loading, error, getHouses } = useFetchHouses();
+onMounted(getHouses);
+
+const deleteHouse = async (itemId) => {
+  try {
+    await axios.delete(`https://api.intern.d-tt.nl/api/houses/${itemId}`, {
+      headers: {
+        'X-Api-Key': "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+      }
+    });
+    // Remove the item from the local list after successful deletion from server
+    items.value = items.value.filter(item => item.id !== itemId);
+  } catch (error) {
+    console.error('Error deleting house:', error);
   }
-);
+};
 
 const search = ref("");
 const sortCriteria = ref("none");
+
+// Get the router instance
+const router = useRouter();
+
+// Define the method to navigate to the House Deteils page
+const goToHouseDetails = () => {
+  console.log('Navigating to HouseDetailsPage'); // Log before navigation
+  router.push({ name: 'HouseDetailsPage' })
+    .then(() => {
+      console.log('Navigation successful'); // Log on successful navigation
+    })
+    .catch((error) => {
+      console.error('Navigation error:', error); // Log any navigation errors
+    });
+};
 
 const filteredItems = computed(() => {
   if (!search.value) {
