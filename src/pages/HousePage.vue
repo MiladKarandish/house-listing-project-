@@ -28,10 +28,6 @@
             @click="search = ''"
           />
         </div>
-
-        <div class="resulf-of-search">
-          <h4>{{ filteredItems.length }} {{ resultLable }} found</h4>
-        </div>
       </div>
 
       <div class="right-block">
@@ -52,6 +48,18 @@
             Size
           </button>
         </div>
+      </div>
+    </div>
+    <div class="result-container">
+      <div class="resulf-of-search">
+        <h4 v-if="filteredItems.length > 0">
+          {{ filteredItems.length }} {{ resultLable }} found
+        </h4>
+      </div>
+      <div v-if="filteredItems.length === 0" class="no-results">
+        <img src="@/assets/images/no-houses-found.png" alt="No results found" />
+        <p class="no-results-text">No results found</p>
+        <p class="no-results-text">Please try another keyword</p>
       </div>
     </div>
 
@@ -183,6 +191,23 @@ const showSearchClearButton = computed(() => {
 </script>
 
 <style scoped>
+.resulf-of-search {
+  margin-right: auto;
+}
+
+.no-results img {
+  width: 450px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 100px 0px;
+}
+
 button.active {
   background-color: #eb5440;
 }
@@ -246,6 +271,7 @@ button.active {
 .search-container {
   position: relative;
   width: fit-content;
+  margin-top: 15px;
 }
 
 .search-container img {

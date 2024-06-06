@@ -76,7 +76,7 @@ a {
   font-family: "Montserrat";
   color: #c3c3c3;
   font-weight: 500;
-  margin: 0px 10px;
+  margin: 0px 20px;
 }
 
 .header-content {
