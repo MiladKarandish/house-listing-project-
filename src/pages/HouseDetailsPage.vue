@@ -84,6 +84,7 @@
               @change="onFileChange"
               accept=".png,.jpg"
               required
+              ref="fileInput"
             />
             <div v-if="imageUrl" class="uploaded-picture-container">
               <div class="uploaded-picture">
@@ -205,18 +206,19 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const goToHousePage = () => {
-  console.log("Navigating to HousePage"); // Log before navigation
+  console.log("Navigating to HousePage");
   router
     .push({ name: "HousePage" })
     .then(() => {
-      console.log("Navigation successful"); // Log on successful navigation
+      console.log("Navigation successful");
     })
     .catch((error) => {
-      console.error("Navigation error:", error); // Log any navigation errors
+      console.error("Navigation error:", error);
     });
 };
 
 const imageUrl = ref(null);
+const fileInput = ref(null);
 const file = ref(null);
 const formData = ref({
   price: "",
@@ -248,9 +250,13 @@ const allFieldsFilled = computed(() => {
   );
 });
 
-const handleData = async () => {
+const handleSubmit = async () => {
   try {
-    const response = await axios.post(
+    // Log the form data being sent
+    console.log("Submitting form data:", formData.value);
+
+    // First, send the text data
+    const textDataResponse = await axios.post(
       "https://api.intern.d-tt.nl/api/houses",
       formData.value,
       {
@@ -259,8 +265,31 @@ const handleData = async () => {
         },
       }
     );
-    console.log("Response:", response.data);
+    console.log("Text Data Response:", textDataResponse.data);
 
+    // If text data is successfully posted, send the image
+    const houseId = textDataResponse.data.id;
+    if (file.value && houseId) {
+      const formDataImage = new FormData();
+      formDataImage.append("image", file.value);
+
+      // Log the image file being sent
+      console.log("Submitting image for house ID:", houseId, file.value);
+
+      const imageResponse = await axios.post(
+        `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
+        formDataImage,
+        {
+          headers: {
+            "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Image Response:", imageResponse.data);
+    }
+
+    // Reset form data and file input
     formData.value = {
       price: "",
       bedrooms: "",
@@ -275,44 +304,16 @@ const handleData = async () => {
       hasGarage: "",
       description: "",
     };
-
     fileInput.value.value = null;
-
-    return response.data; // Return the response data to get the house ID
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-const handleImage = async (houseId) => {
-  try {
-    const formDataImage = new FormData();
-    formDataImage.append("image", file.value);
-
-    const responseImage = await axios.post(
-      `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
-      formDataImage,
-      {
-        headers: {
-          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    console.log("Response:", responseImage.data);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-const handleSubmit = async () => {
-  try {
-    const houseData = await handleData();
-    if (houseData && houseData.id) {
-      await handleImage(houseData.id);
-    }
+    imageUrl.value = null;
+    file.value = null;
   } catch (error) {
     console.error("Submission error:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    }
   }
 };
 

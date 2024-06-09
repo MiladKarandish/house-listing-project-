@@ -102,10 +102,24 @@
             />
             <p>{{ item.size }}</p>
           </div>
-          <div class="delate">
-            <button v-if="item.createdByMe" @click="deleteHouse(item.id)">
-              <img src="@/assets/icons/actions/grey-delate-icon.png" alt="" />
-            </button>
+
+          <div v-if="item.madeByMe" class="madeByMe-block">
+            <div class="edit">
+              <button>
+                <img
+                  src="@/assets/icons/actions/red-edite-icon.png"
+                  alt="edite button"
+                />
+              </button>
+            </div>
+            <div class="delate">
+              <button @click="deleteHouse(item.id)">
+                <img
+                  src="@/assets/icons/actions/grey-delate-icon.png"
+                  alt="delate button"
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -191,6 +205,32 @@ const showSearchClearButton = computed(() => {
 </script>
 
 <style scoped>
+
+.madeByMe-block {
+  display: flex;
+  position: absolute; /* Add this line */
+  top: 0; /* Add this line */
+  right: 0; /* Add this line */
+  margin: 25px; /* Adjust margin if needed */
+}
+
+.madeByMe-block {
+  display: flex;
+  margin-left: auto;
+}
+
+.madeByMe-block img {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+}
+
+.madeByMe-block button {
+  background-color: rgba(0, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+}
+
 .resulf-of-search {
   margin-right: auto;
 }
@@ -330,6 +370,7 @@ input[type="text"] {
   border-radius: 10px;
   margin: 10px 0px;
   overflow: hidden;
+  position: relative;
 }
 
 .item-text-container {
