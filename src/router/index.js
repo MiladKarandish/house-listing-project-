@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HousePage from '../pages/HousePage.vue';
 import AboutPage from '../pages/AboutPage.vue';
+import HouseCreatingPage from '../pages/HouseCreatingPage.vue';
 import HouseDetailsPage from '../pages/HouseDetailsPage.vue';
 
 
@@ -16,18 +17,24 @@ const routes = [
       component: AboutPage,
     },
     {
-      path:'/HouseDetailsPage',
+      path:'/HouseCreatingPage/:id',
+      name: 'HouseCreatingPage',
+      component: HouseCreatingPage,
+    }, 
+    {
+      path: '/HouseDetailsPage/:id',
       name: 'HouseDetailsPage',
       component: HouseDetailsPage,
-    }, 
+    },    
   ]
 
 
-console.log('Configured Routes:', routes); // Log the routes
+  console.log('Configured Routes:', routes); // Log the routes
 
-const router = createRouter({
-  history: createWebHistory(), 
-  routes
-})
-
-export default router;
+  const router = createRouter({
+    history: createWebHistory(), 
+    routes
+  });
+  
+  export default router;
+  

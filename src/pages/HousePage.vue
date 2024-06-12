@@ -31,7 +31,9 @@
       </div>
 
       <div class="right-block">
-        <button @click="goToHouseDetails" class="creat-new">+ CREAT NEW</button>
+        <button @click="goToHouseCreating" class="creat-new">
+          + CREAT NEW
+        </button>
         <div class="filter">
           <button
             class="price-filter"
@@ -71,7 +73,7 @@
         ></div>
         <div class="item-container">
           <div class="item-text-container">
-            <div class="item-title">
+            <div @click="goToHouseDetails(item.id)" class="item-title">
               <h5>
                 {{ item.location.street }} {{ item.location.houseNumber }}
                 {{ item.location.houseNumberAddition }}
@@ -156,11 +158,11 @@ const sortCriteria = ref("none");
 // Get the router instance
 const router = useRouter();
 
-// Define the method to navigate to the House Deteils page
-const goToHouseDetails = () => {
-  console.log("Navigating to HouseDetailsPage"); // Log before navigation
+// Define the method to navigate to the House Creating page
+const goToHouseCreating = () => {
+  console.log("Navigating to HouseCreatingPage"); // Log before navigation
   router
-    .push({ name: "HouseDetailsPage" })
+    .push({ name: "HouseCreatingPage" })
     .then(() => {
       console.log("Navigation successful"); // Log on successful navigation
     })
@@ -169,12 +171,26 @@ const goToHouseDetails = () => {
     });
 };
 
+// Define the method to navigate to the House Deteils page
+const goToHouseDetails = (itemId) => {
+  console.log("Navigating to HouseDetailsPage with ID:", itemId); // Log before navigation
+  router
+    .push({ name: "HouseDetailsPage", params: { id: itemId } })
+    .then(() => {
+      console.log("Navigation successful"); // Log on successful navigation
+    })
+    .catch((error) => {
+      console.error("Navigation error:", error); // Log any navigation errors
+    });
+};
+
+
 const filteredItems = computed(() => {
   if (!search.value) {
     return items.value;
   }
   return items.value.filter((item) =>
-    `${item.location.street}${item.location.zip}${item.location.city}`
+    (item.location.street + item.location.zip + item.location.city)
       .toLowerCase()
       .includes(search.value.toLowerCase())
   );
@@ -205,7 +221,6 @@ const showSearchClearButton = computed(() => {
 </script>
 
 <style scoped>
-
 .madeByMe-block {
   display: flex;
   position: absolute; /* Add this line */
@@ -416,6 +431,10 @@ h5 {
   font-family: "Montserrat";
   color: black;
   font-weight: 700;
+}
+
+.item-title {
+  cursor: pointer;
 }
 
 .item-price {
