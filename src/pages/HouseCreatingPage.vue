@@ -307,6 +307,13 @@ const handleSubmit = async () => {
     fileInput.value.value = null;
     imageUrl.value = null;
     file.value = null;
+
+    // Navigate to the House Details Page for the newly created house
+    router
+      .push({ name: "HouseDetailsPage", params: { id: houseId } })
+      .catch((error) => {
+        console.error("Navigation error:", error);
+      });
   } catch (error) {
     console.error("Submission error:", error);
     if (error.response) {

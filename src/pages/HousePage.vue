@@ -184,7 +184,6 @@ const goToHouseDetails = (itemId) => {
     });
 };
 
-
 const filteredItems = computed(() => {
   if (!search.value) {
     return items.value;
@@ -221,12 +220,17 @@ const showSearchClearButton = computed(() => {
 </script>
 
 <style scoped>
+.items {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .madeByMe-block {
   display: flex;
-  position: absolute; /* Add this line */
-  top: 0; /* Add this line */
-  right: 0; /* Add this line */
-  margin: 25px; /* Adjust margin if needed */
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 25px;
 }
 
 .madeByMe-block {
