@@ -107,7 +107,7 @@
 
           <div v-if="item.madeByMe" class="madeByMe-block">
             <div class="edit">
-              <button>
+              <button @click="goToHouseEditPage(item.id)">
                 <img
                   src="@/assets/icons/actions/red-edite-icon.png"
                   alt="edite button"
@@ -183,6 +183,11 @@ const goToHouseDetails = (itemId) => {
       console.error("Navigation error:", error); // Log any navigation errors
     });
 };
+
+const goToHouseEditPage = (itemId) => {
+  router.push({ name: 'HouseEditPage', params: { id: itemId } });
+};
+
 
 const filteredItems = computed(() => {
   if (!search.value) {

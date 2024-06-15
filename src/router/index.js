@@ -25,7 +25,13 @@ const routes = [
       path: '/HouseDetailsPage/:id',
       name: 'HouseDetailsPage',
       component: HouseDetailsPage,
-    },    
+    },   
+    {
+      path: '/HouseEditPage/:id',
+      name: 'HouseEditPage',
+      component: HouseCreatingPage,
+      props: true,
+    }, 
   ]
 
 

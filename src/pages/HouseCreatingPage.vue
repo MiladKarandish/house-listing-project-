@@ -11,7 +11,9 @@
       </div>
       <form @submit.prevent="handleSubmit">
         <fieldset>
-          <legend><h1>Create new listing</h1></legend>
+          <legend>
+            <h1>{{ isEditing ? "Edit Listing" : "Create New Listing" }}</h1>
+          </legend>
           <div class="form-group form-group-single">
             <label for="street-name">Street name*</label>
             <input
@@ -83,7 +85,7 @@
               name="image"
               @change="onFileChange"
               accept=".png,.jpg"
-              required
+              :required="!isEditing"
               ref="fileInput"
             />
             <div v-if="imageUrl" class="uploaded-picture-container">
@@ -190,7 +192,9 @@
             'post-button': !allFieldsFilled,
           }"
         >
-          <button type="submit">POST</button>
+          <button type="submit">
+            {{ isEditing ? "SAVE" : "POST" }}
+          </button>
         </div>
       </form>
     </div>
@@ -198,12 +202,54 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
 import axios from "axios";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
+
+// Determine if we are editing an existing item
+const isEditing = ref(false);
+const itemId = ref(null);
+
+onMounted(async () => {
+  if (route.params.id) {
+    isEditing.value = true;
+    itemId.value = route.params.id;
+    try {
+      const response = await axios.get(
+        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
+        {
+          headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" },
+        }
+      );
+      const item = response.data[0];
+      if (item && item.rooms && item.location) {
+        formData.value = {
+          price: item.price,
+          bedrooms: item.rooms.bedrooms,
+          bathrooms: item.rooms.bathrooms,
+          size: item.size,
+          streetName: item.location.street,
+          houseNumber: item.location.houseNumber,
+          numberAddition: item.location.houseNumberAddition,
+          zip: item.location.zip,
+          city: item.location.city,
+          constructionYear: item.constructionYear,
+          hasGarage: item.hasGarage,
+          description: item.description,
+        };
+        imageUrl.value = item.image;
+      } else {
+        console.error("Invalid item structure", item);
+      }
+    } catch (error) {
+      console.error("Error fetching item data:", error);
+    }
+  }
+});
 
 const goToHousePage = () => {
   console.log("Navigating to HousePage");
@@ -252,75 +298,42 @@ const allFieldsFilled = computed(() => {
 
 const handleSubmit = async () => {
   try {
-    // Log the form data being sent
-    console.log("Submitting form data:", formData.value);
-
-    // First, send the text data
-    const textDataResponse = await axios.post(
-      "https://api.intern.d-tt.nl/api/houses",
-      formData.value,
-      {
-        headers: {
-          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-        },
-      }
-    );
-    console.log("Text Data Response:", textDataResponse.data);
-
-    // If text data is successfully posted, send the image
-    const houseId = textDataResponse.data.id;
-    if (file.value && houseId) {
-      const formDataImage = new FormData();
-      formDataImage.append("image", file.value);
-
-      // Log the image file being sent
-      console.log("Submitting image for house ID:", houseId, file.value);
-
-      const imageResponse = await axios.post(
-        `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
-        formDataImage,
-        {
-          headers: {
-            "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-            "Content-Type": "multipart/form-data",
-          },
-        }
+    let response;
+    if (isEditing.value) {
+      // Update existing item using PUT
+      response = await axios.post(
+        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`, // Use itemId.value here
+        formData.value,
+        { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
       );
-      console.log("Image Response:", imageResponse.data);
+    } else {
+      // Create new item
+      response = await axios.post(
+        "https://api.intern.d-tt.nl/api/houses",
+        formData.value,
+        { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
+      );
+
+      if (file.value) {
+        const houseId = response.data.id;
+        const formDataImage = new FormData();
+        formDataImage.append("image", file.value);
+        await axios.post(
+          `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
+          formDataImage,
+          {
+            headers: {
+              "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      }
     }
 
-    // Reset form data and file input
-    formData.value = {
-      price: "",
-      bedrooms: "",
-      bathrooms: "",
-      size: "",
-      streetName: "",
-      houseNumber: "",
-      numberAddition: "",
-      zip: "",
-      city: "",
-      constructionYear: "",
-      hasGarage: "",
-      description: "",
-    };
-    fileInput.value.value = null;
-    imageUrl.value = null;
-    file.value = null;
-
-    // Navigate to the House Details Page for the newly created house
-    router
-      .push({ name: "HouseDetailsPage", params: { id: houseId } })
-      .catch((error) => {
-        console.error("Navigation error:", error);
-      });
+    router.push({ name: "HouseDetailsPage", params: { id: response.data.id } });
   } catch (error) {
     console.error("Submission error:", error);
-    if (error.response) {
-      console.error("Response data:", error.response.data);
-      console.error("Response status:", error.response.status);
-      console.error("Response headers:", error.response.headers);
-    }
   }
 };
 
@@ -438,6 +451,11 @@ label.plus {
   border-radius: 8px;
   cursor: pointer;
   margin-left: auto;
+}
+
+button {
+  font-weight: 700;
+  font-size: 22px;
 }
 
 .post-button {

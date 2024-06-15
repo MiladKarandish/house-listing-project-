@@ -41,7 +41,7 @@
                     src="@/assets/icons/properties/construction.png"
                     alt=""
                   />
-                  {{ item.createdAt }}
+                  {{ item.constructionYear }}
                 </div>
               </div>
               <div class="rooms-proberties">
@@ -60,23 +60,23 @@
               </div>
               <div class="describtion item">{{ item.description }}</div>
               <div v-if="item.madeByMe" class="madeByMe-block">
-              <div class="edit">
-                <button>
-                  <img
-                    src="@/assets/icons/actions/red-edite-icon.png"
-                    alt="edite button"
-                  />
-                </button>
+                <div class="edit">
+                  <button @click="goToHouseEditPage(item.id)">
+                    <img
+                      src="@/assets/icons/actions/red-edite-icon.png"
+                      alt="edite button"
+                    />
+                  </button>
+                </div>
+                <div class="delate">
+                  <button @click="deleteHouse(item.id)">
+                    <img
+                      src="@/assets/icons/actions/grey-delate-icon.png"
+                      alt="delate button"
+                    />
+                  </button>
+                </div>
               </div>
-              <div class="delate">
-                <button @click="deleteHouse(item.id)">
-                  <img
-                    src="@/assets/icons/actions/grey-delate-icon.png"
-                    alt="delate button"
-                  />
-                </button>
-              </div>
-            </div>
             </div>
           </div>
         </div>
@@ -140,6 +140,7 @@ import { onMounted, computed, watch, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useFetchHouseDetails } from "@/composables/useFetchHouseDetails";
 import { useFetchHouses } from "@/composables/useFetchHouses";
+import axios from "axios";
 
 const { items, getHouses } = useFetchHouses();
 onMounted(getHouses);
@@ -147,6 +148,28 @@ onMounted(getHouses);
 const { item, loading, error, getHouse } = useFetchHouseDetails();
 const router = useRouter();
 const route = useRoute();
+
+const goToHouseEditPage = (itemId) => {
+  router.push({ name: "HouseEditPage", params: { id: itemId } });
+};
+
+const deleteHouse = async (itemId) => {
+  try {
+    await axios.delete(`https://api.intern.d-tt.nl/api/houses/${itemId}`, {
+      headers: {
+        "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+      },
+    });
+    // Remove the item from the local list after successful deletion from server
+    items.value = items.value.filter((item) => item.id !== itemId);
+    // Navigate back to the house list page
+    router.push({ name: "HousePage" }).catch((error) => {
+      console.error("Navigation error:", error);
+    });
+  } catch (error) {
+    console.error("Error deleting house:", error);
+  }
+};
 
 onMounted(() => {
   const itemId = route.params.id;

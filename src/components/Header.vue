@@ -29,7 +29,10 @@ const router = useRoute();
 
 const isHomeActive = computed(() => {
   const isActive =
-    router.name === "HousePage" || router.name === "HouseCreatingPage" || router.name === "HouseDetailsPage";
+    router.name === "HousePage" ||
+    router.name === "HouseCreatingPage" ||
+    router.name === "HouseDetailsPage" ||
+    router.name === "HouseEditPage";
   console.log("isHomeActive computed:", isActive);
   return isActive;
 });
@@ -64,7 +67,8 @@ const isAboutActive = computed(() => {
   color: black;
 }
 
-.router-link-active, .active {
+.router-link-active,
+.active {
   font-weight: bold;
   color: black;
 }
