@@ -100,7 +100,9 @@
                 </button>
               </div>
             </div>
-            <p v-if="fileError" id="file-error-message" class="error-message">Image is required.</p>
+            <p v-if="fileError" id="file-error-message" class="error-message">
+              Image is required.
+            </p>
           </div>
 
           <div class="form-group form-group-single">
@@ -254,15 +256,10 @@ onMounted(async () => {
 });
 
 const goToHousePage = () => {
-  console.log("Navigating to HousePage");
   router
     .push({ name: "HousePage" })
-    .then(() => {
-      console.log("Navigation successful");
-    })
-    .catch((error) => {
-      console.error("Navigation error:", error);
-    });
+    .then(() => {})
+    .catch((error) => {});
 };
 
 const imageUrl = ref(null);
@@ -405,16 +402,26 @@ const backgroundStyle = computed(() => ({
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-15px); }
-  50% { transform: translateX(15px); }
-  75% { transform: translateX(-15px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-15px);
+  }
+  50% {
+    transform: translateX(15px);
+  }
+  75% {
+    transform: translateX(-15px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .error-message {
-  color: #D8000C;
-  animation: shake 0.5s; 
+  color: #d8000c;
+  animation: shake 0.5s;
 }
 
 input {

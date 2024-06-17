@@ -188,7 +188,9 @@ const deleteHouse = async () => {
       }
     );
     // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter((item) => item.id !== itemToDeleteId.value);
+    items.value = items.value.filter(
+      (item) => item.id !== itemToDeleteId.value
+    );
     itemToDeleteId.value = null;
     hideModal();
     goToHousePage();
@@ -220,16 +222,16 @@ const goToHousePage = () => {
   });
 };
 
+// Computed property to display "Yes" or "No" for hasGarage
+const hasGarageText = computed(() => {
+  return item.value && item.value.hasGarage ? "Yes" : "No";
+});
+
 // Utility function to get random items
 function getRandomItems(array, numberOfItems) {
   const shuffled = array.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, numberOfItems);
 }
-
-// Computed property to display "Yes" or "No" for hasGarage
-const hasGarageText = computed(() => {
-  return item.value && item.value.hasGarage ? "Yes" : "No";
-});
 
 // Computed property for recommended items using random selection
 const recommendedItems = computed(() => {
@@ -242,15 +244,10 @@ const recommendedItems = computed(() => {
 
 // Define the method to navigate to the House Deteils page
 const goToHouseDetails = (itemId) => {
-  console.log("Navigating to HouseDetailsPage with ID:", itemId); // Log before navigation
   router
     .push({ name: "HouseDetailsPage", params: { id: itemId } })
-    .then(() => {
-      console.log("Navigation successful"); // Log on successful navigation
-    })
-    .catch((error) => {
-      console.error("Navigation error:", error); // Log any navigation errors
-    });
+    .then(() => {})
+    .catch((error) => {});
 };
 </script>
 
