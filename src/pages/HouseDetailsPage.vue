@@ -55,7 +55,7 @@
                 </div>
                 <div class="garage item">
                   <img src="@/assets/icons/properties/garage.png" alt="" />
-                  {{ item.hasGarage }}
+                  {{ hasGarageText }}
                 </div>
               </div>
               <div class="describtion item">{{ item.description }}</div>
@@ -68,11 +68,11 @@
                     />
                   </button>
                 </div>
-                <div class="delate">
-                  <button @click="deleteHouse(item.id)">
+                <div class="delete">
+                  <button @click="showModal(item.id)">
                     <img
-                      src="@/assets/icons/actions/grey-delate-icon.png"
-                      alt="delate button"
+                      src="@/assets/icons/actions/grey-delete-icon.png"
+                      alt="delete button"
                     />
                   </button>
                 </div>
@@ -81,6 +81,11 @@
           </div>
         </div>
       </div>
+      <Confirmation
+        v-if="isModalVisible"
+        @confirm="deleteHouse"
+        @cancel="hideModal"
+      />
     </div>
 
     <div class="recommended">
@@ -140,6 +145,7 @@ import { onMounted, computed, watch, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useFetchHouseDetails } from "@/composables/useFetchHouseDetails";
 import { useFetchHouses } from "@/composables/useFetchHouses";
+import Confirmation from "@/components/deleteConfirmation.vue";
 import axios from "axios";
 
 const { items, getHouses } = useFetchHouses();
@@ -149,23 +155,43 @@ const { item, loading, error, getHouse } = useFetchHouseDetails();
 const router = useRouter();
 const route = useRoute();
 
+const isModalVisible = ref(false);
+let itemToDeleteId = ref(null);
+
+const showModal = (itemId) => {
+  itemToDeleteId.value = itemId;
+  isModalVisible.value = true;
+};
+
+const hideModal = () => {
+  isModalVisible.value = false;
+};
+
+watch(isModalVisible, (newValue) => {
+  if (!newValue) {
+    itemToDeleteId.value = null;
+  }
+});
+
 const goToHouseEditPage = (itemId) => {
   router.push({ name: "HouseEditPage", params: { id: itemId } });
 };
 
-const deleteHouse = async (itemId) => {
+const deleteHouse = async () => {
   try {
-    await axios.delete(`https://api.intern.d-tt.nl/api/houses/${itemId}`, {
-      headers: {
-        "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-      },
-    });
+    await axios.delete(
+      `https://api.intern.d-tt.nl/api/houses/${itemToDeleteId.value}`,
+      {
+        headers: {
+          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+        },
+      }
+    );
     // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter((item) => item.id !== itemId);
-    // Navigate back to the house list page
-    router.push({ name: "HousePage" }).catch((error) => {
-      console.error("Navigation error:", error);
-    });
+    items.value = items.value.filter((item) => item.id !== itemToDeleteId.value);
+    itemToDeleteId.value = null;
+    hideModal();
+    goToHousePage();
   } catch (error) {
     console.error("Error deleting house:", error);
   }
@@ -199,6 +225,11 @@ function getRandomItems(array, numberOfItems) {
   const shuffled = array.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, numberOfItems);
 }
+
+// Computed property to display "Yes" or "No" for hasGarage
+const hasGarageText = computed(() => {
+  return item.value && item.value.hasGarage ? "Yes" : "No";
+});
 
 // Computed property for recommended items using random selection
 const recommendedItems = computed(() => {
@@ -292,7 +323,6 @@ p {
 .item-img-recommended {
   width: 120px;
   height: 120px;
-  position: relative;
   background-size: cover;
   border-radius: 5px;
   margin-left: 10px;

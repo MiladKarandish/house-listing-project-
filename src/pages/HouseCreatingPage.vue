@@ -85,7 +85,6 @@
               name="image"
               @change="onFileChange"
               accept=".png,.jpg"
-              :required="!isEditing"
               ref="fileInput"
             />
             <div v-if="imageUrl" class="uploaded-picture-container">
@@ -101,6 +100,7 @@
                 </button>
               </div>
             </div>
+            <p v-if="fileError" id="file-error-message" class="error-message">Image is required.</p>
           </div>
 
           <div class="form-group form-group-single">
@@ -179,6 +179,7 @@
             <label for="description">Description*</label>
             <textarea
               id="description"
+              class="description"
               name="description"
               v-model="formData.description"
               placeholder="Enter description"
@@ -202,7 +203,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, nextTick } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
@@ -213,6 +214,7 @@ const route = useRoute();
 // Determine if we are editing an existing item
 const isEditing = ref(false);
 const itemId = ref(null);
+const fileError = ref(false);
 
 onMounted(async () => {
   if (route.params.id) {
@@ -292,20 +294,51 @@ const allFieldsFilled = computed(() => {
     formData.value.zip &&
     formData.value.city &&
     formData.value.constructionYear &&
-    formData.value.description
+    formData.value.description &&
+    imageUrl.value
   );
 });
 
 const handleSubmit = async () => {
+  if (!file.value && !imageUrl.value) {
+    fileError.value = true;
+    console.error("Image is required.");
+    // Wait for the DOM to update
+    await nextTick();
+    // Scroll to the error message
+    const errorMessageElement = document.getElementById("file-error-message");
+    if (errorMessageElement) {
+      errorMessageElement.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+    return;
+  }
+  fileError.value = false;
   try {
     let response;
     if (isEditing.value) {
       // Update existing item using PUT
       response = await axios.post(
-        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`, // Use itemId.value here
+        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
         formData.value,
         { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
       );
+      if (file.value) {
+        const formDataImage = new FormData();
+        formDataImage.append("image", file.value);
+        await axios.post(
+          `https://api.intern.d-tt.nl/api/houses/${itemId.value}/upload`,
+          formDataImage,
+          {
+            headers: {
+              "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      }
     } else {
       // Create new item
       response = await axios.post(
@@ -340,6 +373,7 @@ const handleSubmit = async () => {
 const onFileChange = (event) => {
   const selectedFile = event.target.files[0];
   if (selectedFile) {
+    fileError.value = false;
     file.value = selectedFile;
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -352,6 +386,7 @@ const onFileChange = (event) => {
 const removeImage = () => {
   imageUrl.value = null;
   file.value = null;
+  fileInput.value.value = null;
 };
 
 const backgroundStyle = computed(() => ({
@@ -365,6 +400,23 @@ const backgroundStyle = computed(() => ({
 </script>
 
 <style scoped>
+.description {
+  white-space: pre-wrap;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-15px); }
+  50% { transform: translateX(15px); }
+  75% { transform: translateX(-15px); }
+  100% { transform: translateX(0); }
+}
+
+.error-message {
+  color: #D8000C;
+  animation: shake 0.5s; 
+}
+
 input {
   color: rgb(0, 0, 0);
 }

@@ -38,14 +38,14 @@
           <button
             class="price-filter"
             :class="{ active: sortCriteria === 'price' }"
-            @click="setSortCriteria('price')"
+            @click="toggleSortCriteria('price')"
           >
             Price
           </button>
           <button
             class="size-filter"
             :class="{ active: sortCriteria === 'size' }"
-            @click="setSortCriteria('size')"
+            @click="toggleSortCriteria('size')"
           >
             Size
           </button>
@@ -114,11 +114,11 @@
                 />
               </button>
             </div>
-            <div class="delate">
-              <button @click="deleteHouse(item.id)">
+            <div class="delete">
+              <button @click="showModal(item.id)">
                 <img
-                  src="@/assets/icons/actions/grey-delate-icon.png"
-                  alt="delate button"
+                  src="@/assets/icons/actions/grey-delete-icon.png"
+                  alt="delete button"
                 />
               </button>
             </div>
@@ -126,31 +126,61 @@
         </div>
       </div>
     </div>
+    <Confirmation
+      v-if="isModalVisible"
+      @confirm="deleteHouse"
+      @cancel="hideModal"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import { useFetchHouses } from "@/composables/useFetchHouses";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import Confirmation from "@/components/deleteConfirmation.vue";
 
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
 
-const deleteHouse = async (itemId) => {
+const isModalVisible = ref(false);
+let itemToDeleteId = ref(null);
+
+const showModal = (itemId) => {
+  itemToDeleteId.value = itemId;
+  isModalVisible.value = true;
+};
+
+const hideModal = () => {
+  isModalVisible.value = false;
+};
+
+const deleteHouse = async () => {
   try {
-    await axios.delete(`https://api.intern.d-tt.nl/api/houses/${itemId}`, {
-      headers: {
-        "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-      },
-    });
+    await axios.delete(
+      `https://api.intern.d-tt.nl/api/houses/${itemToDeleteId.value}`,
+      {
+        headers: {
+          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+        },
+      }
+    );
     // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter((item) => item.id !== itemId);
+    items.value = items.value.filter((item) => item.id !== itemToDeleteId.value);
+    itemToDeleteId.value = null;
+    hideModal();
   } catch (error) {
     console.error("Error deleting house:", error);
   }
 };
+
+// Watcher to clear itemToDeleteId when the modal is closed
+watch(isModalVisible, (newValue) => {
+  if (!newValue) {
+    itemToDeleteId.value = null;
+  }
+});
 
 const search = ref("");
 const sortCriteria = ref("none");
@@ -185,9 +215,8 @@ const goToHouseDetails = (itemId) => {
 };
 
 const goToHouseEditPage = (itemId) => {
-  router.push({ name: 'HouseEditPage', params: { id: itemId } });
+  router.push({ name: "HouseEditPage", params: { id: itemId } });
 };
-
 
 const filteredItems = computed(() => {
   if (!search.value) {
@@ -214,8 +243,13 @@ const resultLable = computed(() => {
   return filteredItems.value.length === 1 ? "result" : "results";
 });
 
-const setSortCriteria = (criteria) => {
-  sortCriteria.value = criteria;
+// Function to toggle the sort criteria
+const toggleSortCriteria = (criteria) => {
+  if (sortCriteria.value === criteria) {
+    sortCriteria.value = null; // Turn off the criteria if it's already active
+  } else {
+    sortCriteria.value = criteria;
+  }
 };
 
 // Simplified function using the Composition API
