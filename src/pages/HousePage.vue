@@ -4,12 +4,20 @@
   <div v-else class="body">
     <div class="upper-block">
       <div class="left-block">
-        <h1>Houses</h1>
+        <div class="test">
+          <h1>Houses</h1>
+          <img
+            @click="goToHouseCreating"
+            class="plus"
+            src="@/assets/icons/actions/upload.png"
+            alt="Create new button"
+          />
+        </div>
         <div class="search-container">
           <img
             class="search"
             src="@/assets/icons/actions/search.png"
-            alt="search of input"
+            alt="Search of input"
           />
           <!-- Using v-model to automatically update the input value and detect changes for clearing -->
           <input
@@ -54,7 +62,7 @@
     </div>
     <div v-if="hasSearched" class="result-container">
       <div class="resulf-of-search">
-        <h4 v-if="filteredItems.length > 0 ">
+        <h4 v-if="filteredItems.length > 0">
           {{ filteredItems.length }} {{ resultLable }} found
         </h4>
       </div>
@@ -146,14 +154,14 @@ onMounted(getHouses);
 
 const search = ref("");
 const sortCriteria = ref("none");
-const hasSearched = ref(false); 
+const hasSearched = ref(false);
 
 const handleInput = () => {
-  hasSearched.value = true; 
+  hasSearched.value = true;
 };
 
 const clearSearch = () => {
-  search.value = '';
+  search.value = "";
   hasSearched.value = false; // Reset when search is cleared
 };
 
@@ -499,7 +507,26 @@ h5 {
   color: #c3c3c3;
 }
 
-@media (max-width: 800px) {
+@media (min-width: 880px) {
+  img.plus {
+    display: none;
+  }
+}
+
+@media (max-width: 880px) {
+  img.plus {
+    width: 25px;
+    height: 25px;
+    margin-left: auto;
+  }
+
+  .test {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
   .upper-block {
     flex-direction: column;
     align-items: center;
@@ -557,12 +584,14 @@ h5 {
     width: 70px;
     height: 70px;
   }
+
   h5 {
     font-size: 14px;
   }
 
   h1 {
     font-size: 22px;
+    margin-left: 42%;
   }
 
   .item-text-container {
@@ -587,6 +616,13 @@ h5 {
 
   .items {
     margin-bottom: 60px;
+    margin-top: 10px;
+  }
+
+  img.property {
+    padding: 0px;
+    height: 13px;
+    margin-left: 2px;
   }
 }
 </style>

@@ -80,7 +80,13 @@ const isAboutActive = computed(() => route.name === "AboutPage");
 </script>
 
 <style scoped>
-@media (max-width: 800px) {
+@media (min-width: 880px) {
+  img.image {
+    display: none;
+  }
+}
+
+@media (max-width: 880px) {
   a {
     display: none;
   }
@@ -94,8 +100,8 @@ const isAboutActive = computed(() => route.name === "AboutPage");
   }
 
   img.image.active {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     position: absolute;
     left: 30%;
   }
@@ -107,6 +113,10 @@ const isAboutActive = computed(() => route.name === "AboutPage");
     width: 100%;
     height: 50px;
     box-shadow: 0px 1px 20px 0px rgba(62, 63, 63, 0.226);
+  }
+
+  .logo {
+    display: none;
   }
 }
 
@@ -155,11 +165,5 @@ a {
   padding: 0% 15%;
   align-items: center;
   width: 100%;
-}
-
-@media (max-width: 800px) {
-  .logo {
-    display: none;
-  }
 }
 </style>
