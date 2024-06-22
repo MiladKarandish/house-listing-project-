@@ -87,5 +87,12 @@ a {
   display: flex;
   padding: 0% 15%;
   align-items: center;
+  width: 100%;
+}
+
+@media (max-width:800px) {
+  .header-content {
+    
+  }
 }
 </style>

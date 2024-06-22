@@ -167,7 +167,9 @@ const deleteHouse = async () => {
       }
     );
     // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter((item) => item.id !== itemToDeleteId.value);
+    items.value = items.value.filter(
+      (item) => item.id !== itemToDeleteId.value
+    );
     itemToDeleteId.value = null;
     hideModal();
   } catch (error) {
@@ -359,7 +361,6 @@ button.active {
 .left-block {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .body {
@@ -368,7 +369,6 @@ button.active {
 
 .search-container {
   position: relative;
-  width: fit-content;
   margin-top: 15px;
 }
 
@@ -487,5 +487,92 @@ h5 {
 
 .item-address {
   color: #c3c3c3;
+}
+
+@media (max-width: 800px) {
+  .upper-block {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-block {
+    align-items: center;
+    width: 100%;
+  }
+
+  .search-container {
+    width: 100%;
+    display: flex;
+  }
+
+  input {
+    width: 100%;
+    flex: 1;
+  }
+
+  .right-block {
+    width: 100%;
+    margin-right: 0px;
+  }
+
+  .creat-new {
+    display: none;
+  }
+
+  .filter {
+    display: flex;
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  button {
+    flex: 1;
+  }
+
+  input {
+    box-sizing: border-box;
+  }
+
+  .body {
+    padding: 0% 5%;
+  }
+
+  .item {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .item-img {
+    width: 70px;
+    height: 70px;
+  }
+  h5 {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .item-text-container {
+    line-height: 20px;
+  }
+
+  .item-container {
+    padding: 0px;
+  }
+
+  .madeByMe-block img {
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+  }
+  .madeByMe-block {
+    margin: 5px;
+  }
+  .madeByMe-block button {
+    padding: 0px;
+  }
 }
 </style>
