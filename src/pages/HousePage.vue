@@ -25,7 +25,7 @@
             class="clear"
             src="@/assets/icons/actions/grey-clear-icon.png"
             alt="Clear search"
-            @click="search = ''"
+            @click="clearSearch"
           />
         </div>
       </div>
@@ -52,9 +52,9 @@
         </div>
       </div>
     </div>
-    <div class="result-container">
+    <div v-if="hasSearched" class="result-container">
       <div class="resulf-of-search">
-        <h4 v-if="filteredItems.length > 0">
+        <h4 v-if="filteredItems.length > 0 ">
           {{ filteredItems.length }} {{ resultLable }} found
         </h4>
       </div>
@@ -144,6 +144,19 @@ import Confirmation from "@/components/deleteConfirmation.vue";
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
 
+const search = ref("");
+const sortCriteria = ref("none");
+const hasSearched = ref(false); 
+
+const handleInput = () => {
+  hasSearched.value = true; 
+};
+
+const clearSearch = () => {
+  search.value = '';
+  hasSearched.value = false; // Reset when search is cleared
+};
+
 const isModalVisible = ref(false);
 let itemToDeleteId = ref(null);
 
@@ -183,9 +196,6 @@ watch(isModalVisible, (newValue) => {
     itemToDeleteId.value = null;
   }
 });
-
-const search = ref("");
-const sortCriteria = ref("none");
 
 // Get the router instance
 const router = useRouter();
