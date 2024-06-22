@@ -9,6 +9,12 @@
         />
         <p>Back to overview</p>
       </div>
+      <div @click="goToHousePage" class="back-mobile">
+        <img
+          src="@/assets/icons/actions/white-back-icon.png"
+          alt="Back to list button"
+        />
+      </div>
       <div class="items">
         <div v-if="loading">Loading...</div>
         <div v-else-if="error">{{ error }}</div>
@@ -68,6 +74,7 @@
                     />
                   </button>
                 </div>
+
                 <div class="delete">
                   <button @click="showModal(item.id)">
                     <img
@@ -76,6 +83,24 @@
                     />
                   </button>
                 </div>
+              </div>
+            </div>
+            <div class="madeByMe-block-mobile">
+              <div class="edit-mobile">
+                <button @click="goToHouseEditPage(item.id)">
+                  <img
+                    src="@/assets/icons/actions/white-edite-icon.png"
+                    alt="edite button"
+                  />
+                </button>
+              </div>
+              <div class="delete-mobile">
+                <button @click="showModal(item.id)">
+                  <img
+                    src="@/assets/icons/actions/white-delete-icon.png"
+                    alt="delete button"
+                  />
+                </button>
               </div>
             </div>
           </div>
@@ -397,5 +422,56 @@ img {
   margin-right: 10px;
   width: 25px;
   height: auto;
+}
+
+@media (max-width: 880px) {
+  .body {
+    flex-direction: column;
+    margin: 0px 0px;
+  }
+
+  .back-to-list-from-details {
+    display: none;
+  }
+
+  .item-conteiner {
+    margin-top: 0px;
+  }
+
+  .item-img {
+    width: 100%;
+  }
+
+  .back-mobile {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+  }
+  .madeByMe-block {
+    display: none;
+  }
+
+  .madeByMe-block-mobile {
+    position: absolute;
+    display: flex;
+    top: 30px;
+    right: 10px;
+  }
+
+  .madeByMe-block-mobile img {
+    width: auto;
+    height: 20px;
+    margin: 0px 8px;
+  }
+
+  button {
+    background-color: rgba(0, 255, 255, 0);
+    border: none;
+    cursor: pointer;
+  }
+
+  .recommended {
+    margin-bottom: 50px;
+  }
 }
 </style>

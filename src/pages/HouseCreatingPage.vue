@@ -397,6 +397,12 @@ const backgroundStyle = computed(() => ({
 </script>
 
 <style scoped>
+@media (max-width: 880px) {
+  .body {
+    margin-bottom: 50px;
+  }
+}
+
 .description {
   white-space: pre-wrap;
 }
