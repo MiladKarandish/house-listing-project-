@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-content">
       <div class="logo header-item">
-        <img src="@/assets/images/logo.png" alt="Logo of DTT complany" />
+        <img src="@/assets/images/logo.png" alt="Logo of DTT company" />
       </div>
 
       <nav>
@@ -16,33 +16,100 @@
           :class="{ active: isAboutActive }"
           >About</router-link
         >
+
+        <img
+          v-if="isHomeActive"
+          @click="goToHousePage"
+          class="image"
+          :class="{ active: isHomeActive }"
+          src="@/assets/icons/mobile/home-active-icon.png"
+          alt="Houses page"
+        />
+        <img
+          v-else
+          @click="goToHousePage"
+          class="image"
+          src="@/assets/icons/mobile/home-icon.png"
+          alt="Houses page"
+        />
+        <img
+          v-if="isAboutActive"
+          @click="goToAboutPage"
+          class="image"
+          :class="{ active: isAboutActive }"
+          src="@/assets/icons/mobile/info-active-icon.png"
+          alt="About page"
+        />
+        <img
+          v-else
+          @click="goToAboutPage"
+          class="image"
+          src="@/assets/icons/mobile/info-icon.png"
+          alt="About page"
+        />
       </nav>
     </div>
   </header>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-const router = useRoute();
+const router = useRouter();
+const route = useRoute();
+
+const goToHousePage = () => {
+  router.push({ name: "HousePage" });
+};
+
+const goToAboutPage = () => {
+  router.push({ name: "AboutPage" });
+};
 
 const isHomeActive = computed(() => {
-  const isActive =
-    router.name === "HousePage" ||
-    router.name === "HouseCreatingPage" ||
-    router.name === "HouseDetailsPage" ||
-    router.name === "HouseEditPage";
-  console.log("isHomeActive computed:", isActive);
-  return isActive;
+  return [
+    "HousePage",
+    "HouseCreatingPage",
+    "HouseDetailsPage",
+    "HouseEditPage",
+  ].includes(route.name);
 });
 
-const isAboutActive = computed(() => {
-  return router.name === "AboutPage";
-});
+const isAboutActive = computed(() => route.name === "AboutPage");
 </script>
 
 <style scoped>
+@media (max-width: 800px) {
+  a {
+    display: none;
+  }
+
+  img.image {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    right: 30%;
+    top: 7px;
+  }
+
+  img.image.active {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    left: 30%;
+  }
+
+  .header {
+    position: fixed;
+    bottom: 0px;
+    z-index: 1;
+    width: 100%;
+    height: 50px;
+    box-shadow: 0px 1px 20px 0px rgba(62, 63, 63, 0.226);
+  }
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -90,9 +157,9 @@ a {
   width: 100%;
 }
 
-@media (max-width:800px) {
-  .header-content {
-    
+@media (max-width: 800px) {
+  .logo {
+    display: none;
   }
 }
 </style>

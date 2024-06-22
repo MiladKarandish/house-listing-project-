@@ -584,5 +584,9 @@ h5 {
   .madeByMe-block button {
     padding: 0px;
   }
+
+  .items {
+    margin-bottom: 60px;
+  }
 }
 </style>
