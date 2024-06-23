@@ -10,10 +10,12 @@
         <p>Back to overview</p>
       </div>
       <div @click="goToHousePage" class="back-mobile">
-        <img
-          src="@/assets/icons/actions/white-back-icon.png"
-          alt="Back to list button"
-        />
+        <button>
+          <img
+            src="@/assets/icons/actions/white-back-icon.png"
+            alt="Back to list button"
+          />
+        </button>
       </div>
       <div class="items">
         <div v-if="loading">Loading...</div>
@@ -461,17 +463,53 @@ img {
   .madeByMe-block-mobile img {
     width: auto;
     height: 20px;
-    margin: 0px 8px;
   }
 
+  img {
+    margin: 3px 8px;
+}
+
   button {
-    background-color: rgba(0, 255, 255, 0);
+    background-color: rgba(44, 45, 45, 0.219);
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+    margin-left: 2px;
+    padding: 3px;
   }
 
   .recommended {
     margin-bottom: 50px;
+    padding: 0px 15px;
   }
+
+  .item img {
+   margin: 0px;
+   width: 15px;
+   height: 15px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .item-recommended {
+    width: 100%;
+  }
+
+  .item-address,
+.item-properties-recommended, .item-price {
+  font-size: 11px;
+}
+
+img.property {
+  width: 15px;
+  height: 15px;
+}
+
 }
 </style>
