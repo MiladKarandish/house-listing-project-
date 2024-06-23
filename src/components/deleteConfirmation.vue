@@ -97,4 +97,31 @@ button {
   justify-content: center;
   align-items: center;
 }
+
+@media (max-width: 700px) {
+  .confirmation-container {
+    height: auto;
+    width: auto;
+    padding: 15px;
+    margin: 0 5px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  .red-button {
+    margin-top: 0;
+  }
+
+  button {
+    width: 60%;
+    font-size: 12px;
+    padding: 10px;
+  }
+}
 </style>

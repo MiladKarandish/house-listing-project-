@@ -627,6 +627,12 @@ label {
   margin-left: 20px;
 }
 
+@media (min-width: 880px) {
+  .back-to-list-mobile {
+    display: none;
+  }
+}
+
 @media (max-width: 880px) {
   .body {
     margin-bottom: 50px;
@@ -641,6 +647,7 @@ label {
   .body-container {
     margin: 0px;
     padding: 20px 15px;
+    width: 100%;
   }
 
   .post-button button {
@@ -678,6 +685,10 @@ label {
 
   h1 {
     margin: 0 auto;
+  }
+
+  form {
+    width: 100%;
   }
 }
 </style>

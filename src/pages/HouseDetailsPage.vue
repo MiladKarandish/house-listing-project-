@@ -467,7 +467,7 @@ img {
 
   img {
     margin: 3px 8px;
-}
+  }
 
   button {
     background-color: rgba(44, 45, 45, 0.219);
@@ -484,9 +484,9 @@ img {
   }
 
   .item img {
-   margin: 0px;
-   width: 15px;
-   height: 15px;
+    margin: 0px;
+    width: 15px;
+    height: 15px;
   }
 
   .text {
@@ -502,14 +502,24 @@ img {
   }
 
   .item-address,
-.item-properties-recommended, .item-price {
-  font-size: 11px;
+  .item-properties-recommended,
+  .item-price {
+    font-size: 11px;
+  }
+
+  img.property {
+    width: 15px;
+    height: 15px;
+  }
 }
 
-img.property {
-  width: 15px;
-  height: 15px;
-}
+@media (min-width:880px) {
+  .back-mobile{
+    display: none;
+  }
 
+  .madeByMe-block-mobile {
+    display: none;
+  }
 }
 </style>
