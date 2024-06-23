@@ -12,6 +12,13 @@
       <form @submit.prevent="handleSubmit">
         <fieldset>
           <legend>
+            <div @click="goToHousePage" class="back-to-list-mobile">
+              <img
+                class="back-to-list-img"
+                src="@/assets/icons/actions/grey-back-icon.png"
+                alt="Back to list button"
+              />
+            </div>
             <h1>{{ isEditing ? "Edit Listing" : "Create New Listing" }}</h1>
           </legend>
           <div class="form-group form-group-single">
@@ -397,12 +404,6 @@ const backgroundStyle = computed(() => ({
 </script>
 
 <style scoped>
-@media (max-width: 880px) {
-  .body {
-    margin-bottom: 50px;
-  }
-}
-
 .description {
   white-space: pre-wrap;
 }
@@ -624,5 +625,59 @@ label {
 
 .right-group-item {
   margin-left: 20px;
+}
+
+@media (max-width: 880px) {
+  .body {
+    margin-bottom: 50px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+  }
+
+  .body-container {
+    margin: 0px;
+    padding: 20px 15px;
+  }
+
+  .post-button button {
+    width: 100%;
+  }
+
+  label.plus[data-v-d92a4f87] {
+    padding: 55px;
+  }
+
+  img {
+    width: 30px;
+    height: auto;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  .back-to-list {
+    display: none;
+  }
+
+  .back-to-list-mobile img {
+    width: 20px;
+    height: auto;
+  }
+
+  legend {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    margin: 0 auto;
+  }
 }
 </style>

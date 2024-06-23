@@ -479,7 +479,7 @@ img {
   }
 
   .recommended {
-    margin-bottom: 50px;
+    margin-bottom: 80px;
     padding: 0px 15px;
   }
 

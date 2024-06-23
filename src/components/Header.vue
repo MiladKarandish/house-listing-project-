@@ -92,8 +92,8 @@ const isAboutActive = computed(() => route.name === "AboutPage");
   }
 
   img.image {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     position: absolute;
     right: 30%;
     top: 7px;
