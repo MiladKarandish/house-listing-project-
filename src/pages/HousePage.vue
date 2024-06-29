@@ -469,7 +469,6 @@ input[type="text"] {
 }
 
 img.property {
-  padding: 5px;
   height: 15px;
 }
 

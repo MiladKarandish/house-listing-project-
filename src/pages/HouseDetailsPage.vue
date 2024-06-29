@@ -334,7 +334,7 @@ p {
   background-color: #ffffff;
   margin-top: 30px;
   border-radius: 8px;
-  width: 350px;
+  width: 100%;
 }
 
 .item-recommended,
@@ -401,7 +401,8 @@ img {
 }
 
 .item-img {
-  width: 600px;
+  width: 100%;
+  min-width: 430px;
   height: 400px;
   overflow: hidden;
   display: flex;
@@ -495,10 +496,6 @@ img {
 
   .title {
     font-size: 18px;
-  }
-
-  .item-recommended {
-    width: 100%;
   }
 
   .item-address,
