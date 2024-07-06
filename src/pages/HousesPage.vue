@@ -13,75 +13,29 @@
             alt="Create new button"
           />
         </div>
-        <div class="search-container">
-          <img
-            class="search"
-            src="@/assets/icons/actions/search.png"
-            alt="Search of input"
-          />
-          <!-- Using v-model to automatically update the input value and detect changes for clearing -->
-          <input
-            type="text"
-            v-model="search"
-            placeholder="Search for a house"
-            @input="handleInput"
-          />
-          <!-- Show the clear button only when the search input length is greater than 0 -->
-          <!-- On click, the input value is cleared (set to an empty string) -->
-          <img
-            v-if="showSearchClearButton"
-            class="clear"
-            src="@/assets/icons/actions/grey-clear-icon.png"
-            alt="Clear search"
-            @click="clearSearch"
-          />
-        </div>
+        <Search></Search>
       </div>
 
       <div class="right-block">
-        <button @click="goToHouseCreating" class="creat-new">
-          + CREAT NEW
-        </button>
-        <div class="filter">
-          <button
-            class="price-filter"
-            :class="{ active: sortCriteria === 'price' }"
-            @click="toggleSortCriteria('price')"
-          >
-            Price
-          </button>
-          <button
-            class="size-filter"
-            :class="{ active: sortCriteria === 'size' }"
-            @click="toggleSortCriteria('size')"
-          >
-            Size
-          </button>
-        </div>
-      </div>
-    </div>
-    <div v-if="hasSearched" class="result-container">
-      <div class="resulf-of-search">
-        <h4 v-if="filteredItems.length > 0">
-          {{ filteredItems.length }} {{ resultLable }} found
-        </h4>
-      </div>
-      <div v-if="filteredItems.length === 0" class="no-results">
-        <img src="@/assets/images/no-houses-found.png" alt="No results found" />
-        <p class="no-results-text">No results found</p>
-        <p class="no-results-text">Please try another keyword</p>
+        <CreatNew></CreatNew>
+        <Filter></Filter>
       </div>
     </div>
 
     <div class="items">
-      <div v-for="item in sortedItems" :key="item.id" class="item">
+      <div
+        v-for="item in sortedItems"
+        :key="item.id"
+        @click="goToHouseDetails(item.id)"
+        class="item"
+      >
         <div
           class="item-img"
           :style="`background-image: url(${item.image})`"
         ></div>
         <div class="item-container">
           <div class="item-text-container">
-            <div @click="goToHouseDetails(item.id)" class="item-title">
+            <div class="item-title">
               <h5>
                 {{ item.location.street }} {{ item.location.houseNumber }}
                 {{ item.location.houseNumberAddition }}
@@ -148,22 +102,15 @@ import { useFetchHouses } from "@/composables/useFetchHouses";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Confirmation from "@/components/deleteConfirmation.vue";
+import Search from "../components/searchInput.vue";
+import CreatNew from "../components/creatNewListing.vue";
+import Filter from "../components/filter.vue";
+import { filteredItems } from "../composables/filteredItems";
 
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
 
-const search = ref("");
 const sortCriteria = ref("none");
-const hasSearched = ref(false);
-
-const handleInput = () => {
-  hasSearched.value = true;
-};
-
-const clearSearch = () => {
-  search.value = "";
-  hasSearched.value = false; // Reset when search is cleared
-};
 
 const isModalVisible = ref(false);
 let itemToDeleteId = ref(null);
@@ -193,9 +140,7 @@ const deleteHouse = async () => {
     );
     itemToDeleteId.value = null;
     hideModal();
-  } catch (error) {
-    console.error("Error deleting house:", error);
-  }
+  } catch (error) {}
 };
 
 // Watcher to clear itemToDeleteId when the modal is closed
@@ -208,46 +153,17 @@ watch(isModalVisible, (newValue) => {
 // Get the router instance
 const router = useRouter();
 
-// Define the method to navigate to the House Creating page
-const goToHouseCreating = () => {
-  console.log("Navigating to HouseCreatingPage"); // Log before navigation
-  router
-    .push({ name: "HouseCreatingPage" })
-    .then(() => {
-      console.log("Navigation successful"); // Log on successful navigation
-    })
-    .catch((error) => {
-      console.error("Navigation error:", error); // Log any navigation errors
-    });
-};
-
 // Define the method to navigate to the House Deteils page
 const goToHouseDetails = (itemId) => {
-  console.log("Navigating to HouseDetailsPage with ID:", itemId); // Log before navigation
   router
     .push({ name: "HouseDetailsPage", params: { id: itemId } })
-    .then(() => {
-      console.log("Navigation successful"); // Log on successful navigation
-    })
-    .catch((error) => {
-      console.error("Navigation error:", error); // Log any navigation errors
-    });
+    .then(() => {})
+    .catch((error) => {});
 };
 
 const goToHouseEditPage = (itemId) => {
   router.push({ name: "HouseEditPage", params: { id: itemId } });
 };
-
-const filteredItems = computed(() => {
-  if (!search.value) {
-    return items.value;
-  }
-  return items.value.filter((item) =>
-    (item.location.street + item.location.zip + item.location.city)
-      .toLowerCase()
-      .includes(search.value.toLowerCase())
-  );
-});
 
 const sortedItems = computed(() => {
   const sorted = [...filteredItems.value]; // Make a copy of the filtered items
@@ -259,10 +175,6 @@ const sortedItems = computed(() => {
   return sorted;
 });
 
-const resultLable = computed(() => {
-  return filteredItems.value.length === 1 ? "result" : "results";
-});
-
 // Function to toggle the sort criteria
 const toggleSortCriteria = (criteria) => {
   if (sortCriteria.value === criteria) {
@@ -271,11 +183,6 @@ const toggleSortCriteria = (criteria) => {
     sortCriteria.value = criteria;
   }
 };
-
-// Simplified function using the Composition API
-const showSearchClearButton = computed(() => {
-  return search.value.length > 0;
-});
 </script>
 
 <style scoped>
@@ -309,23 +216,6 @@ const showSearchClearButton = computed(() => {
   cursor: pointer;
 }
 
-.resulf-of-search {
-  margin-right: auto;
-}
-
-.no-results img {
-  width: 450px;
-  height: auto;
-  margin-bottom: 20px;
-}
-
-.no-results {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 100px 0px;
-}
-
 button.active {
   background-color: #eb5440;
 }
@@ -335,40 +225,6 @@ button.active {
   flex-direction: column;
   align-items: flex-end;
   margin-right: -20px;
-}
-
-.price-filter,
-.size-filter {
-  color: #ffffff;
-  padding: 8px 40px;
-  border: none;
-  font-size: 14px;
-  font-family: "Montserrat";
-  font-weight: 600;
-  cursor: pointer;
-  background-color: #c3c3c3;
-  transition: background-color 0.4s ease;
-}
-
-.price-filter {
-  border-radius: 5px 0px 0px 5px;
-}
-
-.size-filter {
-  border-radius: 0px 5px 5px 0px;
-}
-
-.creat-new {
-  background-color: #eb5440;
-  color: #ffffff;
-  padding: 8px 25px;
-  border-radius: 5px;
-  border: none;
-  font-size: 18px;
-  font-family: "Montserrat";
-  font-weight: 600;
-  margin: 30px 0px;
-  cursor: pointer;
 }
 
 .upper-block {
@@ -385,57 +241,6 @@ button.active {
   padding: 0% 15%;
 }
 
-.search-container {
-  position: relative;
-  margin-top: 15px;
-}
-
-.search-container img {
-  position: absolute;
-  height: 18px;
-  width: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.search-container .search {
-  left: 10px;
-}
-
-.search-container .clear {
-  right: 10px;
-  cursor: pointer;
-}
-
-.search-container input {
-  width: 380px;
-  font-size: 16px;
-  padding: 10px 40px 10px 40px;
-  border: 0;
-  border-radius: 5px;
-  background-color: #e8e8e8;
-  color: #4a4b4c;
-  font-size: 14px;
-  font-family: "Montserrat";
-  font-weight: 500;
-}
-
-.search-container input::placeholder {
-  color: #c3c3c3;
-  font-size: 14px;
-  font-family: "Open Sans";
-  font-weight: 400;
-}
-
-input:focus {
-  outline: none;
-}
-
-input[type="text"] {
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
 .item {
   display: flex;
   flex-direction: row;
@@ -447,6 +252,7 @@ input[type="text"] {
   margin: 10px 0px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
 
 .item-text-container {
@@ -493,10 +299,6 @@ h5 {
   font-weight: 700;
 }
 
-.item-title {
-  cursor: pointer;
-}
-
 .item-price {
   color: #4a4b4c;
   font-weight: 400;
@@ -536,38 +338,13 @@ h5 {
     width: 100%;
   }
 
-  .search-container {
-    width: 100%;
-    display: flex;
-  }
-
-  input {
-    width: 100%;
-    flex: 1;
-  }
-
   .right-block {
     width: 100%;
     margin-right: 0px;
   }
 
-  .creat-new {
-    display: none;
-  }
-
-  .filter {
-    display: flex;
-    margin-top: 15px;
-    width: 100%;
-    justify-content: space-between;
-  }
-
   button {
     flex: 1;
-  }
-
-  input {
-    box-sizing: border-box;
   }
 
   .body {

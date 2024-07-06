@@ -16,10 +16,8 @@ export function useFetchHouses(){
       }
       );
       items.value = response.data;
-      console.log(items.value);
     } catch (err) {
       error.value = "Error happened";
-      console.error("Error:", err);
     } finally {
       loading.value = false;
     }

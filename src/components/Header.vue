@@ -1,13 +1,13 @@
 <template>
   <header class="header">
     <div class="header-content">
-      <div class="logo header-item">
+      <div @click="goToHousesPage" class="logo header-item">
         <img src="@/assets/images/logo.png" alt="Logo of DTT company" />
       </div>
 
       <nav>
         <router-link
-          :to="{ name: 'HousePage' }"
+          :to="{ name: 'HousesPage' }"
           :class="{ active: isHomeActive }"
           >Houses</router-link
         >
@@ -19,7 +19,7 @@
 
         <img
           v-if="isHomeActive"
-          @click="goToHousePage"
+          @click="goToHousesPage"
           class="image"
           :class="{ active: isHomeActive }"
           src="@/assets/icons/mobile/home-active-icon.png"
@@ -27,7 +27,7 @@
         />
         <img
           v-else
-          @click="goToHousePage"
+          @click="goToHousesPage"
           class="image"
           src="@/assets/icons/mobile/home-icon.png"
           alt="Houses page"
@@ -59,8 +59,8 @@ import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-const goToHousePage = () => {
-  router.push({ name: "HousePage" });
+const goToHousesPage = () => {
+  router.push({ name: "HousesPage" });
 };
 
 const goToAboutPage = () => {
@@ -69,7 +69,7 @@ const goToAboutPage = () => {
 
 const isHomeActive = computed(() => {
   return [
-    "HousePage",
+    "HousesPage",
     "HouseCreatingPage",
     "HouseDetailsPage",
     "HouseEditPage",
@@ -137,6 +137,7 @@ const isAboutActive = computed(() => route.name === "AboutPage");
 
 .logo {
   margin-left: 0px;
+  cursor: pointer;
 }
 
 .router-link-active {

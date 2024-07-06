@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="left-block">
-      <div @click="goToHousePage" class="back-to-list-from-details">
+      <div @click="goToHousesPage" class="back-to-list-from-details">
         <img
           class="back-to-list-img"
           src="@/assets/icons/actions/grey-back-icon.png"
@@ -9,7 +9,7 @@
         />
         <p>Back to overview</p>
       </div>
-      <div @click="goToHousePage" class="back-mobile">
+      <div @click="goToHousesPage" class="back-mobile">
         <button>
           <img
             src="@/assets/icons/actions/white-back-icon.png"
@@ -220,19 +220,15 @@ const deleteHouse = async () => {
     );
     itemToDeleteId.value = null;
     hideModal();
-    goToHousePage();
-  } catch (error) {
-    console.error("Error deleting house:", error);
-  }
+    goToHousesPage();
+  } catch (error) {}
 };
 
 onMounted(() => {
   const itemId = route.params.id;
   if (itemId) {
-    console.log("Route param id:", itemId); // Logging
     getHouse(itemId);
   } else {
-    console.error("No itemId found in route params");
   }
 });
 
@@ -243,10 +239,8 @@ watch(
   }
 );
 
-const goToHousePage = () => {
-  router.push({ name: "HousePage" }).catch((error) => {
-    console.error("Navigation error:", error);
-  });
+const goToHousesPage = () => {
+  router.push({ name: "HousesPage" }).catch((error) => {});
 };
 
 // Computed property to display "Yes" or "No" for hasGarage
@@ -510,8 +504,8 @@ img {
   }
 }
 
-@media (min-width:880px) {
-  .back-mobile{
+@media (min-width: 880px) {
+  .back-mobile {
     display: none;
   }
 

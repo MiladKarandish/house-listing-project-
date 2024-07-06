@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HousePage from '../pages/HousePage.vue';
+import HousesPage from '../pages/HousesPage.vue';
 import AboutPage from '../pages/AboutPage.vue';
 import HouseCreatingPage from '../pages/HouseCreatingPage.vue';
 import HouseDetailsPage from '../pages/HouseDetailsPage.vue';
@@ -8,8 +8,8 @@ import HouseDetailsPage from '../pages/HouseDetailsPage.vue';
 const routes = [
     {
       path: '/',
-      name: 'HousePage',
-      component: HousePage,
+      name: 'HousesPage',
+      component: HousesPage,
     },
     {
       path: '/AboutPage',
@@ -33,9 +33,6 @@ const routes = [
       props: true,
     }, 
   ]
-
-
-  console.log('Configured Routes:', routes); // Log the routes
 
   const router = createRouter({
     history: createWebHistory(), 

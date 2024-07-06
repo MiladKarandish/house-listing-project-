@@ -1,7 +1,7 @@
 <template>
   <div class="body" :style="backgroundStyle">
     <div class="body-container">
-      <div @click="goToHousePage" class="back-to-list">
+      <div @click="goToHousesPage" class="back-to-list">
         <img
           class="back-to-list-img"
           src="@/assets/icons/actions/grey-back-icon.png"
@@ -12,7 +12,7 @@
       <form @submit.prevent="handleSubmit">
         <fieldset>
           <legend>
-            <div @click="goToHousePage" class="back-to-list-mobile">
+            <div @click="goToHousesPage" class="back-to-list-mobile">
               <img
                 class="back-to-list-img"
                 src="@/assets/icons/actions/grey-back-icon.png"
@@ -254,17 +254,14 @@ onMounted(async () => {
         };
         imageUrl.value = item.image;
       } else {
-        console.error("Invalid item structure", item);
       }
-    } catch (error) {
-      console.error("Error fetching item data:", error);
-    }
+    } catch (error) {}
   }
 });
 
-const goToHousePage = () => {
+const goToHousesPage = () => {
   router
-    .push({ name: "HousePage" })
+    .push({ name: "HousesPage" })
     .then(() => {})
     .catch((error) => {});
 };
@@ -306,7 +303,6 @@ const allFieldsFilled = computed(() => {
 const handleSubmit = async () => {
   if (!file.value && !imageUrl.value) {
     fileError.value = true;
-    console.error("Image is required.");
     // Wait for the DOM to update
     await nextTick();
     // Scroll to the error message
@@ -369,9 +365,7 @@ const handleSubmit = async () => {
     }
 
     router.push({ name: "HouseDetailsPage", params: { id: response.data.id } });
-  } catch (error) {
-    console.error("Submission error:", error);
-  }
+  } catch (error) {}
 };
 
 const onFileChange = (event) => {
