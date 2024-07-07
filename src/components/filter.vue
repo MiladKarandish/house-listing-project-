@@ -50,6 +50,10 @@ const toggleSortCriteria = (criteria) => {
     width: 100%;
     justify-content: space-between;
   }
+
+  .filter button {
+    flex: 1;
+  }
 }
 
 .price-filter,

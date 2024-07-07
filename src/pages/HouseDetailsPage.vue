@@ -308,7 +308,8 @@ const goToHouseDetails = (itemId) => {
   margin-bottom: 10px;
 }
 
-p {
+.back-to-list-from-details p,
+.item-properties-recommended p {
   margin-right: 10px;
 }
 
@@ -380,7 +381,10 @@ p {
   display: flex;
 }
 
-img {
+.property,
+.item img,
+.edit img,
+.delete img {
   width: 20px;
   height: 20px;
   margin-right: 5px;
@@ -460,11 +464,15 @@ img {
     height: 20px;
   }
 
-  img {
+  .edit-mobile img,
+  .delete-mobile img,
+  .back-mobile img {
     margin: 3px 8px;
   }
 
-  button {
+  .edit-mobile button,
+  .delete-mobile button,
+  .back-mobile button {
     background-color: rgba(44, 45, 45, 0.219);
     border: none;
     cursor: pointer;

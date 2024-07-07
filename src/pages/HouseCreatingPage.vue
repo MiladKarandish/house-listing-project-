@@ -9,9 +9,9 @@
         />
         <p>Back to overview</p>
       </div>
-      <form @submit.prevent="handleSubmit">
-        <fieldset>
-          <legend>
+      <form class="form" @submit.prevent="handleSubmit">
+        <fieldset class="fieldset">
+          <legend class="legend">
             <div @click="goToHousesPage" class="back-to-list-mobile">
               <img
                 class="back-to-list-img"
@@ -19,7 +19,9 @@
                 alt="Back to list button"
               />
             </div>
-            <h1>{{ isEditing ? "Edit Listing" : "Create New Listing" }}</h1>
+            <h1 class="title">
+              {{ isEditing ? "Edit Listing" : "Create New Listing" }}
+            </h1>
           </legend>
           <div class="form-group form-group-single">
             <label for="street-name">Street name*</label>
@@ -425,7 +427,7 @@ const backgroundStyle = computed(() => ({
   animation: shake 0.5s;
 }
 
-input {
+.form-group input {
   color: rgb(0, 0, 0);
 }
 
@@ -434,7 +436,7 @@ input {
   box-sizing: border-box;
 }
 
-select {
+.form-group select {
   width: 100%;
   box-sizing: border-box;
 }
@@ -513,7 +515,8 @@ label.plus {
   margin-left: auto;
 }
 
-button {
+.post-button button,
+.filled-button button {
   font-weight: 700;
   font-size: 22px;
 }
@@ -537,7 +540,8 @@ button {
   margin-right: 10px;
 }
 
-img {
+.back-to-list-img,
+.plus img {
   width: 18px;
   height: 18px;
 }
@@ -565,12 +569,12 @@ img {
   width: 100%;
 }
 
-fieldset {
+.fieldset {
   border: none;
   padding: 0px;
 }
 
-input,
+.form-group input,
 textarea,
 select {
   font-family: Montserrat;
@@ -580,24 +584,24 @@ select {
   border: none;
   border-radius: 10px;
   margin: 5px 0px;
-  color: 4A4B4C;
+  color: #4a4b4c;
 }
 
-input:focus,
+.form-group input:focus,
 textarea:focus,
 select:focus {
   border: none;
   outline: none;
 }
 
-textarea {
+.form-group textarea {
   width: 100%;
   box-sizing: border-box;
   resize: none;
   height: 200px;
 }
 
-input::placeholder,
+.form-group input::placeholder,
 textarea::placeholder {
   font-family: Montserrat;
   font-weight: 400;
@@ -605,7 +609,7 @@ textarea::placeholder {
   color: #c3c3c3;
 }
 
-label {
+.form-group label {
   font-family: Montserrat;
   font-weight: 600;
   font-size: 14px;
@@ -632,7 +636,7 @@ label {
     margin-bottom: 50px;
   }
 
-  input,
+  .form-group input,
   textarea,
   select {
     width: 100%;
@@ -652,13 +656,15 @@ label {
     padding: 55px;
   }
 
-  img {
+  .back-to-list-img,
+  .plus img {
     width: 30px;
     height: auto;
   }
 
-  h1 {
+  .title {
     font-size: 18px;
+    margin: 0 auto;
   }
 
   .back-to-list {
@@ -670,18 +676,14 @@ label {
     height: auto;
   }
 
-  legend {
+  .legend {
     display: flex;
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
   }
 
-  h1 {
-    margin: 0 auto;
-  }
-
-  form {
+  .form {
     width: 100%;
   }
 }

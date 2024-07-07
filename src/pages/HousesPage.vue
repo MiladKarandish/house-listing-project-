@@ -278,7 +278,7 @@ img.property {
   height: 15px;
 }
 
-p {
+.item-properties p {
   padding: 5px;
   color: #c3c3c3;
   margin: 0px;
@@ -292,11 +292,12 @@ p {
   border-radius: 10px;
 }
 
-h5 {
+.item-title h5 {
   font-size: 22px;
   font-family: "Montserrat";
   color: black;
   font-weight: 700;
+  margin: 5px 0;
 }
 
 .item-price {
@@ -343,10 +344,6 @@ h5 {
     margin-right: 0px;
   }
 
-  button {
-    flex: 1;
-  }
-
   .body {
     padding: 0% 5%;
   }
@@ -361,11 +358,11 @@ h5 {
     height: 70px;
   }
 
-  h5 {
+  .item-title h5 {
     font-size: 14px;
   }
 
-  h1 {
+  .test h1 {
     font-size: 22px;
     margin-left: 42%;
   }

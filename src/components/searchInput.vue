@@ -69,7 +69,7 @@ const resultLable = computed(() => {
     display: flex;
   }
 
-  input {
+  .search-container input {
     width: 100%;
     flex: 1;
   }
@@ -117,11 +117,11 @@ const resultLable = computed(() => {
   font-weight: 400;
 }
 
-input:focus {
+.search-container input:focus {
   outline: none;
 }
 
-input[type="text"] {
+.search-container input[type="text"] {
   padding-left: 40px;
   padding-right: 40px;
 }

@@ -1,19 +1,19 @@
 <template>
   <header class="header">
     <div class="header-content">
-      <div @click="goToHousesPage" class="logo header-item">
+      <div @click="goToHousesPage" class="logo">
         <img src="@/assets/images/logo.png" alt="Logo of DTT company" />
       </div>
 
       <nav>
         <router-link
           :to="{ name: 'HousesPage' }"
-          :class="{ active: isHomeActive }"
+          :class="['nav-link', { active: isHomeActive }]"
           >Houses</router-link
         >
         <router-link
           :to="{ name: 'AboutPage' }"
-          :class="{ active: isAboutActive }"
+          :class="['nav-link', { active: isAboutActive }]"
           >About</router-link
         >
 
@@ -87,7 +87,7 @@ const isAboutActive = computed(() => route.name === "AboutPage");
 }
 
 @media (max-width: 880px) {
-  a {
+  .nav-link {
     display: none;
   }
 
@@ -115,7 +115,7 @@ const isAboutActive = computed(() => route.name === "AboutPage");
     box-shadow: 0px 1px 20px 0px rgba(62, 63, 63, 0.226);
   }
 
-  .logo {
+  .logo img{
     display: none;
   }
 }
@@ -131,27 +131,14 @@ const isAboutActive = computed(() => route.name === "AboutPage");
   height: 30px;
 }
 
-.header-item {
-  margin: 20px;
-}
-
 .logo {
   margin-left: 0px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
-.router-link-active {
-  font-weight: bold;
-  color: black;
-}
-
-.router-link-active,
-.active {
-  font-weight: bold;
-  color: black;
-}
-
-a {
+.nav-link {
   text-decoration: none;
   color: inherit;
   font-size: 18px;
@@ -159,6 +146,12 @@ a {
   color: #c3c3c3;
   font-weight: 500;
   margin: 0px 20px;
+}
+
+.router-link-active,
+.active {
+  font-weight: bold;
+  color: black;
 }
 
 .header-content {

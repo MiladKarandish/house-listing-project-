@@ -34,21 +34,21 @@ const cancel = () => {
   margin: 20px 0px;
 }
 
-p {
+.confirmation-container p {
   color: #4a4b4c;
   font-size: 18px;
   font-weight: 500;
   margin: 0px;
 }
 
-h2 {
+.confirmation-container h2 {
   color: black;
   font-size: 30px;
   font-weight: 700;
 }
 
-p,
-h2 {
+.confirmation-container p,
+.confirmation-container h2 {
   font-family: Open Sans;
 }
 
@@ -72,7 +72,8 @@ button.grey-button {
   justify-content: center;
 }
 
-button {
+.red-button,
+.grey-button {
   width: 70%;
   margin-top: 15px;
   color: #ffffff;
@@ -106,11 +107,11 @@ button {
     margin: 0 5px;
   }
 
-  h2 {
+  .confirmation-container h2 {
     font-size: 22px;
   }
 
-  p {
+  .confirmation-container p {
     font-size: 12px;
   }
 
@@ -118,7 +119,8 @@ button {
     margin-top: 0;
   }
 
-  button {
+  .red-button,
+  .grey-button {
     width: 60%;
     font-size: 12px;
     padding: 10px;

@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <h1>About DTT Rael Estate</h1>
+    <h1 class="title">About DTT Rael Estate</h1>
     <p>
       From a student room in 2010 to a full-service digital agency in the heart
       of Amsterdam. Our story is one of those. A story we are very proud of.
@@ -17,10 +17,10 @@
     </p>
     <h2>Design and Developement</h2>
     <div class="content-web-link">
-      <img src="@/assets/images/logo.png" alt="logo of DTT company" />
+      <img class="logo" src="@/assets/images/logo.png" alt="logo of DTT company" />
       <div class="web-link">
-        <h5 class="web-link-item">By DTT</h5>
-        <a href="www.d-tt.nl" class="web-link-item">www.d-tt.nl</a>
+        <h5 class="web-link-item text">By DTT</h5>
+        <a href="www.d-tt.nl" class="web-link-item link">www.d-tt.nl</a>
       </div>
     </div>
   </div>
@@ -50,14 +50,14 @@ export default {
   font-weight: 300;
 }
 
-h1 {
+.title {
   font-family: Montserrat;
   font-size: 32px;
   color: black;
   font-weight: 700;
 }
 
-img {
+.logo {
   height: 70px;
 }
 
@@ -71,14 +71,14 @@ img {
   padding: 15px 20px;
 }
 
-h5 {
+.text {
   margin: 0px;
   font-size: 18px;
   color: black;
   font-weight: 300;
 }
 
-a {
+.link {
   text-decoration: none;
   color: inherit;
   font-size: 15px;
