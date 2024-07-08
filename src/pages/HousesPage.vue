@@ -41,7 +41,7 @@
                 {{ item.location.houseNumberAddition }}
               </h5>
             </div>
-            <div class="item-price">{{ item.price }}€</div>
+            <div class="item-price">{{ currencyFormat(item.price) }}</div>
             <div class="item-address">
               {{ item.location.zip }} {{ item.location.city }}
             </div>
@@ -109,6 +109,15 @@ import { filteredItems } from "../composables/filteredItems";
 
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
+
+// Currency formatting function
+const currencyFormat = (value) => {
+  return new Intl.NumberFormat('nl-NL', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 0
+  }).format(value)
+};
 
 const sortCriteria = ref("none");
 

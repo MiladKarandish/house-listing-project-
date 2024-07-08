@@ -38,7 +38,7 @@
               <div class="item-properties">
                 <div class="price item">
                   <img src="@/assets/icons/properties/price.png" alt="" />
-                  {{ item.price }}€
+                  {{ currencyFormatWithouSimvol(item.price) }}
                 </div>
                 <div class="size item">
                   <img src="@/assets/icons/properties/size.png" alt="" />
@@ -135,7 +135,9 @@
                   {{ item.location.houseNumberAddition }}
                 </h5>
               </div>
-              <div class="item-price">{{ item.price }}€</div>
+              <div class="item-price">
+                € {{ currencyFormatWithouSimvol(item.price) }}
+              </div>
               <div class="item-address">
                 {{ item.location.zip }} {{ item.location.city }}
               </div>
@@ -181,6 +183,14 @@ onMounted(getHouses);
 const { item, loading, error, getHouse } = useFetchHouseDetails();
 const router = useRouter();
 const route = useRoute();
+
+const currencyFormatWithouSimvol = (value) => {
+  return new Intl.NumberFormat("nl-NL", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(value);
+};
 
 const isModalVisible = ref(false);
 let itemToDeleteId = ref(null);
@@ -365,6 +375,8 @@ const goToHouseDetails = (itemId) => {
 .item {
   margin-right: 20px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .item-conteiner {
