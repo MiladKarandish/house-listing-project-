@@ -44,12 +44,12 @@ import { useFetchHouses } from "@/composables/useFetchHouses";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Confirmation from "@/components/deleteConfirmation.vue";
-import CreatNew from "../components/creatNewListing.vue";
-import Filter from "../components/filter.vue";
-import Search from "../components/searchInput.vue";
-import CreatNewMobile from "../components/createNewListingMobile.vue";
-import ItemsList from "../components/items.vue";
-import ResultOfSearch from "../components/resultOfSearch.vue";
+import CreatNew from "../components/HousesPage/creatNewListing.vue";
+import Filter from "../components/HousesPage/filter.vue";
+import Search from "../components/HousesPage/searchInput.vue";
+import CreatNewMobile from "../components/HousesPage/createNewListingMobile.vue";
+import ItemsList from "../components/HousesPage/items.vue";
+import ResultOfSearch from "../components/HousesPage/resultOfSearch.vue";
 
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
