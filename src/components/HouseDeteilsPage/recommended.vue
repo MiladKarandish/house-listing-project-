@@ -168,7 +168,7 @@ const goToHouseDetails = (itemId) => {
 .recommended {
   padding-left: 60px;
   width: 100%;
-  margin-top: 60px;
+  margin-top: 50px;
 }
 
 .item-title h5 {

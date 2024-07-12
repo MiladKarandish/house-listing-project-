@@ -17,7 +17,6 @@
         @cancel="hideModal"
       />
     </div>
-
     <Recommended
       :item="item"
       :items="items"
@@ -33,10 +32,10 @@ import { useFetchHouseDetails } from "@/composables/useFetchHouseDetails";
 import { useFetchHouses } from "@/composables/useFetchHouses";
 import Confirmation from "@/components/deleteConfirmation.vue";
 import axios from "axios";
-import BackToList from "../components/HouseDeteilsPage/backToList.vue";
+import BackToList from "../components/backToList.vue";
 import ItemsDetails from "../components/HouseDeteilsPage/ItemsDetails.vue";
 import Recommended from "../components/HouseDeteilsPage/recommended.vue";
-
+import img from "../assets/icons/actions/white-back-icon.png"
 const { items, getHouses } = useFetchHouses();
 onMounted(getHouses);
 

@@ -9,16 +9,21 @@
   </div>
   <div @click="goToHousesPage" class="back-mobile">
     <button>
-      <img
-        src="@/assets/icons/actions/white-back-icon.png"
-        alt="Back to list button"
-      />
+      <img :src="imgSrc" alt="back icon">
     </button>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  imgSrc: {
+    type: String,
+    required: true
+  }
+});
 
 const router = useRouter();
 
@@ -32,6 +37,29 @@ const goToHousesPage = () => {
   .back-mobile {
     display: none;
   }
+}
+
+
+
+.back-to-list-from-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.back-to-list-from-details img {
+  margin-right: 10px;
+  width: 25px;
+  height: auto;
+}
+
+.back-to-list-from-details p {
+  margin-right: 10px;
 }
 
 @media (max-width: 880px) {
@@ -58,26 +86,4 @@ const goToHousesPage = () => {
     padding: 3px;
   }
 }
-
-.back-to-list-from-details {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-family: Montserrat;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  margin-bottom: -20px;
-}
-
-.back-to-list-from-details img {
-  margin-right: 10px;
-  width: 25px;
-  height: auto;
-}
-
-.back-to-list-from-details p {
-  margin-right: 10px;
-}
-
 </style>
