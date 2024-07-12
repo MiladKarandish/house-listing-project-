@@ -3,63 +3,58 @@
     <img
       class="search"
       src="@/assets/icons/actions/search.png"
-      alt="Search of input"
+      alt="Search input"
     />
-    <!-- Using v-model to automatically update the input value and detect changes for clearing -->
     <input
       type="text"
-      v-model="search"
+      :value="search"
       placeholder="Search for a house"
-      @input="handleInput"
+      @input="onInput"
     />
-    <!-- Show the clear button only when the search input length is greater than 0 -->
-    <!-- On click, the input value is cleared (set to an empty string) -->
     <img
-      v-if="showSearchClearButton"
+      v-if="search.length > 0"
       class="clear"
       src="@/assets/icons/actions/grey-clear-icon.png"
       alt="Clear search"
       @click="clearSearch"
     />
   </div>
-  <div v-if="hasSearched" class="result-container">
-    <div class="resulf-of-search">
-      <h4 v-if="filteredItems.length > 0">
-        {{ filteredItems.length }} {{ resultLable }} found
-      </h4>
-    </div>
-    <div v-if="filteredItems.length === 0" class="no-results">
-      <img src="@/assets/images/no-houses-found.png" alt="No results found" />
-      <p class="no-results-text">No results found</p>
-      <p class="no-results-text">Please try another keyword</p>
-    </div>
-  </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import {filteredItems} from '../composables/filteredItems'
+import { ref, watch } from "vue";
 
-const search = ref("");
-const hasSearched = ref(false);
+// Props for the component
+const props = defineProps({
+  search: String,
+});
 
-const handleInput = () => {
-  hasSearched.value = true;
+// Emits for the component
+const emit = defineEmits(["update:search", "input"]);
+
+// Local search state
+const search = ref(props.search || "");
+
+// Watch for prop changes to update local state
+watch(
+  () => props.search,
+  (newSearch) => {
+    search.value = newSearch;
+  }
+);
+
+// Emit events on input change
+const onInput = (event) => {
+  emit("update:search", event.target.value);
+  emit("input", event.target.value);
 };
 
+// Clear search function
 const clearSearch = () => {
   search.value = "";
-  hasSearched.value = false; // Reset when search is cleared
+  emit("update:search", "");
+  emit("input", "");
 };
-
-// Simplified function using the Composition API
-const showSearchClearButton = computed(() => {
-  return search.value.length > 0;
-});
-
-const resultLable = computed(() => {
-  return filteredItems.value.length === 1 ? "result" : "results";
-});
 </script>
 
 <style scoped>

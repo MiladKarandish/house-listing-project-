@@ -38,7 +38,7 @@
               <div class="item-properties">
                 <div class="price item">
                   <img src="@/assets/icons/properties/price.png" alt="" />
-                  {{ currencyFormatWithouSimvol(item.price) }}
+                  {{ currencyFormatWithoutSimbol(item.price) }}
                 </div>
                 <div class="size item">
                   <img src="@/assets/icons/properties/size.png" alt="" />
@@ -136,7 +136,7 @@
                 </h5>
               </div>
               <div class="item-price">
-                € {{ currencyFormatWithouSimvol(item.price) }}
+                € {{ currencyFormatWithoutSimbol(item.price) }}
               </div>
               <div class="item-address">
                 {{ item.location.zip }} {{ item.location.city }}
@@ -184,7 +184,7 @@ const { item, loading, error, getHouse } = useFetchHouseDetails();
 const router = useRouter();
 const route = useRoute();
 
-const currencyFormatWithouSimvol = (value) => {
+const currencyFormatWithoutSimbol = (value) => {
   return new Intl.NumberFormat("nl-NL", {
     style: "decimal",
     minimumFractionDigits: 0,

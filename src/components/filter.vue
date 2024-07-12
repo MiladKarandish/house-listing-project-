@@ -3,14 +3,14 @@
     <button
       class="price-filter"
       :class="{ active: sortCriteria === 'price' }"
-      @click="toggleSortCriteria('price')"
+      @click="$emit('toggle', 'price')"
     >
       Price
     </button>
     <button
       class="size-filter"
       :class="{ active: sortCriteria === 'size' }"
-      @click="toggleSortCriteria('size')"
+      @click="$emit('toggle', 'size')"
     >
       Size
     </button>
@@ -18,29 +18,15 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { toRefs } from "vue";
 
-const sortCriteria = ref("none");
-
-const sortedItems = computed(() => {
-  const sorted = [...filteredItems.value]; // Make a copy of the filtered items
-  if (sortCriteria.value === "price") {
-    sorted.sort((a, b) => a.price - b.price);
-  } else if (sortCriteria.value === "size") {
-    sorted.sort((a, b) => a.size - b.size);
-  }
-  return sorted;
+const props = defineProps({
+  sortCriteria: String,
 });
 
-// Function to toggle the sort criteria
-const toggleSortCriteria = (criteria) => {
-  if (sortCriteria.value === criteria) {
-    sortCriteria.value = null; // Turn off the criteria if it's already active
-  } else {
-    sortCriteria.value = criteria;
-  }
-};
+const { sortCriteria } = toRefs(props);
 </script>
+
 
 <style scoped>
 @media (max-width: 880px) {
@@ -75,5 +61,9 @@ const toggleSortCriteria = (criteria) => {
 
 .size-filter {
   border-radius: 0px 5px 5px 0px;
+}
+
+.active {
+  background-color: #eb5440;
 }
 </style>
