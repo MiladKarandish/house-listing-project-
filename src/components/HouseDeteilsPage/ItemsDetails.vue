@@ -103,7 +103,6 @@ const props = defineProps({
 
 <style scoped>
 @media (max-width: 880px) {
-
   .item-conteiner {
     margin-top: 0px;
   }
@@ -149,10 +148,6 @@ const props = defineProps({
     height: 15px;
   }
 
-  .text {
-    font-size: 14px;
-  }
-
   .title {
     font-size: 18px;
   }
@@ -169,7 +164,7 @@ const props = defineProps({
   }
 }
 
-.item-conteiner {
+.item-container {
   font-size: 16px;
   font-family: "Open Sans";
   color: #4a4b4c;
@@ -219,6 +214,10 @@ const props = defineProps({
 .text {
   position: relative;
   padding: 30px;
+  font-size: 16px;
+  font-family: "Open Sans";
+  color: #4a4b4c;
+  font-weight: 500;
 }
 
 .madeByMe-block {
