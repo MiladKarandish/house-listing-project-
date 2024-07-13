@@ -121,10 +121,7 @@ const deleteHouse = async () => {
         },
       }
     );
-    // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter(
-      (item) => item.id !== itemToDeleteId.value
-    );
+    await getHouses();
     itemToDeleteId.value = null;
     hideModal();
   } catch (error) {}

@@ -68,9 +68,9 @@
             />
           </div>
           <Uploaded
-            :imageUrl="imageUrl"
+            :imageUrl="housePhoto.url"
             :fileError="fileError"
-            @fileChange="handleFileChange"
+            @fileChange="uploadImage"
             @removeImage="removeImage"
           ></Uploaded>
 
@@ -137,6 +137,14 @@
           </div>
           <div class="form-group form-group-single">
             <label for="construction-date">Construction date*</label>
+            <div class="construction-year-info-container">
+              <img
+                class="construction-year-info"
+                src="@/assets/icons/mobile/info-active-icon.png"
+                alt="info"
+              />
+              <p>The constuction year sould be more then 1900</p>
+            </div>
             <input
               type="text"
               id="construction-date"
@@ -183,6 +191,10 @@ const route = useRoute();
 const isEditing = ref(false);
 const itemId = ref(null);
 const fileError = ref(false);
+const housePhoto = ref({
+  file: null,
+  url: null,
+});
 
 onMounted(async () => {
   if (route.params.id) {
@@ -211,16 +223,13 @@ onMounted(async () => {
           hasGarage: item.hasGarage,
           description: item.description,
         };
-        imageUrl.value = item.image;
+        housePhoto.value.url = item.image;
       } else {
       }
     } catch (error) {}
   }
 });
 
-const imageUrl = ref("");
-const fileInput = ref(null);
-const file = ref(null);
 const formData = ref({
   price: "",
   bedrooms: "",
@@ -236,6 +245,10 @@ const formData = ref({
   description: "",
 });
 
+const isImageUploaded = computed(
+  () => housePhoto.value.file && housePhoto.value.url
+);
+
 const allFieldsFilled = computed(() => {
   return (
     formData.value.price &&
@@ -248,16 +261,17 @@ const allFieldsFilled = computed(() => {
     formData.value.city &&
     formData.value.constructionYear &&
     formData.value.description &&
-    imageUrl.value
+    isImageUploaded.value
   );
 });
 
-const handleFileChange = (fileDataUrl) => {
-  imageUrl.value = fileDataUrl;
+const uploadImage = ({ url, file }) => {
+  housePhoto.value.file = file;
+  housePhoto.value.url = url;
 };
 
 const handleSubmit = async () => {
-  if (!file.value && !imageUrl.value) {
+  if (!isImageUploaded) {
     fileError.value = true;
     await nextTick();
     const errorMessageElement = document.getElementById("file-error-message");
@@ -269,7 +283,9 @@ const handleSubmit = async () => {
     }
     return;
   }
+
   fileError.value = false;
+
   try {
     let response;
     if (isEditing.value) {
@@ -278,20 +294,19 @@ const handleSubmit = async () => {
         formData.value,
         { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
       );
-      if (file.value) {
-        const formDataImage = new FormData();
-        formDataImage.append("image", file.value);
-        await axios.post(
-          `https://api.intern.d-tt.nl/api/houses/${itemId.value}/upload`,
-          formDataImage,
-          {
-            headers: {
-              "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-      }
+
+      const formDataImage = new FormData();
+      formDataImage.append("image", housePhoto.value.file);
+      await axios.post(
+        `https://api.intern.d-tt.nl/api/houses/${itemId.value}/upload`,
+        formDataImage,
+        {
+          headers: {
+            "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
     } else {
       response = await axios.post(
         "https://api.intern.d-tt.nl/api/houses",
@@ -299,11 +314,11 @@ const handleSubmit = async () => {
         { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
       );
 
-      if (file.value) {
+      if (housePhoto.value) {
         const houseId = response.data.id;
         const formDataImage = new FormData();
-        formDataImage.append("image", file.value);
-        const uploadResponse = await axios.post(
+        formDataImage.append("image", housePhoto.value.file);
+        await axios.post(
           `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
           formDataImage,
           {
@@ -312,13 +327,6 @@ const handleSubmit = async () => {
               "Content-Type": "multipart/form-data",
             },
           }
-        );
-        // Ensure the image URL is saved after upload
-        formData.value.image = uploadResponse.data.imageUrl;
-        await axios.put(
-          `https://api.intern.d-tt.nl/api/houses/${houseId}`,
-          formData.value,
-          { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
         );
       }
     }
@@ -329,22 +337,9 @@ const handleSubmit = async () => {
   }
 };
 
-
-const onFileChange = (event) => {
-  const selectedFile = event.target.files[0];
-  if (selectedFile) {
-    fileError.value = false;
-    file.value = selectedFile;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      imageUrl.value = e.target.result;
-    };
-    reader.readAsDataURL(selectedFile);
-  }
-};
-
 const removeImage = () => {
-  imageUrl.value = null;
+  housePhoto.value.file = null;
+  housePhoto.value.url = null;
 };
 
 const backgroundStyle = computed(() => ({

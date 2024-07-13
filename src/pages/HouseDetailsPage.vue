@@ -43,6 +43,10 @@ const { item, loading, error, getHouse } = useFetchHouseDetails();
 const router = useRouter();
 const route = useRoute();
 
+const goToHousesPage = () => {
+  router.push({ name: "HousesPage" }).catch((error) => {});
+};
+
 const currencyFormatWithoutSimbol = (value) => {
   return new Intl.NumberFormat("nl-NL", {
     style: "decimal",
@@ -83,14 +87,13 @@ const deleteHouse = async () => {
         },
       }
     );
-    // Remove the item from the local list after successful deletion from server
-    items.value = items.value.filter(
-      (item) => item.id !== itemToDeleteId.value
-    );
+    await getHouses();
     itemToDeleteId.value = null;
     hideModal();
     goToHousesPage();
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error deleting house:", error);
+  }
 };
 
 onMounted(() => {

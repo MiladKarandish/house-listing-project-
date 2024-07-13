@@ -47,23 +47,26 @@ export default {
     };
   },
   methods: {
-  onFileChange(event) {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.$emit("fileChange", e.target.result);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
+    onFileChange(event) {
+      const selectedFile = event.target.files[0];
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.$emit("fileChange", {
+            url: e.target.result,
+            file: selectedFile,
+          });
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    },
+    removeImage() {
+      this.$emit("removeImage");
+      if (this.fileInput) {
+        this.fileInput.value = null;
+      }
+    },
   },
-  removeImage() {
-    this.$emit("removeImage");
-    if (this.fileInput) {
-      this.fileInput.value = null;
-    }
-  },
-},
 
   mounted() {
     this.fileInput = this.$refs.fileInput;
