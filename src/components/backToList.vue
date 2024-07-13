@@ -9,19 +9,30 @@
   </div>
   <div @click="goToHousesPage" class="back-mobile">
     <button>
-      <img :src="imgSrc" alt="back icon">
+      <img :src="backImg" alt="back icon" />
     </button>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
-import { defineProps } from 'vue';
+import { computed, defineProps } from "vue";
+import backImgBlack from "@/assets/icons/actions/grey-back-icon.png";
+import backImgWhite from "@/assets/icons/actions/white-back-icon.png";
 
 const props = defineProps({
-  imgSrc: {
+  styling: {
     type: String,
-    required: true
+    required: true,
+    default: "black",
+  },
+});
+
+const backImg = computed(() => {
+  if (props.styling === "black") {
+    return backImgBlack;
+  } else if (props.styling === "white") {
+    return backImgWhite;
   }
 });
 
@@ -38,8 +49,6 @@ const goToHousesPage = () => {
     display: none;
   }
 }
-
-
 
 .back-to-list-from-details {
   display: flex;
@@ -75,10 +84,12 @@ const goToHousesPage = () => {
 
   .back-mobile img {
     margin: 3px 8px;
+    width: 20px;
+    height: 20px;
   }
 
   .back-mobile button {
-    background-color: rgba(44, 45, 45, 0.219);
+    background-color: rgba(44, 45, 45, 0);
     border: none;
     cursor: pointer;
     border-radius: 5px;

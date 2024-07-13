@@ -1,24 +1,11 @@
 <template>
   <div class="body" :style="backgroundStyle">
     <div class="body-container">
-      <<div @click="goToHousesPage" class="back-to-list">
-        <img
-          class="back-to-list-img"
-          src="@/assets/icons/actions/grey-back-icon.png"
-          alt="Back to list button"
-        />
-        <p>Back to overview</p>
-      </div>
+      <BackToList :styling="black"></BackToList>
+
       <form class="form" @submit.prevent="handleSubmit">
         <fieldset class="fieldset">
           <legend class="legend">
-            <div @click="goToHousesPage" class="back-to-list-mobile">
-              <img
-                class="back-to-list-img"
-                src="@/assets/icons/actions/grey-back-icon.png"
-                alt="Back to list button"
-              />
-            </div>
             <h1 class="title">
               {{ isEditing ? "Edit Listing" : "Create New Listing" }}
             </h1>
@@ -171,16 +158,10 @@
             ></textarea>
           </div>
         </fieldset>
-        <div
-          :class="{
-            'filled-button': allFieldsFilled,
-            'post-button': !allFieldsFilled,
-          }"
-        >
-          <button type="submit">
-            {{ isEditing ? "SAVE" : "POST" }}
-          </button>
-        </div>
+        <PostButton
+          :isEditing="isEditing"
+          :allFieldsFilled="allFieldsFilled"
+        ></PostButton>
       </form>
     </div>
   </div>
@@ -191,7 +172,9 @@ import { computed, ref, onMounted, nextTick } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
+import BackToList from "../components/backToList.vue";
 import Uploaded from "../components/HouseCreatePage/uploaded.vue";
+import PostButton from "../components/HouseCreatePage/postButton.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -235,14 +218,7 @@ onMounted(async () => {
   }
 });
 
-const goToHousesPage = () => {
-  router
-    .push({ name: "HousesPage" })
-    .then(() => {})
-    .catch((error) => {});
-};
-
-const imageUrl = ref(null);
+const imageUrl = ref("");
 const fileInput = ref(null);
 const file = ref(null);
 const formData = ref({
@@ -283,9 +259,7 @@ const handleFileChange = (fileDataUrl) => {
 const handleSubmit = async () => {
   if (!file.value && !imageUrl.value) {
     fileError.value = true;
-    // Wait for the DOM to update
     await nextTick();
-    // Scroll to the error message
     const errorMessageElement = document.getElementById("file-error-message");
     if (errorMessageElement) {
       errorMessageElement.scrollIntoView({
@@ -299,7 +273,6 @@ const handleSubmit = async () => {
   try {
     let response;
     if (isEditing.value) {
-      // Update existing item using PUT
       response = await axios.post(
         `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
         formData.value,
@@ -320,7 +293,6 @@ const handleSubmit = async () => {
         );
       }
     } else {
-      // Create new item
       response = await axios.post(
         "https://api.intern.d-tt.nl/api/houses",
         formData.value,
@@ -331,7 +303,7 @@ const handleSubmit = async () => {
         const houseId = response.data.id;
         const formDataImage = new FormData();
         formDataImage.append("image", file.value);
-        await axios.post(
+        const uploadResponse = await axios.post(
           `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
           formDataImage,
           {
@@ -341,12 +313,22 @@ const handleSubmit = async () => {
             },
           }
         );
+        // Ensure the image URL is saved after upload
+        formData.value.image = uploadResponse.data.imageUrl;
+        await axios.put(
+          `https://api.intern.d-tt.nl/api/houses/${houseId}`,
+          formData.value,
+          { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
+        );
       }
     }
 
     router.push({ name: "HouseDetailsPage", params: { id: response.data.id } });
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
+
 
 const onFileChange = (event) => {
   const selectedFile = event.target.files[0];
@@ -392,63 +374,6 @@ const backgroundStyle = computed(() => ({
 .form-group select {
   width: 100%;
   box-sizing: border-box;
-}
-
-.filled-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.filled-button button {
-  background-color: #eb5440;
-  color: white;
-  padding: 15px 10px;
-  width: 200px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: auto;
-}
-
-.post-button button {
-  background-color: #eb5440bd;
-  color: white;
-  padding: 15px 10px;
-  width: 200px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: auto;
-}
-
-.post-button button,
-.filled-button button {
-  font-weight: 700;
-  font-size: 22px;
-}
-
-.post-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.back-to-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-family: Montserrat;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.back-to-list-img {
-  margin-right: 10px;
-}
-
-.back-to-list-img {
-  width: 18px;
-  height: 18px;
 }
 
 .body-container {
@@ -530,12 +455,6 @@ textarea::placeholder {
   margin-left: 20px;
 }
 
-@media (min-width: 880px) {
-  .back-to-list-mobile {
-    display: none;
-  }
-}
-
 @media (max-width: 880px) {
   .body {
     margin-bottom: 50px;
@@ -561,7 +480,6 @@ textarea::placeholder {
     padding: 55px;
   }
 
-  .back-to-list-img,
   .plus img {
     width: 30px;
     height: auto;
@@ -570,15 +488,6 @@ textarea::placeholder {
   .title {
     font-size: 18px;
     margin: 0 auto;
-  }
-
-  .back-to-list {
-    display: none;
-  }
-
-  .back-to-list-mobile img {
-    width: 20px;
-    height: auto;
   }
 
   .legend {
