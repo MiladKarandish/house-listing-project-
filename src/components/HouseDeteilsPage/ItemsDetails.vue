@@ -102,7 +102,7 @@ const props = defineProps({
 </script>
 
 <style scoped>
-@media (max-width: 880px) {
+@media (max-width: 915px) {
   .item-conteiner {
     margin-top: 0px;
   }
@@ -158,18 +158,22 @@ const props = defineProps({
   }
 }
 
-@media (min-width: 880px) {
+@media (min-width: 915px) {
   .madeByMe-block-mobile {
     display: none;
   }
 }
 
-.item-container {
+.items {
+  min-width: 550px;
+}
+
+.item-conteiner {
   font-size: 16px;
   font-family: "Open Sans";
   color: #4a4b4c;
   font-weight: 500;
-  margin-top: 30px;
+  margin-top: 10px;
   background-color: #ffffff;
 }
 

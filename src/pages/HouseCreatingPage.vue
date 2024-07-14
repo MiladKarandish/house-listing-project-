@@ -68,11 +68,13 @@
             />
           </div>
           <Uploaded
-            :imageUrl="housePhoto.url"
-            :fileError="fileError"
+            :imageUrl="formData.housePhoto?.url"
             @fileChange="uploadImage"
             @removeImage="removeImage"
           ></Uploaded>
+          <span v-if="vuelidateResult.housePhoto.$error"
+            >The image is required</span
+          >
 
           <div class="form-group form-group-single">
             <label for="price">Price*</label>
@@ -137,23 +139,33 @@
           </div>
           <div class="form-group form-group-single">
             <label for="construction-date">Construction date*</label>
-            <div class="construction-year-info-container">
-              <img
-                class="construction-year-info"
-                src="@/assets/icons/mobile/info-active-icon.png"
-                alt="info"
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="construction-date"
+                name="constructionYear"
+                v-model="formData.constructionYear"
+                placeholder="e.g.1990"
+                required
               />
-              <p>The constuction year sould be more then 1900</p>
+              <div class="construction-year-info-container">
+                <img
+                  class="construction-year-info"
+                  src="@/assets/icons/mobile/info-active-icon.png"
+                  alt="info"
+                />
+                <p class="info-text">
+                  The construction year should be more than 1901
+                </p>
+              </div>
             </div>
-            <input
-              type="text"
-              id="construction-date"
-              name="constructionYear"
-              v-model="formData.constructionYear"
-              placeholder="e.g.1990"
-              required
-            />
+            <span v-if="vuelidateResult.constructionYear.$error">{{
+              vuelidateResult.constructionYear.$errors
+                .map((error) => error.$message)
+                .join(", ")
+            }}</span>
           </div>
+
           <div class="form-group form-group-single">
             <label for="description">Description*</label>
             <textarea
@@ -183,52 +195,8 @@ import { useRouter, useRoute } from "vue-router";
 import BackToList from "../components/backToList.vue";
 import Uploaded from "../components/HouseCreatePage/uploaded.vue";
 import PostButton from "../components/HouseCreatePage/postButton.vue";
-
-const router = useRouter();
-const route = useRoute();
-
-// Determine if we are editing an existing item
-const isEditing = ref(false);
-const itemId = ref(null);
-const fileError = ref(false);
-const housePhoto = ref({
-  file: null,
-  url: null,
-});
-
-onMounted(async () => {
-  if (route.params.id) {
-    isEditing.value = true;
-    itemId.value = route.params.id;
-    try {
-      const response = await axios.get(
-        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
-        {
-          headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" },
-        }
-      );
-      const item = response.data[0];
-      if (item && item.rooms && item.location) {
-        formData.value = {
-          price: item.price,
-          bedrooms: item.rooms.bedrooms,
-          bathrooms: item.rooms.bathrooms,
-          size: item.size,
-          streetName: item.location.street,
-          houseNumber: item.location.houseNumber,
-          numberAddition: item.location.houseNumberAddition,
-          zip: item.location.zip,
-          city: item.location.city,
-          constructionYear: item.constructionYear,
-          hasGarage: item.hasGarage,
-          description: item.description,
-        };
-        housePhoto.value.url = item.image;
-      } else {
-      }
-    } catch (error) {}
-  }
-});
+import useVuelidate from "@vuelidate/core";
+import { helpers, minValue, numeric, required } from "@vuelidate/validators";
 
 const formData = ref({
   price: "",
@@ -243,10 +211,68 @@ const formData = ref({
   constructionYear: "",
   hasGarage: "",
   description: "",
+  housePhoto: {
+    file: null,
+    url: null,
+  },
+});
+
+// Determine if we are editing an existing item
+const isEditing = ref(false);
+const itemId = ref(null);
+
+const rules = {
+  constructionYear: {
+    required,
+    minValue: helpers.withMessage("Minimal year is 1901", minValue(1901)),
+    numeric: numeric,
+  },
+  housePhoto: {
+    url: { required },
+  },
+};
+
+const vuelidateResult = useVuelidate(rules, formData);
+
+const router = useRouter();
+const route = useRoute();
+
+onMounted(async () => {
+  if (route.params.id) {
+    isEditing.value = true;
+    itemId.value = route.params.id;
+    try {
+      const response = await axios.get(
+        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
+        {
+          headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" },
+        }
+      );
+      const item = response.data[0];
+      if (item && item.rooms && item.location) {
+        formData.value.price = item.price;
+        formData.value.bedrooms = item.rooms.bedrooms;
+        formData.value.bathrooms = item.rooms.bathrooms;
+        formData.value.size = item.size;
+        formData.value.streetName = item.location.street;
+        formData.value.houseNumber = item.location.houseNumber;
+        formData.value.numberAddition = item.location.houseNumberAddition;
+        formData.value.zip = item.location.zip;
+        formData.value.city = item.location.city;
+        formData.value.constructionYear = item.constructionYear;
+        formData.value.hasGarage = item.hasGarage;
+        formData.value.description = item.description;
+        formData.value.housePhoto.url = item.image;
+      } else {
+      }
+    } catch (error) {
+      alert("There was an error from API");
+    }
+  }
 });
 
 const isImageUploaded = computed(
-  () => housePhoto.value.file && housePhoto.value.url
+  () => formData.value.housePhoto?.file && formData.value.housePhoto?.url
 );
 
 const allFieldsFilled = computed(() => {
@@ -266,25 +292,17 @@ const allFieldsFilled = computed(() => {
 });
 
 const uploadImage = ({ url, file }) => {
-  housePhoto.value.file = file;
-  housePhoto.value.url = url;
+  formData.value.housePhoto.file = file;
+  formData.value.housePhoto.url = url;
 };
 
 const handleSubmit = async () => {
-  if (!isImageUploaded) {
-    fileError.value = true;
-    await nextTick();
-    const errorMessageElement = document.getElementById("file-error-message");
-    if (errorMessageElement) {
-      errorMessageElement.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
+  vuelidateResult.value.$touch();
+
+  if (vuelidateResult.value.$invalid) {
+    console.log("something wrong here 1");
     return;
   }
-
-  fileError.value = false;
 
   try {
     let response;
@@ -295,18 +313,20 @@ const handleSubmit = async () => {
         { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
       );
 
-      const formDataImage = new FormData();
-      formDataImage.append("image", housePhoto.value.file);
-      await axios.post(
-        `https://api.intern.d-tt.nl/api/houses/${itemId.value}/upload`,
-        formDataImage,
-        {
-          headers: {
-            "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      if (formData.value.housePhoto.file) {
+        const formDataImage = new FormData();
+        formDataImage.append("image", formData.value.housePhoto.file);
+        await axios.post(
+          `https://api.intern.d-tt.nl/api/houses/${itemId.value}/upload`,
+          formDataImage,
+          {
+            headers: {
+              "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      }
     } else {
       response = await axios.post(
         "https://api.intern.d-tt.nl/api/houses",
@@ -314,10 +334,10 @@ const handleSubmit = async () => {
         { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
       );
 
-      if (housePhoto.value) {
+      if (formData.value.housePhoto.file) {
         const houseId = response.data.id;
         const formDataImage = new FormData();
-        formDataImage.append("image", housePhoto.value.file);
+        formDataImage.append("image", formData.value.housePhoto.file);
         await axios.post(
           `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
           formDataImage,
@@ -332,14 +352,12 @@ const handleSubmit = async () => {
     }
 
     router.push({ name: "HouseDetailsPage", params: { id: response.data.id } });
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
 };
 
 const removeImage = () => {
-  housePhoto.value.file = null;
-  housePhoto.value.url = null;
+  formData.value.housePhoto.file = null;
+  formData.value.housePhoto.url = null;
 };
 
 const backgroundStyle = computed(() => ({
@@ -353,6 +371,45 @@ const backgroundStyle = computed(() => ({
 </script>
 
 <style scoped>
+span {
+  color: red;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.construction-year-info-container {
+  position: absolute;
+  top: 50%;
+  left: 108%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.construction-year-info {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.info-text {
+  display: none;
+  position: absolute;
+  left: 150%;
+  background-color: #f6f6f6cc;
+  color: #4a4b4c;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.construction-year-info-container:hover .info-text {
+  display: block;
+}
+
 .description {
   white-space: pre-wrap;
 }

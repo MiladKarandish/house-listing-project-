@@ -1,11 +1,12 @@
 <template>
-  <div @click="goToHousesPage" class="back-to-list-from-details">
+  <div class="back-to-list-from-details">
     <img
       class="back-to-list-img"
+      @click="goToHousesPage"
       src="@/assets/icons/actions/grey-back-icon.png"
       alt="Back to list button"
     />
-    <p>Back to overview</p>
+    <p @click="goToHousesPage">Back to overview</p>
   </div>
   <div @click="goToHousesPage" class="back-mobile">
     <button>
@@ -57,7 +58,6 @@ const goToHousesPage = () => {
   font-family: Montserrat;
   font-weight: 700;
   font-size: 14px;
-  cursor: pointer;
   margin-bottom: 10px;
 }
 
@@ -65,10 +65,12 @@ const goToHousesPage = () => {
   margin-right: 10px;
   width: 25px;
   height: auto;
+  cursor: pointer;
 }
 
 .back-to-list-from-details p {
   margin-right: 10px;
+  cursor: pointer;
 }
 
 @media (max-width: 880px) {

@@ -90,7 +90,7 @@ const goToHouseDetails = (itemId) => {
 </script>
 
 <style scoped>
-@media (max-width: 880px) {
+@media (max-width: 915px) {
   .item-img {
     width: 100%;
   }
@@ -158,8 +158,8 @@ const goToHouseDetails = (itemId) => {
 }
 
 .item-img-recommended {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   background-size: cover;
   border-radius: 5px;
   margin-left: 10px;
@@ -172,7 +172,7 @@ const goToHouseDetails = (itemId) => {
 }
 
 .item-title h5 {
-  font-size: 16px;
+  font-size: 14px;
   font-family: "Montserrat";
   color: black;
   font-weight: 700;
@@ -186,11 +186,12 @@ const goToHouseDetails = (itemId) => {
   font-weight: 600;
   font-family: "Open Sans";
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 .item-address,
 .item-properties-recommended {
-  font-size: 16px;
+  font-size: 13px;
   font-family: "Open Sans";
   color: #4a4b4c;
   font-weight: 500;
