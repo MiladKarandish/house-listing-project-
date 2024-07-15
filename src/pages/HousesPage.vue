@@ -32,7 +32,7 @@
 
     <Confirmation
       v-if="isModalVisible"
-      @confirm="deleteHouse"
+      @confirm="handleDeleteHouse"
       @cancel="hideModal"
     />
   </div>
@@ -49,12 +49,12 @@ import Search from "../components/HousesPage/searchInput.vue";
 import CreatNewMobile from "../components/HousesPage/createNewListingMobile.vue";
 import ItemsList from "../components/HousesPage/items.vue";
 import ResultOfSearch from "../components/HousesPage/resultOfSearch.vue";
-import { apiService } from "@/services/apiService";
 import { useCurrencyFormat } from "@/composables/useCurrencyFormat";
 import { useModal } from "@/composables/useModal";
+import { useDeleteHouse } from "@/composables/useDeleteHouse";
 
 const { isModalVisible, itemToDeleteId, showModal, hideModal } = useModal();
-
+const { deleteHouse } = useDeleteHouse();
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
 
@@ -93,13 +93,8 @@ const showSearchClearButton = computed(() => {
 
 const sortCriteria = ref("none");
 
-const deleteHouse = async () => {
-  try {
-    await apiService.deleteHouse(itemToDeleteId.value);
-    await getHouses();
-    itemToDeleteId.value = null;
-    hideModal();
-  } catch (error) {}
+const handleDeleteHouse = async () => {
+  await deleteHouse(itemToDeleteId.value, getHouses, hideModal);
 };
 
 // Watcher to clear itemToDeleteId when the modal is closed

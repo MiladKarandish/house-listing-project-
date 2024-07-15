@@ -13,7 +13,7 @@
       ></ItemsDetails>
       <Confirmation
         v-if="isModalVisible"
-        @confirm="deleteHouse"
+        @confirm="handleDeleteHouse"
         @cancel="hideModal"
       />
     </div>
@@ -34,14 +34,13 @@ import Confirmation from "@/components/deleteConfirmation.vue";
 import BackToList from "../components/backToList.vue";
 import ItemsDetails from "../components/HouseDeteilsPage/ItemsDetails.vue";
 import Recommended from "../components/HouseDeteilsPage/recommended.vue";
-import { apiService } from "../services/apiService";
 import { useCurrencyFormat } from "@/composables/useCurrencyFormat";
 import { useModal } from "@/composables/useModal";
+import { useDeleteHouse } from "@/composables/useDeleteHouse";
 
 const { isModalVisible, itemToDeleteId, showModal, hideModal } = useModal();
-
 const { currencyFormatWithoutSymbol } = useCurrencyFormat();
-
+const { deleteHouse } = useDeleteHouse();
 const { items, getHouses } = useFetchHouses();
 onMounted(getHouses);
 
@@ -64,16 +63,9 @@ const goToHouseEditPage = (itemId) => {
   router.push({ name: "HouseEditPage", params: { id: itemId } });
 };
 
-const deleteHouse = async () => {
-  try {
-    await apiService.deleteHouse(itemToDeleteId.value);
-    await getHouses();
-    itemToDeleteId.value = null;
-    hideModal();
-    goToHousesPage();
-  } catch (error) {
-    console.error("Error deleting house:", error);
-  }
+const handleDeleteHouse = async () => {
+  await deleteHouse(itemToDeleteId.value, getHouses, hideModal);
+  goToHousesPage();
 };
 
 onMounted(() => {
