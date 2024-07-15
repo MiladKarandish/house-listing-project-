@@ -6,7 +6,7 @@
         :loading="loading"
         :error="error"
         :item="item"
-        :currencyFormatWithoutSimbol="currencyFormatWithoutSimbol"
+        :currencyFormatWithoutSimbol="currencyFormatWithoutSymbol"
         :hasGarageText="hasGarageText"
         :showModal="showModal"
         :goToHouseEditPage="goToHouseEditPage"
@@ -20,7 +20,7 @@
     <Recommended
       :item="item"
       :items="items"
-      :currencyFormatWithoutSimbol="currencyFormatWithoutSimbol"
+      :currencyFormatWithoutSimbol="currencyFormatWithoutSymbol"
     ></Recommended>
   </div>
 </template>
@@ -31,10 +31,16 @@ import { useRouter, useRoute } from "vue-router";
 import { useFetchHouseDetails } from "@/composables/useFetchHouseDetails";
 import { useFetchHouses } from "@/composables/useFetchHouses";
 import Confirmation from "@/components/deleteConfirmation.vue";
-import axios from "axios";
 import BackToList from "../components/backToList.vue";
 import ItemsDetails from "../components/HouseDeteilsPage/ItemsDetails.vue";
 import Recommended from "../components/HouseDeteilsPage/recommended.vue";
+import { apiService } from "../services/apiService";
+import { useCurrencyFormat } from "@/composables/useCurrencyFormat";
+import { useModal } from "@/composables/useModal";
+
+const { isModalVisible, itemToDeleteId, showModal, hideModal } = useModal();
+
+const { currencyFormatWithoutSymbol } = useCurrencyFormat();
 
 const { items, getHouses } = useFetchHouses();
 onMounted(getHouses);
@@ -47,26 +53,7 @@ const goToHousesPage = () => {
   router.push({ name: "HousesPage" }).catch((error) => {});
 };
 
-const currencyFormatWithoutSimbol = (value) => {
-  return new Intl.NumberFormat("nl-NL", {
-    style: "decimal",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value);
-};
-
-const isModalVisible = ref(false);
-let itemToDeleteId = ref(null);
-
-const showModal = (itemId) => {
-  itemToDeleteId.value = itemId;
-  isModalVisible.value = true;
-};
-
-const hideModal = () => {
-  isModalVisible.value = false;
-};
-
+// Watcher to clear itemToDeleteId when the modal is closed
 watch(isModalVisible, (newValue) => {
   if (!newValue) {
     itemToDeleteId.value = null;
@@ -79,14 +66,7 @@ const goToHouseEditPage = (itemId) => {
 
 const deleteHouse = async () => {
   try {
-    await axios.delete(
-      `https://api.intern.d-tt.nl/api/houses/${itemToDeleteId.value}`,
-      {
-        headers: {
-          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-        },
-      }
-    );
+    await apiService.deleteHouse(itemToDeleteId.value);
     await getHouses();
     itemToDeleteId.value = null;
     hideModal();

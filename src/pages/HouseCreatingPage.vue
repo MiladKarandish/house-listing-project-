@@ -190,13 +190,13 @@
 <script setup>
 import { computed, ref, onMounted, nextTick } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
-import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
 import BackToList from "../components/backToList.vue";
 import Uploaded from "../components/HouseCreatePage/uploaded.vue";
 import PostButton from "../components/HouseCreatePage/postButton.vue";
 import useVuelidate from "@vuelidate/core";
 import { helpers, minValue, numeric, required } from "@vuelidate/validators";
+import { apiService } from "../services/apiService";
 
 const formData = ref({
   price: "",
@@ -242,12 +242,7 @@ onMounted(async () => {
     isEditing.value = true;
     itemId.value = route.params.id;
     try {
-      const response = await axios.get(
-        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
-        {
-          headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" },
-        }
-      );
+      const response = await apiService.getHouse(itemId.value);
       const item = response.data[0];
       if (item && item.rooms && item.location) {
         formData.value.price = item.price;
@@ -300,54 +295,27 @@ const handleSubmit = async () => {
   vuelidateResult.value.$touch();
 
   if (vuelidateResult.value.$invalid) {
-    console.log("something wrong here 1");
     return;
   }
 
   try {
     let response;
     if (isEditing.value) {
-      response = await axios.post(
-        `https://api.intern.d-tt.nl/api/houses/${itemId.value}`,
-        formData.value,
-        { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
-      );
+      response = await apiService.updateHouse(itemId.value, formData.value);
 
       if (formData.value.housePhoto.file) {
-        const formDataImage = new FormData();
-        formDataImage.append("image", formData.value.housePhoto.file);
-        await axios.post(
-          `https://api.intern.d-tt.nl/api/houses/${itemId.value}/upload`,
-          formDataImage,
-          {
-            headers: {
-              "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        await apiService.uploadHouseImage(itemId.value, formData.value.housePhoto.file);
       }
+
     } else {
-      response = await axios.post(
-        "https://api.intern.d-tt.nl/api/houses",
-        formData.value,
-        { headers: { "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z" } }
-      );
+      response = await apiService.createHouse(formData.value);
+      console.log("Create House Response:", response.data); // Debugging log
+
+      const houseId = response.data.id || response.data.itemId; // Ensure the correct property is used
+      console.log("New House ID:", houseId); // Debugging log
 
       if (formData.value.housePhoto.file) {
-        const houseId = response.data.id;
-        const formDataImage = new FormData();
-        formDataImage.append("image", formData.value.housePhoto.file);
-        await axios.post(
-          `https://api.intern.d-tt.nl/api/houses/${houseId}/upload`,
-          formDataImage,
-          {
-            headers: {
-              "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        await apiService.uploadHouseImage(houseId, formData.value.housePhoto.file);
       }
     }
 

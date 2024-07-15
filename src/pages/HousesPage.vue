@@ -42,7 +42,6 @@
 import { computed, ref, onMounted, watch } from "vue";
 import { useFetchHouses } from "@/composables/useFetchHouses";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import Confirmation from "@/components/deleteConfirmation.vue";
 import CreatNew from "../components/HousesPage/creatNewListing.vue";
 import Filter from "../components/HousesPage/filter.vue";
@@ -50,24 +49,20 @@ import Search from "../components/HousesPage/searchInput.vue";
 import CreatNewMobile from "../components/HousesPage/createNewListingMobile.vue";
 import ItemsList from "../components/HousesPage/items.vue";
 import ResultOfSearch from "../components/HousesPage/resultOfSearch.vue";
+import { apiService } from "@/services/apiService";
+import { useCurrencyFormat } from "@/composables/useCurrencyFormat";
+import { useModal } from "@/composables/useModal";
+
+const { isModalVisible, itemToDeleteId, showModal, hideModal } = useModal();
 
 const { items, loading, error, getHouses } = useFetchHouses();
 onMounted(getHouses);
 
-// Currency formatting function
-const currencyFormat = (value) => {
-  return new Intl.NumberFormat("nl-NL", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 0,
-  }).format(value);
-};
+const { currencyFormat } = useCurrencyFormat();
 
-// Search state
 const search = ref("");
 const hasSearched = ref(false);
 
-// Handle input function
 const handleInput = () => {
   hasSearched.value = true;
 };
@@ -89,38 +84,18 @@ const filteredItems = computed(() => {
 
 const clearSearch = () => {
   search.value = "";
-  hasSearched.value = false; // Reset when search is cleared
+  hasSearched.value = false; 
 };
 
-// Simplified function using the Composition API
 const showSearchClearButton = computed(() => {
   return search.value.length > 0;
 });
 
 const sortCriteria = ref("none");
 
-const isModalVisible = ref(false);
-let itemToDeleteId = ref(null);
-
-const showModal = (itemId) => {
-  itemToDeleteId.value = itemId;
-  isModalVisible.value = true;
-};
-
-const hideModal = () => {
-  isModalVisible.value = false;
-};
-
 const deleteHouse = async () => {
   try {
-    await axios.delete(
-      `https://api.intern.d-tt.nl/api/houses/${itemToDeleteId.value}`,
-      {
-        headers: {
-          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-        },
-      }
-    );
+    await apiService.deleteHouse(itemToDeleteId.value);
     await getHouses();
     itemToDeleteId.value = null;
     hideModal();
@@ -134,10 +109,8 @@ watch(isModalVisible, (newValue) => {
   }
 });
 
-// Get the router instance
 const router = useRouter();
 
-// Define the method to navigate to the House Details page
 const goToHouseDetails = (itemId) => {
   router
     .push({ name: "HouseDetailsPage", params: { id: itemId } })
@@ -150,7 +123,7 @@ const goToHouseEditPage = (itemId) => {
 };
 
 const sortedItems = computed(() => {
-  const sorted = [...filteredItems.value]; // Make a copy of the filtered items
+  const sorted = [...filteredItems.value]; 
   if (sortCriteria.value === "price") {
     sorted.sort((a, b) => a.price - b.price);
   } else if (sortCriteria.value === "size") {
@@ -159,10 +132,9 @@ const sortedItems = computed(() => {
   return sorted;
 });
 
-// Function to toggle the sort criteria
 const toggleSortCriteria = (criteria) => {
   if (sortCriteria.value === criteria) {
-    sortCriteria.value = null; // Turn off the criteria if it's already active
+    sortCriteria.value = null; 
   } else {
     sortCriteria.value = criteria;
   }
