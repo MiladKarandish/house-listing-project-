@@ -102,68 +102,6 @@ const props = defineProps({
 </script>
 
 <style scoped>
-@media (max-width: 915px) {
-  .item-conteiner {
-    margin-top: 0px;
-  }
-
-  .item-img {
-    width: 100%;
-  }
-
-  .madeByMe-block {
-    display: none;
-  }
-
-  .madeByMe-block-mobile {
-    position: absolute;
-    display: flex;
-    top: 30px;
-    right: 10px;
-  }
-
-  .madeByMe-block-mobile img {
-    width: auto;
-    height: 20px;
-  }
-
-  .edit-mobile img,
-  .delete-mobile img {
-    margin: 3px 8px;
-  }
-
-  .edit-mobile button,
-  .delete-mobile button {
-    background-color: rgba(44, 45, 45, 0.219);
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 2px;
-    padding: 3px;
-  }
-
-  .item img {
-    margin: 0px;
-    width: 15px;
-    height: 15px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  img.property {
-    width: 15px;
-    height: 15px;
-  }
-}
-
-@media (min-width: 915px) {
-  .madeByMe-block-mobile {
-    display: none;
-  }
-}
-
 .items {
   min-width: 550px;
 }
@@ -236,5 +174,71 @@ const props = defineProps({
   background-color: rgba(0, 255, 255, 0);
   border: none;
   cursor: pointer;
+}
+
+@media (max-width: 915px) {
+  .madeByMe-block {
+    display: none;
+  }
+
+  .item-conteiner {
+    margin-top: 0px;
+  }
+
+  .item-img {
+    width: 100%;
+  }
+
+  .madeByMe-block {
+    display: none;
+  }
+
+  .madeByMe-block-mobile {
+    position: absolute;
+    display: flex;
+    top: 30px;
+    right: 10px;
+  }
+
+  .madeByMe-block-mobile img {
+    width: auto;
+    height: 20px;
+  }
+
+  .edit-mobile img,
+  .delete-mobile img {
+    margin: 3px 8px;
+  }
+
+  .edit-mobile button,
+  .delete-mobile button {
+    background-color: rgba(44, 45, 45, 0.219);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 2px;
+    padding: 3px;
+  }
+
+  .item img {
+    margin: 0px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  img.property {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (min-width: 915px) {
+  .madeByMe-block-mobile {
+    display: none;
+  }
 }
 </style>
