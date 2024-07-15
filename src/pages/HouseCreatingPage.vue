@@ -193,12 +193,12 @@
 import { computed, ref, onMounted } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
 import { useRouter, useRoute } from "vue-router";
-import BackToList from "../components/backToList.vue";
-import Uploaded from "../components/HouseCreatePage/uploaded.vue";
-import PostButton from "../components/HouseCreatePage/postButton.vue";
+import BackToList from "@/components/BackToList.vue";
+import Uploaded from "@/components/HouseCreatePage/Uploaded.vue";
+import PostButton from "@/components/HouseCreatePage/PostButton.vue";
 import useVuelidate from "@vuelidate/core";
 import { helpers, minValue, numeric, required } from "@vuelidate/validators";
-import { apiService } from "../services/apiService";
+import { apiService } from "@/services/apiService";
 
 const black = "black";
 
