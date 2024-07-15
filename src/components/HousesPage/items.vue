@@ -1,5 +1,5 @@
 <template>
-  <div class="items">
+  <transition-group name="fade" tag="div" class="items">
     <div
       v-for="item in sortedItems"
       :key="item.id"
@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </transition-group>
 </template>
 
 <script setup>
@@ -91,51 +91,12 @@ const goToHouseDetails = (itemId) => {
 </script>
 
 <style scoped>
-@media (max-width: 880px) {
-  .item {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
+.fade-leave-active {
+  transition: opacity 1s;
+}
 
-  .item-img {
-    width: 70px;
-    height: 70px;
-  }
-
-  .item-title h5 {
-    font-size: 14px;
-  }
-
-  .item-text-container {
-    line-height: 20px;
-  }
-
-  .item-container {
-    padding: 0px;
-  }
-
-  .madeByMe-block img {
-    width: 15px;
-    height: 15px;
-    margin: 5px;
-  }
-  .madeByMe-block {
-    margin: 5px;
-  }
-  .madeByMe-block button {
-    padding: 0px;
-  }
-
-  .items {
-    margin-bottom: 60px;
-    margin-top: 10px;
-  }
-
-  img.property {
-    padding: 0px;
-    height: 13px;
-    margin-left: 2px;
-  }
+.fade-leave-to {
+  opacity: 0;
 }
 
 .items {
@@ -234,5 +195,56 @@ img.property {
 
 .item-address {
   color: #c3c3c3;
+}
+
+@media (max-width: 880px) {
+  .item {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .item-img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .item-title h5 {
+    font-size: 14px;
+  }
+
+  .item-text-container {
+    line-height: 20px;
+  }
+
+  .item-container {
+    padding: 0px;
+  }
+
+  .madeByMe-block img {
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+  }
+  .madeByMe-block {
+    margin: 5px;
+  }
+  .madeByMe-block button {
+    padding: 0px;
+  }
+
+  .items {
+    margin-bottom: 60px;
+    margin-top: 10px;
+  }
+
+  img.property {
+    padding: 0px;
+    height: 13px;
+    margin-left: 2px;
+  }
+
+  .item-title h5 {
+    font-size: 13px;
+  }
 }
 </style>

@@ -141,7 +141,6 @@ const toggleSortCriteria = (criteria) => {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-right: -20px;
 }
 
 .upper-block {

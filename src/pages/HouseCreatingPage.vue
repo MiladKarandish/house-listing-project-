@@ -1,7 +1,9 @@
 <template>
   <div class="body" :style="backgroundStyle">
     <div class="body-container">
-      <BackToList :styling="black"></BackToList>
+      <div class="back-button">
+        <BackToList :styling="black"></BackToList>
+      </div>
 
       <form class="form" @submit.prevent="handleSubmit">
         <fieldset class="fieldset">
@@ -188,7 +190,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, nextTick } from "vue";
+import { computed, ref, onMounted } from "vue";
 import backgroundImage from "@/assets/images/create-new-property-background.png";
 import { useRouter, useRoute } from "vue-router";
 import BackToList from "../components/backToList.vue";
@@ -197,6 +199,8 @@ import PostButton from "../components/HouseCreatePage/postButton.vue";
 import useVuelidate from "@vuelidate/core";
 import { helpers, minValue, numeric, required } from "@vuelidate/validators";
 import { apiService } from "../services/apiService";
+
+const black = "black";
 
 const formData = ref({
   price: "",
@@ -266,12 +270,15 @@ onMounted(async () => {
   }
 });
 
-const isImageUploaded = computed(
-  () => formData.value.housePhoto?.file && formData.value.housePhoto?.url
-);
+const isImageUploaded = computed(() => {
+  const hasFile = !!formData.value.housePhoto.file;
+  const hasUrl = !!formData.value.housePhoto.url;
+  console.log("isImageUploaded:", hasFile || hasUrl, formData.value.housePhoto);
+  return hasFile || hasUrl;
+});
 
 const allFieldsFilled = computed(() => {
-  return (
+  const result = !!(
     formData.value.price &&
     formData.value.bedrooms &&
     formData.value.bathrooms &&
@@ -284,6 +291,8 @@ const allFieldsFilled = computed(() => {
     formData.value.description &&
     isImageUploaded.value
   );
+  console.log("allFieldsFilled:", result);
+  return result;
 });
 
 const uploadImage = ({ url, file }) => {
@@ -304,18 +313,21 @@ const handleSubmit = async () => {
       response = await apiService.updateHouse(itemId.value, formData.value);
 
       if (formData.value.housePhoto.file) {
-        await apiService.uploadHouseImage(itemId.value, formData.value.housePhoto.file);
+        await apiService.uploadHouseImage(
+          itemId.value,
+          formData.value.housePhoto.file
+        );
       }
-
     } else {
       response = await apiService.createHouse(formData.value);
-      console.log("Create House Response:", response.data); // Debugging log
 
-      const houseId = response.data.id || response.data.itemId; // Ensure the correct property is used
-      console.log("New House ID:", houseId); // Debugging log
+      const houseId = response.data.id || response.data.itemId;
 
       if (formData.value.housePhoto.file) {
-        await apiService.uploadHouseImage(houseId, formData.value.housePhoto.file);
+        await apiService.uploadHouseImage(
+          houseId,
+          formData.value.housePhoto.file
+        );
       }
     }
 
@@ -339,6 +351,10 @@ const backgroundStyle = computed(() => ({
 </script>
 
 <style scoped>
+.back-button {
+  margin-top: 15px;
+}
+
 span {
   color: red;
 }
@@ -476,6 +492,10 @@ textarea::placeholder {
 }
 
 @media (max-width: 880px) {
+  .construction-year-info-container {
+    display: none;
+  }
+
   .body {
     margin-bottom: 50px;
   }

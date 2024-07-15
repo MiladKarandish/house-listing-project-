@@ -66,7 +66,7 @@
             </div>
           </div>
         </div>
-        <div class="madeByMe-block-mobile">
+        <div v-if="item.madeByMe" class="madeByMe-block-mobile">
           <div class="edit-mobile">
             <button @click="goToHouseEditPage(item.id)">
               <img
@@ -212,7 +212,7 @@ const props = defineProps({
 
   .edit-mobile button,
   .delete-mobile button {
-    background-color: rgba(44, 45, 45, 0.219);
+    background-color: rgba(44, 45, 45, 0);
     border: none;
     cursor: pointer;
     border-radius: 5px;
@@ -221,7 +221,7 @@ const props = defineProps({
   }
 
   .item img {
-    margin: 0px;
+    margin: 0 5px 0 0;
     width: 15px;
     height: 15px;
   }

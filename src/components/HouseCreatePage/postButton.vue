@@ -16,7 +16,7 @@ const props = defineProps({
   },
   allFieldsFilled: {
     type: Boolean,
-    default: false,
+    required: true,
   },
 });
 
@@ -29,7 +29,8 @@ const buttonClass = computed(() => ({
 </script>
 
 <style scoped>
-.filled-button {
+.filled-button,
+.post-button {
   display: flex;
   justify-content: flex-end;
 }
@@ -62,8 +63,10 @@ const buttonClass = computed(() => ({
   font-size: 22px;
 }
 
-.post-button {
-  display: flex;
-  justify-content: flex-end;
+@media (max-width: 880px) {
+  .post-button button,
+  .filled-button button {
+    width: 100%;
+  }
 }
 </style>
