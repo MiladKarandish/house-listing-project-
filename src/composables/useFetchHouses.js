@@ -9,10 +9,7 @@ export function useFetchHouses(){
 
   const getHouses = async () => {
     try {
-      const response = await axios.get("https://api.intern.d-tt.nl/api/houses", {
-        headers: {
-          "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-        }
+      const response = await axios.get("http://localhost:5000/api/houses", {
       }
       );
       items.value = response.data;
