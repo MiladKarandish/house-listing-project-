@@ -7,11 +7,13 @@ import fs from 'fs';
 const app = express();
 const PORT = 5000;
 
+app.use('/uploads', express.static('uploads'));
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads'));
 
+// TODO: load it dynamically inside /api/houses during each call
 // Load existing houses from JSON file
 let houses = [];
 fs.readFile('./houses.json', 'utf8', (err, data) => {
@@ -25,7 +27,14 @@ fs.readFile('./houses.json', 'utf8', (err, data) => {
 
 // Routes
 app.get('/api/houses', (req, res) => {
-  res.json(houses);
+  // TODO: add something like const houses = loadHousesJson() function here
+  // So you will always have up-to-date data
+  res.json(houses.map(house => {
+    return {
+      ...house,
+      image: 'http://localhost:' + PORT + house.image,
+    };
+  }));
 });
 
 app.post('/api/houses', (req, res) => {
@@ -44,9 +53,9 @@ app.post('/api/houses', (req, res) => {
   fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
     if (err) {
       console.error('Error writing to houses.json:', err);
-    } 
+    }
   });
-  
+
   res.status(201).json(newHouse);
 });
 

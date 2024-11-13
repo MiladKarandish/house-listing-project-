@@ -1,10 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://api.intern.d-tt.nl/api",
-  headers: {
-    "X-Api-Key": "MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z",
-  },
+  baseURL: "https://localhost:5000/api",
 });
 
 export const apiService = {

@@ -23,10 +23,7 @@ const item = ref({
 export function useFetchHouseDetails() {
   const getHouse = async (id) => {
     try {
-      const response = await axios.get(`https://api.intern.d-tt.nl/api/houses/${id}`, {
-        headers: {
-          'X-Api-Key': 'MiVfUJGoDtbq2z6FCOdjSem91Wcry8-Z',
-        },
+      const response = await axios.get(`http://localhost:5000/api/houses/${id}`, {
       });
       item.value = response.data[0];
     } catch (err) {

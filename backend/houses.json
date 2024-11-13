@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 11,
     "location": {
       "street": "Main Street",
       "houseNumber": "123",
@@ -14,10 +14,10 @@
       "bedrooms": 3,
       "bathrooms": 2
     },
-    "image": null
+    "image": "/uploads/uploads1.jpg"
   },
   {
-    "id": 2,
+    "id": 22,
     "location": {
       "street": "Park Avenue",
       "houseNumber": "456",
@@ -31,7 +31,7 @@
       "bedrooms": 4,
       "bathrooms": 3
     },
-    "image": null
+    "image": "/uploads/uploads2.jpg"
   },
   {
     "id": 3,
@@ -48,7 +48,6 @@
       "bedrooms": 2,
       "bathrooms": 1
     },
-    "image": null
+    "image": "/uploads/uploads3.jpg"
   }
-  
 ]
