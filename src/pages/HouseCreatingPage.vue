@@ -247,7 +247,7 @@ onMounted(async () => {
     itemId.value = route.params.id;
     try {
       const response = await apiService.getHouse(itemId.value);
-      const item = response.data[0];
+      const item = response.data;
       if (item && item.rooms && item.location) {
         formData.value.price = item.price;
         formData.value.bedrooms = item.rooms.bedrooms;
@@ -308,9 +308,24 @@ const handleSubmit = async () => {
   }
 
   try {
+    const payload = {
+      streetName: formData.value.streetName,
+      houseNumber: formData.value.houseNumber,
+      numberAddition: formData.value.numberAddition || '', // Optional
+      zip: formData.value.zip,
+      city: formData.value.city,
+      price: parseFloat(formData.value.price),
+      size: parseFloat(formData.value.size),
+      bedrooms: parseInt(formData.value.bedrooms, 10),
+      bathrooms: parseInt(formData.value.bathrooms, 10),
+      constructionYear: parseInt(formData.value.constructionYear, 10),
+      hasGarage: formData.value.hasGarage,
+      description: formData.value.description,
+    };
+
     let response;
     if (isEditing.value) {
-      response = await apiService.updateHouse(itemId.value, formData.value);
+      response = await apiService.updateHouse(itemId.value, payload);
 
       if (formData.value.housePhoto.file) {
         await apiService.uploadHouseImage(
@@ -319,7 +334,7 @@ const handleSubmit = async () => {
         );
       }
     } else {
-      response = await apiService.createHouse(formData.value);
+      response = await apiService.createHouse(payload);
 
       const houseId = response.data.id || response.data.itemId;
 
@@ -331,9 +346,12 @@ const handleSubmit = async () => {
       }
     }
 
-    router.push({ name: "HouseDetailsPage", params: { id: response.data.id } });
-  } catch (error) {}
+    router.push({ name: 'HouseDetailsPage', params: { id: response.data.id } });
+  } catch (error) {
+    console.error('Error creating or updating house:', error);
+  }
 };
+
 
 const removeImage = () => {
   formData.value.housePhoto.file = null;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://localhost:5000/api",
+  baseURL: "http://localhost:5000/api",
 });
 
 export const apiService = {
@@ -29,9 +29,6 @@ export const apiService = {
     const formData = new FormData();
     formData.append("image", image);
     return apiClient.post(`/houses/${id}/upload`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
     });
   },
 };

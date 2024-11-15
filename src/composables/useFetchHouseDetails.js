@@ -25,7 +25,7 @@ export function useFetchHouseDetails() {
     try {
       const response = await axios.get(`http://localhost:5000/api/houses/${id}`, {
       });
-      item.value = response.data[0];
+      item.value = response.data;
     } catch (err) {
       error.value = 'Error happened';
     } finally {
