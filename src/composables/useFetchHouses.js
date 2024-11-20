@@ -13,6 +13,7 @@ export function useFetchHouses(){
       }
       );
       items.value = response.data;
+      console.log('Fetched Houses:', data); 
     } catch (err) {
       error.value = "Error happened";
     } finally {

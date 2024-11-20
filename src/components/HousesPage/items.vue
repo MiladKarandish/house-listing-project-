@@ -14,7 +14,7 @@
         <div class="item-text-container">
           <div class="item-title">
             <h5>
-              {{ item.location.street }} {{ item.location.houseNumber }}
+              {{ item.location?.street }} {{ item.location.houseNumber }}
               {{ item.location.houseNumberAddition }}
             </h5>
           </div>

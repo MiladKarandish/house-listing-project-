@@ -14,6 +14,9 @@
       "bedrooms": 3,
       "bathrooms": 2
     },
+    "constructionYear": 2000,
+    "hasGarage": true,
+    "description": "A lovely house.",
     "image": "/uploads/uploads1.jpg"
   },
   {
@@ -31,6 +34,9 @@
       "bedrooms": 4,
       "bathrooms": 3
     },
+    "constructionYear": 2000,
+    "hasGarage": true,
+    "description": "A lovely house.",
     "image": "/uploads/uploads2.jpg"
   },
   {
@@ -48,46 +54,9 @@
       "bedrooms": 2,
       "bathrooms": 1
     },
+    "constructionYear": 2000,
+    "hasGarage": true,
+    "description": "A lovely house.",
     "image": "/uploads/uploads3.jpg"
-  },
-  {
-    "id": 11,
-    "location": {
-      "street": "Nachtegaalstraat",
-      "houseNumber": "31",
-      "houseNumberAddition": "31",
-      "zip": "3082 PD",
-      "city": "Rotterdam"
-    },
-    "price": 23422,
-    "size": 22,
-    "rooms": {
-      "bedrooms": 2,
-      "bathrooms": 2
-    },
-    "constructionYear": 2000,
-    "hasGarage": true,
-    "description": "vdfvdfvjdhv",
-    "image": "/uploads/65d097303d07adb0b75334cd12d9226b"
-  },
-  {
-    "id": 5,
-    "location": {
-      "street": "Nachtegaalstraat",
-      "houseNumber": "31",
-      "houseNumberAddition": "31",
-      "zip": "3082 PD",
-      "city": "Rotterdam"
-    },
-    "price": 2222,
-    "size": 22,
-    "rooms": {
-      "bedrooms": 2,
-      "bathrooms": 2
-    },
-    "constructionYear": 2000,
-    "hasGarage": true,
-    "description": "Nice house",
-    "image": "/uploads/1259a7e91690bd2901850f09db99d1f2"
   }
 ]
