@@ -25,8 +25,6 @@ app.use('/uploads', express.static('uploads'));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'dist', 'index.html')));
-
 // Load houses
 let houses = [];
 fs.readFile('./houses.json', 'utf8', (err, data) => {
@@ -45,6 +43,7 @@ fs.readFile('./houses.json', 'utf8', (err, data) => {
 
 // Routes
 app.get('/api/houses', (req, res) => {
+  console.log('Api start');
   const validatedHouses = houses.map((house) => ({
     id: house.id || null,
     location: house.location || { street: '', houseNumber: '', zip: '', city: '' },
@@ -61,6 +60,10 @@ app.get('/api/houses', (req, res) => {
   res.json(validatedHouses);
 });
 
+app.get('*', (req, res) => {
+  console.log('Catch everything 1');
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
 
 // Other routes and file upload remain unchanged...
 

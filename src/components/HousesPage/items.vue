@@ -14,14 +14,18 @@
         <div class="item-text-container">
           <div class="item-title">
             <h5>
-              {{ item.location?.street }} {{ item.location.houseNumber }}
-              {{ item.location.houseNumberAddition }}
+              {{ item.location?.street || 'No street provided' }} 
+              {{ item.location?.houseNumber || '' }}
+              {{ item.location?.houseNumberAddition || '' }}
             </h5>
+
           </div>
           <div class="item-price">{{ currencyFormat(item.price) }}</div>
           <div class="item-address">
-            {{ item.location.zip }} {{ item.location.city }}
+            {{ item.location?.zip || 'No ZIP provided' }} 
+            {{ item.location?.city || 'No City provided' }}
           </div>
+
         </div>
         <div class="item-properties">
           <img
@@ -29,19 +33,19 @@
             src="@/assets/icons/properties/bed.png"
             alt="icon of bed"
           />
-          <p>{{ item.rooms.bedrooms }}</p>
+          <p>{{ item.rooms?.bedrooms || 'N/A' }}</p>
           <img
             class="property"
             src="@/assets/icons/properties/bath.png"
             alt="icon of bath"
           />
-          <p>{{ item.rooms.bathrooms }}</p>
+          <p>{{ item.rooms?.bathrooms || 'N/A' }}</p>
           <img
             class="property"
             src="@/assets/icons/properties/size.png"
             alt="icon of size"
           />
-          <p>{{ item.size }}</p>
+          <p>{{ item.size || 'N/A' }}</p>
         </div>
 
         <div v-if="item.madeByMe" class="madeByMe-block">
