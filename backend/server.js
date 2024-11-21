@@ -46,6 +46,7 @@ app.get('/api/houses', (req, res) => {
   console.log('Api start');
   const validatedHouses = houses.map((house) => ({
     id: house.id || null,
+    madeByMe: house.madeByMe || false,
     location: house.location || { street: '', houseNumber: '', zip: '', city: '' },
     price: house.price || 0,
     size: house.size || 0,

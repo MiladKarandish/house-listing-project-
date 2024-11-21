@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "madeByMe": true,
     "location": {
       "street": "Main Street",
       "houseNumber": "123",
@@ -21,6 +22,7 @@
   },
   {
     "id": 2,
+    "madeByMe": true,
     "location": {
       "street": "Park Avenue",
       "houseNumber": "456",
@@ -41,6 +43,7 @@
   },
   {
     "id": 3,
+    "madeByMe": true,
     "location": {
       "street": "Mainhoven",
       "houseNumber": "20",
