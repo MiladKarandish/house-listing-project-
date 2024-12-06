@@ -23,7 +23,7 @@ const item = ref({
 export function useFetchHouseDetails() {
   const getHouse = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/houses/${id}`, {
+      const response = await axios.get(`https://house-listing-project.onrender.com/api/houses/${id}`, {
       });
       item.value = response.data;
     } catch (err) {

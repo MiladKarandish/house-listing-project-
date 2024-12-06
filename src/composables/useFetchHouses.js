@@ -9,7 +9,7 @@ export function useFetchHouses(){
 
   const getHouses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/houses");
+      const response = await axios.get("https://house-listing-project.onrender.com/api/houses");
       items.value = response.data; // Assign the data to the items ref
       console.log("Fetched Houses:", response.data); // Log the correct data
     } catch (err) {
