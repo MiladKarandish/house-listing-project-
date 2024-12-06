@@ -57,15 +57,9 @@ app.get('/api/houses', (req, res) => {
     image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
   }));
 
-  console.log('Validated Houses:', validatedHouses); // Add this
+  console.log('Validated Houses:', validatedHouses); 
   res.json(validatedHouses);
 });
 
-app.get('*', (req, res) => {
-  console.log('Catch everything 1');
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-});
-
-// Other routes and file upload remain unchanged...
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
