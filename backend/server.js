@@ -24,7 +24,7 @@ app.use(cors({
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use('/uploads', express.static('uploads'));
+
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -81,22 +81,6 @@ app.get('/api/houses/:id', (req, res) => {
     res.status(404).json({ error: 'House not found' });
   }
 });
-
-app.get('/uploads/:id', (req, res) => {
-  const uploadsId = parseInt(req.params.id, 10); // Get and parse the upload ID
-  if (isNaN(uploadsId)) {
-    return res.status(400).json({ error: 'Invalid upload ID' });
-  }
-
-  const upload = uploads.find(u => u.id === uploadsId); // Search for the upload by ID
-  if (upload) {
-    res.json(upload); // Return the upload details if found
-  } else {
-    res.status(404).json({ error: 'Image not found' }); // Return 404 if not found
-  }
-});
-
-
 
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
