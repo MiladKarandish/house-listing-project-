@@ -82,6 +82,21 @@ app.get('/api/houses/:id', (req, res) => {
   }
 });
 
+app.get('/api/houses/uploads/:id', (req, res) => {
+  const uploadsId = parseInt(req.params.id, 10); // Get and parse the upload ID
+  if (isNaN(uploadsId)) {
+    return res.status(400).json({ error: 'Invalid upload ID' });
+  }
+
+  const upload = uploads.find(u => u.id === uploadsId); // Search for the upload by ID
+  if (upload) {
+    res.json(upload); // Return the upload details if found
+  } else {
+    res.status(404).json({ error: 'Image not found' }); // Return 404 if not found
+  }
+});
+
+
 
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
