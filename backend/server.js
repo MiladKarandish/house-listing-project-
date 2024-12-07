@@ -58,7 +58,7 @@ app.get('/api/houses', (req, res) => {
       constructionYear: house.constructionYear || null,
       hasGarage: house.hasGarage || false,
       description: house.description || '',
-      image: house.image ? `https://house-listing-project.onrender.com${house.image}` : null,
+      image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
 
     }));
     res.json(validatedHouses);
@@ -81,6 +81,7 @@ app.get('/api/houses/:id', (req, res) => {
     res.status(404).json({ error: 'House not found' });
   }
 });
+
 
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
