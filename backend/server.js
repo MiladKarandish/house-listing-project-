@@ -17,7 +17,11 @@ if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
-app.use(cors({ origin: ['https://comfy-longma-ab6c60.netlify.app/'], methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type'] }));
+app.use(cors({ origin: ['https://comfy-longma-ab6c60.netlify.app'], 
+methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+ }));
+
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use('/uploads', express.static('uploads'));
@@ -43,22 +47,24 @@ fs.readFile('./houses.json', 'utf8', (err, data) => {
 
 // Routes
 app.get('/api/houses', (req, res) => {
-  console.log('Api start');
-  const validatedHouses = houses.map((house) => ({
-    id: house.id || null,
-    madeByMe: house.madeByMe || false,
-    location: house.location || { street: '', houseNumber: '', zip: '', city: '' },
-    price: house.price || 0,
-    size: house.size || 0,
-    rooms: house.rooms || { bedrooms: 0, bathrooms: 0 },
-    constructionYear: house.constructionYear || null,
-    hasGarage: house.hasGarage || false,
-    description: house.description || '',
-    image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
-  }));
-
-  console.log('Validated Houses:', validatedHouses); 
-  res.json(validatedHouses);
+  try {
+    const validatedHouses = houses.map((house) => ({
+      id: house.id || null,
+      madeByMe: house.madeByMe || false,
+      location: house.location || { street: '', houseNumber: '', zip: '', city: '' },
+      price: house.price || 0,
+      size: house.size || 0,
+      rooms: house.rooms || { bedrooms: 0, bathrooms: 0 },
+      constructionYear: house.constructionYear || null,
+      hasGarage: house.hasGarage || false,
+      description: house.description || '',
+      image: house.image ? `${req.protocol}://${req.get('host')}${house.image.replace(/^\//, '')}` : null,
+    }));
+    res.json(validatedHouses);
+  } catch (err) {
+    console.error('Error processing houses:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 
