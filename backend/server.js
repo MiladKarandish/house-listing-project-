@@ -58,7 +58,7 @@ app.get('/api/houses', (req, res) => {
       constructionYear: house.constructionYear || null,
       hasGarage: house.hasGarage || false,
       description: house.description || '',
-      image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
+      image: house.image ? `https://house-listing-project.onrender.com${house.image}` : null,
 
     }));
     res.json(validatedHouses);
