@@ -47,5 +47,6 @@ html, body {
 body {
   margin: 0px;
   background-color: #f6f6f6;
+  margin-bottom: 80px;
 }
 </style>
