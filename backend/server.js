@@ -68,7 +68,7 @@ app.get('/api/houses', (req, res) => {
   }
 });
 
-app.get('/api/houses/:id', (req, res) => {
+app.get('/api/houes/:id', (req, res) => {
   const houseId = parseInt(req.params.id, 10);
   if (isNaN(houseId)) {
     return res.status(400).json({ error: 'Invalid house ID' });
@@ -82,7 +82,7 @@ app.get('/api/houses/:id', (req, res) => {
   }
 });
 
-app.get('/api/houses/uploads/:id', (req, res) => {
+app.get('/api/uploads/:id', (req, res) => {
   const uploadsId = parseInt(req.params.id, 10); // Get and parse the upload ID
   if (isNaN(uploadsId)) {
     return res.status(400).json({ error: 'Invalid upload ID' });
