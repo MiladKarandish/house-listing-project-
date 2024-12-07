@@ -17,10 +17,11 @@ if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
-app.use(cors({ origin: ['https://comfy-longma-ab6c60.netlify.app'], 
-methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
- }));
+app.use(cors({
+  origin: ['https://comfy-longma-ab6c60.netlify.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -58,7 +59,8 @@ app.get('/api/houses', (req, res) => {
       constructionYear: house.constructionYear || null,
       hasGarage: house.hasGarage || false,
       description: house.description || '',
-      image: house.image ? `${req.protocol}://${req.get('host')}${house.image.replace(/^\//, '')}` : null,
+      image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
+
     }));
     res.json(validatedHouses);
   } catch (err) {
