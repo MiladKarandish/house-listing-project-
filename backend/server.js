@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import multer from 'multer';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -68,6 +67,21 @@ app.get('/api/houses', (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+app.get('/api/houses/:id', (req, res) => {
+  const houseId = parseInt(req.params.id, 10);
+  if (isNaN(houseId)) {
+    return res.status(400).json({ error: 'Invalid house ID' });
+  }
+
+  const house = houses.find(h => h.id === houseId);
+  if (house) {
+    res.json(house);
+  } else {
+    res.status(404).json({ error: 'House not found' });
+  }
+});
+
 
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
