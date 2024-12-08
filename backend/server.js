@@ -61,7 +61,6 @@ app.get('/api/houses', (req, res) => {
       hasGarage: house.hasGarage || false,
       description: house.description || '',
       image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
-
     }));
     res.json(validatedHouses);
   } catch (err) {
@@ -78,12 +77,15 @@ app.get('/api/houses/:id', (req, res) => {
 
   const house = houses.find(h => h.id === houseId);
   if (house) {
-    res.json(house);
+    // Add the full URL for the image
+    const houseWithFullImageUrl = {
+      ...house,
+      image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
+    };
+    res.json(houseWithFullImageUrl);
   } else {
     res.status(404).json({ error: 'House not found' });
   }
 });
-
-
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
