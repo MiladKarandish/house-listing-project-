@@ -82,6 +82,9 @@ app.get('/api/houses/:id', (req, res) => {
       ...house,
       image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
     };
+
+    console.log('Generated image URL:', houseWithFullImageUrl.image);
+
     res.json(houseWithFullImageUrl);
   } else {
     res.status(404).json({ error: 'House not found' });
