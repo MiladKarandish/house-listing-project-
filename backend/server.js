@@ -28,6 +28,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Load houses
 let houses = [];
