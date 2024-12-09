@@ -17,8 +17,13 @@ export const apiService = {
     return apiClient.post("/houses", data);
   },
 
-  updateHouse(id, data) {
-    return apiClient.put(`/houses/${id}`, data);
+  updateHouse(id, updatedData, existingData) {
+    // Merge updated data with existing data before sending to the backend
+    const completeData = {
+      ...existingData,
+      ...updatedData,
+    };
+    return apiClient.put(`/houses/${id}`, completeData);
   },
 
   deleteHouse(id) {

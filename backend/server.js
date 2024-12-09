@@ -16,20 +16,20 @@ if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
-app.use(cors({
-  origin: ['https://comfy-longma-ab6c60.netlify.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
+app.use(
+  cors({
+    origin: ['https://comfy-longma-ab6c60.netlify.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  })
+);
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-
 // Serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 
 // Load houses
 let houses = [];
@@ -47,6 +47,21 @@ fs.readFile('./houses.json', 'utf8', (err, data) => {
   }
 });
 
+// Deep merge function for nested objects
+function deepMerge(target, source) {
+  for (const key in source) {
+    if (
+      source[key] instanceof Object &&
+      target[key] &&
+      !(source[key] instanceof Array)
+    ) {
+      Object.assign(source[key], deepMerge(target[key], source[key]));
+    }
+  }
+  Object.assign(target || {}, source);
+  return target;
+}
+
 // Routes
 app.get('/api/houses', (req, res) => {
   try {
@@ -60,7 +75,9 @@ app.get('/api/houses', (req, res) => {
       constructionYear: house.constructionYear || null,
       hasGarage: house.hasGarage || false,
       description: house.description || '',
-      image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
+      image: house.image
+        ? `${req.protocol}://${req.get('host')}${house.image}`
+        : null,
     }));
     res.json(validatedHouses);
   } catch (err) {
@@ -75,17 +92,14 @@ app.get('/api/houses/:id', (req, res) => {
     return res.status(400).json({ error: 'Invalid house ID' });
   }
 
-  const house = houses.find(h => h.id === houseId);
+  const house = houses.find((h) => h.id === houseId);
   if (house) {
-    // Add the full URL for the image
-    const houseWithFullImageUrl = {
+    res.json({
       ...house,
-      image: house.image ? `${req.protocol}://${req.get('host')}${house.image}` : null,
-    };
-
-    console.log('Generated image URL:', houseWithFullImageUrl.image);
-
-    res.json(houseWithFullImageUrl);
+      image: house.image
+        ? `${req.protocol}://${req.get('host')}${house.image}`
+        : null,
+    });
   } else {
     res.status(404).json({ error: 'House not found' });
   }
@@ -97,27 +111,24 @@ app.put('/api/houses/:id', (req, res) => {
     return res.status(400).json({ error: 'Invalid house ID' });
   }
 
-  const index = houses.findIndex(h => h.id === houseId);
+  const index = houses.findIndex((h) => h.id === houseId);
   if (index === -1) {
     return res.status(404).json({ error: 'House not found' });
   }
 
-  const updatedHouse = {
-    ...houses[index],
-    ...req.body, // Overwrite fields with the new data from the request body
-  };
+  // Perform a deep merge for nested objects
+  houses[index] = deepMerge(houses[index], req.body);
 
-  houses[index] = updatedHouse;
-
-  // Saveing changes to the JSON file
+  // Save changes to the JSON file
   fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
     if (err) {
       console.error('Error saving houses.json:', err.message);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-    res.json(updatedHouse);
+    res.json(houses[index]);
   });
 });
 
-
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);
