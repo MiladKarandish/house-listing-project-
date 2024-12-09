@@ -18,7 +18,7 @@ export const apiService = {
   },
 
   updateHouse(id, data) {
-    return apiClient.post(`/houses/${id}`, data);
+    return apiClient.put(`/houses/${id}`, data);
   },
 
   deleteHouse(id) {

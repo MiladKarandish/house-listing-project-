@@ -91,4 +91,33 @@ app.get('/api/houses/:id', (req, res) => {
   }
 });
 
+app.put('/api/houses/:id', (req, res) => {
+  const houseId = parseInt(req.params.id, 10);
+  if (isNaN(houseId)) {
+    return res.status(400).json({ error: 'Invalid house ID' });
+  }
+
+  const index = houses.findIndex(h => h.id === houseId);
+  if (index === -1) {
+    return res.status(404).json({ error: 'House not found' });
+  }
+
+  const updatedHouse = {
+    ...houses[index],
+    ...req.body, // Overwrite fields with the new data from the request body
+  };
+
+  houses[index] = updatedHouse;
+
+  // Saveing changes to the JSON file
+  fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
+    if (err) {
+      console.error('Error saving houses.json:', err.message);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(updatedHouse);
+  });
+});
+
+
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
