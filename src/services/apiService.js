@@ -17,21 +17,8 @@ export const apiService = {
     return apiClient.post("/houses", data);
   },
 
-  updateHouse(id, updatedData, existingData) {
-    console.log("Existing Data:", existingData);
-    console.log("Updated Data:", updatedData);
-  
-    const completeData = {
-      ...existingData,
-      ...updatedData,
-      location: {
-        ...existingData.location, // Ensure this exists
-        ...updatedData.location,  // Merge location updates
-      },
-    };
-  
-    console.log("Complete Data:", completeData); // Debugging merged data
-    return apiClient.put(`/houses/${id}`, completeData);
+  updateHouse(id) {
+    return apiClient.put(`/houses/${id}`);
   },
   
 
