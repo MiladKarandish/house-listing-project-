@@ -105,6 +105,8 @@ app.get('/api/houses/:id', (req, res) => {
 
 app.put('/api/houses/:id', (req, res) => {
   const houseId = parseInt(req.params.id, 10);
+  console.log("Received House ID:", houseId); // Debugging
+  console.log("Request Body:", req.body); // Debugging
   if (isNaN(houseId)) {
     return res.status(400).json({ error: 'Invalid house ID' });
   }

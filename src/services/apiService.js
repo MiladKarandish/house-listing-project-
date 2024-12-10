@@ -18,26 +18,22 @@ export const apiService = {
   },
 
   updateHouse(id, updatedData, existingData) {
-    // Merge updated data with existing data before sending to the backend
+    console.log("Existing Data:", existingData);
+    console.log("Updated Data:", updatedData);
+  
     const completeData = {
       ...existingData,
       ...updatedData,
       location: {
-        ...existingData.location,
-        ...updatedData.location, // Ensure location is updated properly
+        ...existingData.location, // Ensure this exists
+        ...updatedData.location,  // Merge location updates
       },
     };
-
-    // Remove flat fields (redundant if using nested structure)
-    delete completeData.streetName;
-    delete completeData.houseNumber;
-    delete completeData.numberAddition;
-    delete completeData.zip;
-    delete completeData.city;
-
-    console.log("PUT Payload:", completeData); // Debugging
+  
+    console.log("Complete Data:", completeData); // Debugging merged data
     return apiClient.put(`/houses/${id}`, completeData);
   },
+  
 
   deleteHouse(id) {
     return apiClient.delete(`/houses/${id}`);
