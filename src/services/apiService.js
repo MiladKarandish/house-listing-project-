@@ -18,7 +18,7 @@ export const apiService = {
   },
 
   updateHouse(id) {
-    return apiClient.put(`/houses/${id}`);
+    return apiClient.put(`/houses/${id}`, data);
   },
   
 

@@ -114,6 +114,9 @@ app.put('/api/houses/:id', (req, res) => {
     return res.status(404).json({ error: 'House not found' });
   }
 
+  // Update house data with the new values
+  houses[index] = deepMerge(houses[index], req.body);
+
   // Save updated houses to the JSON file
   fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
     if (err) {
@@ -123,6 +126,7 @@ app.put('/api/houses/:id', (req, res) => {
     res.json(houses[index]);
   });
 });
+
 
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
