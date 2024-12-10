@@ -8,7 +8,7 @@ export const apiService = {
   getHouses() {
     return apiClient.get("/houses");
   },
-  
+
   getHouse(id) {
     return apiClient.get(`/houses/${id}`);
   },
@@ -22,18 +22,25 @@ export const apiService = {
     const completeData = {
       ...existingData,
       ...updatedData,
+      location: {
+        ...existingData.location,
+        ...updatedData.location, // Ensure location is updated properly
+      },
     };
+
+    // Remove flat fields (redundant if using nested structure)
+    delete completeData.streetName;
+    delete completeData.houseNumber;
+    delete completeData.numberAddition;
+    delete completeData.zip;
+    delete completeData.city;
+
+    console.log("PUT Payload:", completeData); // Debugging
     return apiClient.put(`/houses/${id}`, completeData);
   },
 
   deleteHouse(id) {
     return apiClient.delete(`/houses/${id}`);
-  }, 
-
-  uploadHouseImage(id, image) {
-    const formData = new FormData();
-    formData.append("image", image);
-    return apiClient.post(`/houses/${id}/upload`, formData, {
-    });
   },
 };
+

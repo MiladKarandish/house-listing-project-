@@ -16,13 +16,11 @@ if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
-app.use(
-  cors({
-    origin: ['https://comfy-longma-ab6c60.netlify.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  })
-);
+app.use(cors({
+  origin: ['https://comfy-longma-ab6c60.netlify.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -116,10 +114,17 @@ app.put('/api/houses/:id', (req, res) => {
     return res.status(404).json({ error: 'House not found' });
   }
 
-  // Perform a deep merge for nested objects
+  // Perform a deep merge
   houses[index] = deepMerge(houses[index], req.body);
 
-  // Save changes to the JSON file
+  // Ensure only `location` structure is kept, remove redundant fields
+  delete houses[index].streetName;
+  delete houses[index].houseNumber;
+  delete houses[index].numberAddition;
+  delete houses[index].zip;
+  delete houses[index].city;
+
+  // Save updated houses to the JSON file
   fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
     if (err) {
       console.error('Error saving houses.json:', err.message);
@@ -132,3 +137,4 @@ app.put('/api/houses/:id', (req, res) => {
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
+
