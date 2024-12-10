@@ -105,8 +105,6 @@ app.get('/api/houses/:id', (req, res) => {
 
 app.put('/api/houses/:id', (req, res) => {
   const houseId = parseInt(req.params.id, 10);
-  console.log("Received House ID:", houseId); // Debugging
-  console.log("Request Body:", req.body); // Debugging
   if (isNaN(houseId)) {
     return res.status(400).json({ error: 'Invalid house ID' });
   }
@@ -115,16 +113,6 @@ app.put('/api/houses/:id', (req, res) => {
   if (index === -1) {
     return res.status(404).json({ error: 'House not found' });
   }
-
-  // Perform a deep merge
-  houses[index] = deepMerge(houses[index], req.body);
-
-  // Ensure only `location` structure is kept, remove redundant fields
-  delete houses[index].streetName;
-  delete houses[index].houseNumber;
-  delete houses[index].numberAddition;
-  delete houses[index].zip;
-  delete houses[index].city;
 
   // Save updated houses to the JSON file
   fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
