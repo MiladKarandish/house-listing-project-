@@ -18,6 +18,7 @@ export const apiService = {
   },
 
   updateHouse(id) {
+    console.log('Sending PUT request:', data); // Log outgoing data
     return apiClient.put(`/houses/${id}`, data);
   },
   
