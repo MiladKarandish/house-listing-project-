@@ -119,7 +119,7 @@ app.put('/api/houses/:id', (req, res) => {
 houses[index] = deepMerge(houses[index], req.body);
 
 // Manually handle location fields
-if (req.body.streetName || req.body.houseNumber || req.body.zip || req.body.city) {
+if (req.body.street || req.body.houseNumber || req.body.zip || req.body.city) {
   houses[index].location = {
     ...houses[index].location, // Preserve existing address fields
     street: req.body.street || houses[index].location.street,
