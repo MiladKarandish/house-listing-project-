@@ -122,9 +122,9 @@ houses[index] = deepMerge(houses[index], req.body);
 if (req.body.streetName || req.body.houseNumber || req.body.zip || req.body.city) {
   houses[index].location = {
     ...houses[index].location, // Preserve existing address fields
-    streetName: req.body.streetName || houses[index].location.streetName,
+    street: req.body.street || houses[index].location.street,
     houseNumber: req.body.houseNumber || houses[index].location.houseNumber,
-    numberAddition: req.body.numberAddition || houses[index].location.numberAddition,
+    houseNumberAddition: req.body.houseNumberAddition || houses[index].location.houseNumberAddition,
     zip: req.body.zip || houses[index].location.zip,
     city: req.body.city || houses[index].location.city,
   };
