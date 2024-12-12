@@ -45,20 +45,19 @@ fs.readFile('./houses.json', 'utf8', (err, data) => {
   }
 });
 
-// Deep merge function for nested objects
+// Deep merge function for nested object
 function deepMerge(target, source) {
   for (const key in source) {
-    if (
-      source[key] instanceof Object &&
-      target[key] &&
-      !(source[key] instanceof Array)
-    ) {
-      Object.assign(source[key], deepMerge(target[key], source[key]));
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      target[key] = target[key] || {}; // Make sure the target has the same section
+      deepMerge(target[key], source[key]); // Merge the details
+    } else {
+      target[key] = source[key]; // Overwrite or add simple values
     }
   }
-  Object.assign(target || {}, source);
   return target;
 }
+
 
 // Routes
 app.get('/api/houses', (req, res) => {
