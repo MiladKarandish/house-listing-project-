@@ -118,10 +118,10 @@ app.put('/api/houses/:id', (req, res) => {
   // Merge the general fields
 houses[index] = deepMerge(houses[index], req.body);
 
-// Manually handle location fields
-if (req.body.street || req.body.houseNumber || req.body.zip || req.body.city) {
+// Manually handle address fields
+if (req.body.street || req.body.houseNumber || req.body.houseNumberAddition || req.body.zip || req.body.city) {
   houses[index].location = {
-    ...houses[index].location, // Preserve existing address fields
+    ...houses[index].location, // Keep existing fields
     street: req.body.street || houses[index].location.street,
     houseNumber: req.body.houseNumber || houses[index].location.houseNumber,
     houseNumberAddition: req.body.houseNumberAddition || houses[index].location.houseNumberAddition,
@@ -129,6 +129,11 @@ if (req.body.street || req.body.houseNumber || req.body.zip || req.body.city) {
     city: req.body.city || houses[index].location.city,
   };
 }
+
+// Remove root-level duplicates if they exist (optional cleanup)
+delete houses[index].streetName;
+delete houses[index].numberAddition;
+
 
 
   console.log('Updated house:', houses[index]); // Log updated house
