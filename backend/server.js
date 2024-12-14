@@ -102,6 +102,53 @@ app.get('/api/houses/:id', (req, res) => {
   }
 });
 
+function createNewHouse(data, housesArray) {
+  // Auto-generate a unique ID based on the array length
+  const newId = housesArray.length > 0 ? housesArray[housesArray.length - 1].id + 1 : 1;
+
+  // Construct a new house object with defaults if fields are missing
+  const newHouse = {
+    id: newId,
+    madeByMe: data.madeByMe ?? false, // Default to false if not provided
+    location: {
+      street: data.location?.street || '',
+      houseNumber: data.location?.houseNumber || '',
+      houseNumberAddition: data.location?.houseNumberAddition || '',
+      zip: data.location?.zip || '',
+      city: data.location?.city || '',
+    },
+    price: data.price ?? 0, // Default to 0
+    size: data.size ?? 0,   // Default to 0
+    rooms: {
+      bedrooms: data.rooms?.bedrooms ?? 0,
+      bathrooms: data.rooms?.bathrooms ?? 0,
+    },
+    constructionYear: data.constructionYear ?? new Date().getFullYear(), // Default to current year
+    hasGarage: data.hasGarage ?? false, // Default to false
+    description: data.description || '',
+    image: data.image || '',
+  };
+
+  // Add the new house to the array
+  housesArray.push(newHouse);
+
+  // Return the newly added house
+  return newHouse;
+}
+
+app.post('/api/houses', (req, res) => {
+  const newHouse = createNewHouse(req.body, houses);
+  res.status(201).json(newHouse); // Respond with the new house
+});
+
+
+app.post('/api/houses', (req, res) => {
+  const houseId = parseInt(req.param.id, 10);
+  if (isNaN(houseId)) {
+    return res.status(400).json({ error: 'Invalid house ID' });
+  }
+})
+
 app.put('/api/houses/:id', (req, res) => {
   const houseId = parseInt(req.params.id, 10);
   console.log('Incoming PUT request:', req.body); // Log incoming data
