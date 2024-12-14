@@ -17,8 +17,8 @@
             <input
               type="text"
               id="street-name"
-              name="streetName"
-              v-model="formData.streetName"
+              name="street"
+              v-model="formData.street"
               placeholder="Enter the street name"
               required
             />
@@ -207,7 +207,7 @@ const formData = ref({
   bedrooms: "",
   bathrooms: "",
   size: "",
-  streetName: "",
+  street: "",
   houseNumber: "",
   numberAddition: "",
   zip: "",
@@ -253,7 +253,7 @@ onMounted(async () => {
         formData.value.bedrooms = item.rooms.bedrooms;
         formData.value.bathrooms = item.rooms.bathrooms;
         formData.value.size = item.size;
-        formData.value.streetName = item.location.street;
+        formData.value.street = item.location.street;
         formData.value.houseNumber = item.location.houseNumber;
         formData.value.numberAddition = item.location.houseNumberAddition;
         formData.value.zip = item.location.zip;
@@ -283,7 +283,7 @@ const allFieldsFilled = computed(() => {
     formData.value.bedrooms &&
     formData.value.bathrooms &&
     formData.value.size &&
-    formData.value.streetName &&
+    formData.value.street &&
     formData.value.houseNumber &&
     formData.value.zip &&
     formData.value.city &&
@@ -309,7 +309,7 @@ const handleSubmit = async () => {
 
   try {
     const payload = {
-      streetName: formData.value.streetName,
+      street: formData.value.street,
       houseNumber: formData.value.houseNumber,
       numberAddition: formData.value.numberAddition || '', // Optional
       zip: formData.value.zip,

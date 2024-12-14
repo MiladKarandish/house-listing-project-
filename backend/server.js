@@ -130,12 +130,6 @@ if (req.body.street || req.body.houseNumber || req.body.houseNumberAddition || r
   };
 }
 
-// Remove root-level duplicates if they exist (optional cleanup)
-delete houses[index].streetName;
-delete houses[index].numberAddition;
-
-
-
   console.log('Updated house:', houses[index]); // Log updated house
 
   // Save updated houses to the JSON file
