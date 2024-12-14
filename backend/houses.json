@@ -45,9 +45,9 @@
     "id": 3,
     "madeByMe": true,
     "location": {
-      "street": "Mainhoven",
+      "streetName": "Mainhoven",
       "houseNumber": "20",
-      "houseNumberAddition": "B",
+      "numberAddition": "B",
       "zip": "4983 BD",
       "city": "Rotterdam"
     },
