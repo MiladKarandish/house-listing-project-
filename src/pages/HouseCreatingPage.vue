@@ -40,8 +40,8 @@
               <input
                 type="text"
                 id="addition"
-                name="numberAddition"
-                v-model="formData.numberAddition"
+                name="houseNumberAddition"
+                v-model="formData.houseNumberAddition"
                 placeholder="e.g. A"
               />
             </div>
@@ -209,7 +209,7 @@ const formData = ref({
   size: "",
   street: "",
   houseNumber: "",
-  numberAddition: "",
+  houseNumberAddition: "",
   zip: "",
   city: "",
   constructionYear: "",
@@ -255,7 +255,7 @@ onMounted(async () => {
         formData.value.size = item.size;
         formData.value.street = item.location.street;
         formData.value.houseNumber = item.location.houseNumber;
-        formData.value.numberAddition = item.location.houseNumberAddition;
+        formData.value.houseNumberAddition = item.location.houseNumberAddition;
         formData.value.zip = item.location.zip;
         formData.value.city = item.location.city;
         formData.value.constructionYear = item.constructionYear;
@@ -311,7 +311,7 @@ const handleSubmit = async () => {
     const payload = {
       street: formData.value.street,
       houseNumber: formData.value.houseNumber,
-      numberAddition: formData.value.numberAddition || '', // Optional
+      houseNumberAddition: formData.value.houseNumberAddition || '', // Optional
       zip: formData.value.zip,
       city: formData.value.city,
       price: parseFloat(formData.value.price),
