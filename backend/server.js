@@ -130,6 +130,14 @@ if (req.body.street || req.body.houseNumber || req.body.houseNumberAddition || r
   };
 }
 
+if (req.body.bedrooms || req.body.bathrooms) {
+  houses[index].rooms = {
+    ...houses[index].rooms,
+    bedrooms: req.body.bedrooms !== undefined ? req.body.bedrooms : houses[index].rooms.bedrooms,
+    bathrooms: req.body.bathrooms !== undefined ? req.body.bathrooms : houses[index].rooms.bathrooms,
+  };
+}
+
   console.log('Updated house:', houses[index]); // Log updated house
 
   // Save updated houses to the JSON file
