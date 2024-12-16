@@ -141,14 +141,6 @@ app.post('/api/houses', (req, res) => {
   res.status(201).json(newHouse); // Respond with the new house
 });
 
-
-app.post('/api/houses', (req, res) => {
-  const houseId = parseInt(req.param.id, 10);
-  if (isNaN(houseId)) {
-    return res.status(400).json({ error: 'Invalid house ID' });
-  }
-})
-
 app.put('/api/houses/:id', (req, res) => {
   const houseId = parseInt(req.params.id, 10);
   console.log('Incoming PUT request:', req.body); // Log incoming data
