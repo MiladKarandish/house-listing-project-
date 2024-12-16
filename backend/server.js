@@ -112,7 +112,7 @@ function createNewHouse(data, housesArray) {
   // Construct a new house object with defaults if fields are missing
   const newHouse = {
     id: newId,
-    madeByMe: data.madeByMe ?? false, // Default to false if not provided
+    madeByMe: data.madeByMe ?? true, // Default to false if not provided
     location: {
       street: data.location?.street || '',
       houseNumber: data.location?.houseNumber || '',

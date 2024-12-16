@@ -309,19 +309,24 @@ const handleSubmit = async () => {
 
   try {
     const payload = {
-      street: formData.value.street,
-      houseNumber: formData.value.houseNumber,
-      houseNumberAddition: formData.value.houseNumberAddition || '', // Optional
-      zip: formData.value.zip,
-      city: formData.value.city,
-      price: parseFloat(formData.value.price),
-      size: parseFloat(formData.value.size),
-      bedrooms: parseInt(formData.value.bedrooms, 10),
-      bathrooms: parseInt(formData.value.bathrooms, 10),
-      constructionYear: parseInt(formData.value.constructionYear, 10),
-      hasGarage: formData.value.hasGarage,
-      description: formData.value.description,
-    };
+  location: {
+    street: formData.value.street,
+    houseNumber: formData.value.houseNumber,
+    houseNumberAddition: formData.value.houseNumberAddition,
+    zip: formData.value.zip,
+    city: formData.value.city,
+  },
+  rooms: {
+    bedrooms: parseInt(formData.value.bedrooms, 10),
+    bathrooms: parseInt(formData.value.bathrooms, 10),
+  },
+  price: parseFloat(formData.value.price),
+  size: parseFloat(formData.value.size),
+  constructionYear: parseInt(formData.value.constructionYear, 10),
+  hasGarage: formData.value.hasGarage,
+  description: formData.value.description,
+};
+
 
     let response;
     if (isEditing.value) {
