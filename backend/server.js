@@ -160,6 +160,33 @@ app.post('/api/houses/:id/uploadImage', upload.single('image'), (req, res) => {
   res.json(houses[index]);
 });
 
+app.delete('/api/houses/:id', (req, res) => {
+  const houseId = parseInt(req.params.id, 10);
+
+  if (isNaN(houseId)) {
+    return res.status(400).json({ error: 'Invalid house ID' });
+  }
+
+  const index = houses.findIndex((h) => h.id === houseId);
+  if (index === -1) {
+    return res.status(404).json({ error: 'House not found' });
+  }
+
+  // Remove the house from the array and save it temporarily for the response
+  const deletedHouse = houses.splice(index, 1)[0];
+
+  // Write the updated data to houses.json
+  fs.writeFile('./houses.json', JSON.stringify(houses, null, 2), (err) => {
+    if (err) {
+      console.error('Error saving houses.json:', err.message);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log(`House with ID ${houseId} deleted successfully`);
+    res.json({ message: 'House deleted successfully', house: deletedHouse });
+  });
+});
+
+
 app.put('/api/houses/:id', (req, res) => {
   const houseId = parseInt(req.params.id, 10);
   console.log('Incoming PUT request:', req.body); // Log incoming data
