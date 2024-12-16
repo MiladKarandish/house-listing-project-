@@ -18,13 +18,25 @@ export const apiService = {
   },
 
   updateHouse(id, data) {
-    console.log('Sending PUT request:', data); 
+    console.log('Sending PUT request:', data);
     return apiClient.put(`/houses/${id}`, data);
   },
-  
 
   deleteHouse(id) {
     return apiClient.delete(`/houses/${id}`);
   },
+
+  // Add the uploadHouseImage method:
+  uploadHouseImage(id, file) {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    return apiClient.post(`/houses/${id}/uploadImage`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 };
+
 

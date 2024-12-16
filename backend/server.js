@@ -4,6 +4,9 @@ import bodyParser from 'body-parser';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import multer from 'multer';
+
+const upload = multer({ dest: './uploads/' });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -139,6 +142,22 @@ function createNewHouse(data, housesArray) {
 app.post('/api/houses', (req, res) => {
   const newHouse = createNewHouse(req.body, houses);
   res.status(201).json(newHouse); // Respond with the new house
+});
+
+app.post('/api/houses/:id/uploadImage', upload.single('image'), (req, res) => {
+  const houseId = parseInt(req.params.id, 10);
+  const index = houses.findIndex(h => h.id === houseId);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'House not found' });
+  }
+
+  // Save the uploaded file path to the house object
+  houses[index].image = `/uploads/${req.file.filename}`;
+
+  fs.writeFileSync('./houses.json', JSON.stringify(houses, null, 2));
+
+  res.json(houses[index]);
 });
 
 app.put('/api/houses/:id', (req, res) => {
