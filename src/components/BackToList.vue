@@ -91,7 +91,7 @@ const goToHousesPage = () => {
   }
 
   .back-mobile button {
-    background-color: rgba(44, 45, 45, 0);
+    background-color: rgb(248, 99, 30);
     border: none;
     cursor: pointer;
     border-radius: 5px;
