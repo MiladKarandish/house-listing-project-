@@ -61,5 +61,173 @@
     "hasGarage": true,
     "description": "A lovely house.",
     "image": "/uploads/uploads3.jpg"
+  }, 
+  {
+    "id": 4,
+    "madeByMe": true,
+    "location": {
+      "street": "Elm Street",
+      "houseNumber": "32",
+      "houseNumberAddition": "C",
+      "zip": "45678",
+      "city": "Utrecht"
+    },
+    "price": 220000,
+    "size": 100,
+    "rooms": {
+      "bedrooms": 2,
+      "bathrooms": 1
+    },
+    "constructionYear": 1980,
+    "hasGarage": false,
+    "description": "Perfect for couples.",
+    "image": "/uploads/uploads4.jpg"
+  },
+  {
+    "id": 5,
+    "madeByMe": true,
+    "location": {
+      "street": "Maple Lane",
+      "houseNumber": "56",
+      "houseNumberAddition": "D",
+      "zip": "56789",
+      "city": "Eindhoven"
+    },
+    "price": 350000,
+    "size": 150,
+    "rooms": {
+      "bedrooms": 5,
+      "bathrooms": 3
+    },
+    "constructionYear": 2015,
+    "hasGarage": true,
+    "description": "Luxury home with a large yard.",
+    "image": "/uploads/uploads5.jpg"
+  },
+  {
+    "id": 6,
+    "madeByMe": true,
+    "location": {
+      "street": "Birch Boulevard",
+      "houseNumber": "12",
+      "houseNumberAddition": "E",
+      "zip": "67890",
+      "city": "Groningen"
+    },
+    "price": 200000,
+    "size": 90,
+    "rooms": {
+      "bedrooms": 2,
+      "bathrooms": 1
+    },
+    "constructionYear": 1975,
+    "hasGarage": false,
+    "description": "Affordable and charming.",
+    "image": "/uploads/uploads6.jpg"
+  },
+  {
+    "id": 7,
+    "madeByMe": true,
+    "location": {
+      "street": "Willow Way",
+      "houseNumber": "99",
+      "houseNumberAddition": "F",
+      "zip": "78901",
+      "city": "Maastricht"
+    },
+    "price": 400000,
+    "size": 160,
+    "rooms": {
+      "bedrooms": 4,
+      "bathrooms": 2
+    },
+    "constructionYear": 2020,
+    "hasGarage": true,
+    "description": "Modern and energy-efficient.",
+    "image": "/uploads/uploads7.jpg"
+  },
+  {
+    "id": 8,
+    "madeByMe": true,
+    "location": {
+      "street": "Cedar Circle",
+      "houseNumber": "67",
+      "houseNumberAddition": "G",
+      "zip": "89012",
+      "city": "Leiden"
+    },
+    "price": 260000,
+    "size": 115,
+    "rooms": {
+      "bedrooms": 3,
+      "bathrooms": 2
+    },
+    "constructionYear": 2005,
+    "hasGarage": false,
+    "description": "Bright and airy interior.",
+    "image": "/uploads/uploads8.jpg"
+  },
+  {
+    "id": 9,
+    "madeByMe": true,
+    "location": {
+      "street": "Aspen Avenue",
+      "houseNumber": "88",
+      "houseNumberAddition": "",
+      "zip": "90123",
+      "city": "Arnhem"
+    },
+    "price": 310000,
+    "size": 130,
+    "rooms": {
+      "bedrooms": 4,
+      "bathrooms": 2
+    },
+    "constructionYear": 2012,
+    "hasGarage": true,
+    "description": "Family-friendly neighborhood.",
+    "image": "/uploads/uploads9.jpg"
+  },
+  {
+    "id": 10,
+    "madeByMe": true,
+    "location": {
+      "street": "Cherry Lane",
+      "houseNumber": "23",
+      "houseNumberAddition": "H",
+      "zip": "01234",
+      "city": "Breda"
+    },
+    "price": 240000,
+    "size": 105,
+    "rooms": {
+      "bedrooms": 3,
+      "bathrooms": 1
+    },
+    "constructionYear": 1990,
+    "hasGarage": false,
+    "description": "Classic charm in a great location.",
+    "image": "/uploads/uploads10.jpg"
+  },
+  {
+    "id": 11,
+    "madeByMe": true,
+    "location": {
+      "street": "Poplar Drive",
+      "houseNumber": "58",
+      "houseNumberAddition": "I",
+      "zip": "54321",
+      "city": "Zwolle"
+    },
+    "price": 280000,
+    "size": 125,
+    "rooms": {
+      "bedrooms": 3,
+      "bathrooms": 2
+    },
+    "constructionYear": 2008,
+    "hasGarage": true,
+    "description": "Peaceful and private.",
+    "image": "/uploads/uploads11.jpg"
   }
 ]

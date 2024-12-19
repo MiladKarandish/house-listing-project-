@@ -175,6 +175,7 @@ const toggleSortCriteria = (criteria) => {
 
   .body {
     padding: 0% 5%;
+    margin-bottom: 100px;
   }
 }
 </style>
