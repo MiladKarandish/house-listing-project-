@@ -5,6 +5,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import multer from 'multer';
+import NodeCache from 'node-cache';
 
 const upload = multer({ dest: './uploads/' });
 
@@ -31,6 +32,24 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+const cache = new NodeCache({ stdTTL: 3600 }); // Cache for 1 hour
+
+app.get('/api/data', async (req, res) => {
+  try {
+    const cachedData = cache.get('data_key'); // Check if data is in cache
+    if (cachedData) {
+      return res.json(cachedData); // Send cached data
+    }
+
+    const data = await fetchDataFromDatabase(); // Simulate database fetch
+    cache.set('data_key', data); // Save data in cache
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Load houses
 let houses = [];
