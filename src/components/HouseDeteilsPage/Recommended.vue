@@ -84,9 +84,15 @@ const router = useRouter();
 const goToHouseDetails = (itemId) => {
   router
     .push({ name: "HouseDetailsPage", params: { id: itemId } })
-    .then(() => {})
-    .catch((error) => {});
+    .then(() => {
+      // Scroll to the top after navigation
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    })
+    .catch((error) => {
+      console.error("Navigation error:", error);
+    });
 };
+
 </script>
 
 <style scoped>
