@@ -21,7 +21,7 @@ if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
 app.use(cors({
-  origin: ['http://keynestery.com/'],
+  origin: ['http://keynestery.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
