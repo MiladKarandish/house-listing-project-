@@ -21,7 +21,7 @@ if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
 app.use(cors({
-  origin: ['https://comfy-longma-ab6c60.netlify.app'],
+  origin: ['http://keynestery.com/'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
