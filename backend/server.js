@@ -20,11 +20,14 @@ if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 if (!fs.existsSync('./houses.json')) fs.writeFileSync('./houses.json', '[]');
 
 // Middleware
-app.use(cors({
-  origin: ['http://keynestery.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
+app.use(cors());
+
+
+//app.use(cors({
+  //origin: ['http://keynestery.com'],
+  //methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  //allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+//}));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
