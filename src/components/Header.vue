@@ -5,48 +5,37 @@
         <img src="@/assets/images/logo.png" alt="Logo of DTT company" />
       </div>
 
-      <nav>
-        <router-link
-          :to="{ name: 'HousesPage' }"
-          :class="['nav-link', { active: isHomeActive }]"
-          >Houses</router-link
-        >
-        <router-link
-          :to="{ name: 'AboutPage' }"
-          :class="['nav-link', { active: isAboutActive }]"
-          >About</router-link
-        >
-
-        <img
-          v-if="isHomeActive"
-          @click="goToHousesPage"
-          class="image"
-          :class="{ active: isHomeActive }"
-          src="@/assets/icons/mobile/home-active-icon.png"
-          alt="Houses page"
-        />
-        <img
-          v-else
-          @click="goToHousesPage"
-          class="image"
-          src="@/assets/icons/mobile/home-icon.png"
-          alt="Houses page"
-        />
-        <img
-          v-if="isAboutActive"
-          @click="goToAboutPage"
-          class="image"
-          :class="{ active: isAboutActive }"
-          src="@/assets/icons/mobile/info-active-icon.png"
-          alt="About page"
-        />
-        <img
-          v-else
-          @click="goToAboutPage"
-          class="image"
-          src="@/assets/icons/mobile/info-icon.png"
-          alt="About page"
-        />
+      <nav class="navbar">
+        <router-link :to="{ name: 'HousesPage' }" :class="['nav-link', { active: isHomeActive }]">
+          <span>Houses</span>
+          <img
+            v-if="isHomeActive"
+            @click="goToHousesPage"
+            class="image"
+            :class="{ active: isHomeActive }"
+            src="@/assets/icons/mobile/home-active-icon.png"
+            alt="Houses page"
+          />
+          <img
+            v-else
+            @click="goToHousesPage"
+            class="image"
+            src="@/assets/icons/mobile/home-icon.png"
+            alt="Houses page"
+          />
+        </router-link>
+        <router-link :to="{ name: 'AboutPage' }" :class="['nav-link', { active: isAboutActive }]">
+          <span>About</span>
+          <img
+            v-if="isAboutActive"
+            @click="goToAboutPage"
+            class="image"
+            :class="{ active: isAboutActive }"
+            src="@/assets/icons/mobile/info-active-icon.png"
+            alt="About page"
+          />
+          <img v-else @click="goToAboutPage" class="image" src="@/assets/icons/mobile/info-icon.png" alt="About page" />
+        </router-link>
       </nav>
     </div>
   </header>
@@ -68,18 +57,19 @@ const goToAboutPage = () => {
 };
 
 const isHomeActive = computed(() => {
-  return [
-    "HousesPage",
-    "HouseCreatingPage",
-    "HouseDetailsPage",
-    "HouseEditPage",
-  ].includes(route.name);
+  return ["HousesPage", "HouseCreatingPage", "HouseDetailsPage", "HouseEditPage"].includes(route.name);
 });
 
 const isAboutActive = computed(() => route.name === "AboutPage");
 </script>
 
 <style scoped>
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
 @media (min-width: 880px) {
   img.image {
     display: none;
@@ -87,23 +77,22 @@ const isAboutActive = computed(() => route.name === "AboutPage");
 }
 
 @media (max-width: 880px) {
-  .nav-link {
+  .nav-link:last-of-type {
+    margin-inline-start: auto;
+  }
+
+  .nav-link span {
     display: none;
   }
 
-  img.image {
+  .nav-link img {
     width: 30px;
     height: 30px;
-    position: absolute;
-    right: 30%;
-    top: 7px;
   }
 
-  img.image.active {
+  .nav-link img.active {
     width: 30px;
     height: 30px;
-    position: absolute;
-    left: 30%;
   }
 
   .header {
@@ -115,7 +104,7 @@ const isAboutActive = computed(() => route.name === "AboutPage");
     box-shadow: 0px 1px 20px 0px rgba(62, 63, 63, 0.226);
   }
 
-  .logo img{
+  .logo img {
     display: none;
   }
 }
