@@ -1,40 +1,32 @@
 <template>
   <header class="header">
     <div class="header-content">
-      <div @click="goToHousesPage" class="logo">
+      <router-link :to="{ name: 'HousesPage' }" class="logo">
         <img src="@/assets/images/logo.png" alt="Logo of DTT company" />
-      </div>
+      </router-link>
 
       <nav class="navbar">
         <router-link :to="{ name: 'HousesPage' }" :class="['nav-link', { active: isHomeActive }]">
           <span>Houses</span>
           <img
             v-if="isHomeActive"
-            @click="goToHousesPage"
             class="image"
             :class="{ active: isHomeActive }"
             src="@/assets/icons/mobile/home-active-icon.png"
             alt="Houses page"
           />
-          <img
-            v-else
-            @click="goToHousesPage"
-            class="image"
-            src="@/assets/icons/mobile/home-icon.png"
-            alt="Houses page"
-          />
+          <img v-else class="image" src="@/assets/icons/mobile/home-icon.png" alt="Houses page" />
         </router-link>
         <router-link :to="{ name: 'AboutPage' }" :class="['nav-link', { active: isAboutActive }]">
           <span>About</span>
           <img
             v-if="isAboutActive"
-            @click="goToAboutPage"
             class="image"
             :class="{ active: isAboutActive }"
             src="@/assets/icons/mobile/info-active-icon.png"
             alt="About page"
           />
-          <img v-else @click="goToAboutPage" class="image" src="@/assets/icons/mobile/info-icon.png" alt="About page" />
+          <img v-else class="image" src="@/assets/icons/mobile/info-icon.png" alt="About page" />
         </router-link>
       </nav>
     </div>
@@ -43,18 +35,9 @@
 
 <script setup>
 import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
-const router = useRouter();
 const route = useRoute();
-
-const goToHousesPage = () => {
-  router.push({ name: "HousesPage" });
-};
-
-const goToAboutPage = () => {
-  router.push({ name: "AboutPage" });
-};
 
 const isHomeActive = computed(() => {
   return ["HousesPage", "HouseCreatingPage", "HouseDetailsPage", "HouseEditPage"].includes(route.name);
