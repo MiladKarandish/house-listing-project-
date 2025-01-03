@@ -1,13 +1,12 @@
 <template>
   <div class="items">
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading">
+      <Loading />
+    </div>
     <div v-else-if="error">{{ error }}</div>
     <div v-else-if="item && item.location">
       <div class="item-conteiner">
-        <div
-          class="item-img"
-          :style="`background-image: url(${item.image})`"
-        ></div>
+        <div class="item-img" :style="`background-image: url(${item.image})`"></div>
         <div class="text">
           <div class="title item">
             {{ item.location.street }} {{ item.location.houseNumber }}
@@ -49,19 +48,13 @@
           <div v-if="item.madeByMe" class="madeByMe-block">
             <div class="edit">
               <button @click="goToHouseEditPage(item.id)">
-                <img
-                  src="@/assets/icons/actions/red-edite-icon.png"
-                  alt="edite button"
-                />
+                <img src="@/assets/icons/actions/red-edite-icon.png" alt="edite button" />
               </button>
             </div>
 
             <div class="delete">
               <button @click="showModal(item.id)">
-                <img
-                  src="@/assets/icons/actions/grey-delete-icon.png"
-                  alt="delete button"
-                />
+                <img src="@/assets/icons/actions/grey-delete-icon.png" alt="delete button" />
               </button>
             </div>
           </div>
@@ -69,18 +62,12 @@
         <div v-if="item.madeByMe" class="madeByMe-block-mobile">
           <div class="edit-mobile">
             <button @click="goToHouseEditPage(item.id)">
-              <img
-                src="@/assets/icons/actions/white-edite-icon.png"
-                alt="edite button"
-              />
+              <img src="@/assets/icons/actions/white-edite-icon.png" alt="edite button" />
             </button>
           </div>
           <div class="delete-mobile">
             <button @click="showModal(item.id)">
-              <img
-                src="@/assets/icons/actions/white-delete-icon.png"
-                alt="delete button"
-              />
+              <img src="@/assets/icons/actions/white-delete-icon.png" alt="delete button" />
             </button>
           </div>
         </div>
@@ -90,6 +77,8 @@
 </template>
 
 <script setup>
+import Loading from "@/components/Loading.vue";
+
 const props = defineProps({
   loading: Boolean,
   error: String,

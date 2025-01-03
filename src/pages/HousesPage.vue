@@ -1,5 +1,7 @@
 <template>
-  <div v-if="loading">Loading...</div>
+  <div v-if="loading">
+    <Loading />
+  </div>
   <div v-else-if="error">{{ error }}</div>
   <div v-else class="body">
     <div class="upper-block">
@@ -10,10 +12,7 @@
 
       <div class="right-block">
         <CreatNew></CreatNew>
-        <Filter
-          :sortCriteria="sortCriteria"
-          @toggle="toggleSortCriteria"
-        ></Filter>
+        <Filter :sortCriteria="sortCriteria" @toggle="toggleSortCriteria"></Filter>
       </div>
     </div>
     <ResultOfSearch
@@ -30,11 +29,7 @@
       :goToHouseEditPage="goToHouseEditPage"
     ></ItemsList>
 
-    <Confirmation
-      v-if="isModalVisible"
-      @confirm="handleDeleteHouse"
-      @cancel="hideModal"
-    />
+    <Confirmation v-if="isModalVisible" @confirm="handleDeleteHouse" @cancel="hideModal" />
   </div>
 </template>
 
@@ -49,6 +44,7 @@ import Search from "@/components/HousesPage/SearchInput.vue";
 import CreatNewMobile from "@/components/HousesPage/CreateNewListingMobile.vue";
 import ItemsList from "@/components/HousesPage/Items.vue";
 import ResultOfSearch from "@/components/HousesPage/ResultOfSearch.vue";
+import Loading from "@/components/Loading.vue";
 import { useCurrencyFormat } from "@/composables/useCurrencyFormat";
 import { useModal } from "@/composables/useModal";
 import { useDeleteHouse } from "@/composables/useDeleteHouse";
@@ -73,18 +69,14 @@ const filteredItems = computed(() => {
     return items.value;
   }
   return items.value.filter((item) => {
-    const itemString = (
-      item.location.street +
-      item.location.zip +
-      item.location.city
-    ).toLowerCase();
+    const itemString = (item.location.street + item.location.zip + item.location.city).toLowerCase();
     return itemString.includes(search.value.toLowerCase());
   });
 });
 
 const clearSearch = () => {
   search.value = "";
-  hasSearched.value = false; 
+  hasSearched.value = false;
 };
 
 const showSearchClearButton = computed(() => {
@@ -118,7 +110,7 @@ const goToHouseEditPage = (itemId) => {
 };
 
 const sortedItems = computed(() => {
-  const sorted = [...filteredItems.value]; 
+  const sorted = [...filteredItems.value];
   if (sortCriteria.value === "price") {
     sorted.sort((a, b) => a.price - b.price);
   } else if (sortCriteria.value === "size") {
@@ -129,7 +121,7 @@ const sortedItems = computed(() => {
 
 const toggleSortCriteria = (criteria) => {
   if (sortCriteria.value === criteria) {
-    sortCriteria.value = null; 
+    sortCriteria.value = null;
   } else {
     sortCriteria.value = criteria;
   }
